@@ -27,11 +27,11 @@ public class SolgeConsultingApplication {
 	//@Bean
 	CommandLineRunner commandLineRunner(AppRoleRepository roleRepository){
 		return args -> {
-			AppRole role =AppRole.builder().roleName("client").build();
+			AppRole role =AppRole.builder().roleName("Client").build();
 			roleRepository.save(role);
-			role =AppRole.builder().roleName("manager").build();
+			role =AppRole.builder().roleName("Manager").build();
 			roleRepository.save(role);
-			role =AppRole.builder().roleName("admin").build();
+			role =AppRole.builder().roleName("Admin").build();
 			roleRepository.save(role);
 		};
 	}

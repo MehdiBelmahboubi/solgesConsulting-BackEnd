@@ -86,10 +86,10 @@ public class AppUserServiceImpl implements AppUserService {
                 .orElseThrow(() -> new AppUserException(
                         "User With id [%s] not Exist".formatted(appUserRequestDto.getEmail())));
         user.setPassword(passwordEncoder.encode(appUserRequestDto.getPassWord()));
-        AppRole appRoleClient=appRoleRepository.findByRoleName("client").orElseThrow(
+        AppRole appRoleClient=appRoleRepository.findByRoleName("Client").orElseThrow(
                 ()-> new EntityNotFoundException("role width this [%s] not Exist".formatted("client"))
         );
-        AppRole appRoleAdmin=appRoleRepository.findByRoleName("manager").orElseThrow(
+        AppRole appRoleAdmin=appRoleRepository.findByRoleName("Manager").orElseThrow(
                 ()-> new EntityNotFoundException("role width this [%s] not Exist".formatted("manager"))
         );
         user.getAppRoles().add(appRoleAdmin);
