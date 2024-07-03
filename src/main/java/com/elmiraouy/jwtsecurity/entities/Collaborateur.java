@@ -1,9 +1,6 @@
 package com.elmiraouy.jwtsecurity.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
@@ -19,6 +16,7 @@ public class Collaborateur {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    //Info Personnels
     private String matricule;
     private String civilite;
     private String initiales;
@@ -77,4 +75,8 @@ public class Collaborateur {
     private String civNomPrenom;
     private String civPrenomNom;
     private String phots;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id")
+    private Company company;
 }

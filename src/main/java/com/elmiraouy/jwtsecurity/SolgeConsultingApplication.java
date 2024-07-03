@@ -24,7 +24,7 @@ public class SolgeConsultingApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SolgeConsultingApplication.class, args);
 	}
-	//@Bean
+	@Bean
 	CommandLineRunner commandLineRunner(AppRoleRepository roleRepository){
 		return args -> {
 			AppRole role =AppRole.builder().roleName("Client").build();

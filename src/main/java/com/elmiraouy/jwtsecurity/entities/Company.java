@@ -53,6 +53,8 @@ public class Company {
     private Image image;
     @OneToMany(mappedBy = "company",fetch = FetchType.LAZY)
     private Collection<TypeUnitOrganisational> unitTypes;
+    @OneToMany(mappedBy = "company",fetch = FetchType.LAZY)
+    private Collection<Collaborateur> collaborateurs;
     public Company(Long id, String name, String raisonSocial, String code, String titledCommercial, String rc, String ice, String iss, String tva, String patent, String cnss, String codePostal,String number) {
         this.id = id;
         this.name = name;
