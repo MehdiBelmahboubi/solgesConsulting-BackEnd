@@ -1,22 +1,24 @@
 package com.elmiraouy.jwtsecurity.Dto.request;
 
+import com.elmiraouy.jwtsecurity.enums.Sexe;
+import lombok.*;
 import java.util.Date;
 
+@Data
+@Builder
 public class CollaborateurRequestDto {
-    private Long id;
     private String matricule;
     private String civilite;
     private String initiales;
     private String nom;
     private String prenom;
-    private String sexe;
     private Date dateNaissance;
     private String lieuNaissance;
-    private Date dateDeces;
-    private Date dateCertifDeces;
-    private String nationalite;
-    private String nationalite2;
-    private Date dateNaturalisation;
+    private Sexe sexe;
+    private String civNomPrenom;
+    private String civPrenomNom;
+    private String photos;
+    private String signature;
     private String cnie;
     private Date cnieDelivreeLe;
     private Date cnieExpireLe;
@@ -35,6 +37,13 @@ public class CollaborateurRequestDto {
     private Date passePortDelivreLe;
     private Date passePortExpireLe;
     private String passePortDelivrePar;
+    private String telephone;
+    private String tel1;
+    private String tel2;
+    private String tel3;
+    private String email1;
+    private String email2;
+    private String email3;
     private Integer nbEnfantsSaisi;
     private Integer nbEnfants;
     private Integer nbEnfantsChargeSaisi;
@@ -43,23 +52,20 @@ public class CollaborateurRequestDto {
     private Integer nbPersCharge;
     private Integer nbEpousesSaisi;
     private Integer nbEpouses;
+    private Date dateDeces;
+    private Date dateCertifDeces;
+    private String nationalite;
+    private String nationalite2;
+    private Date dateNaturalisation;
     private Boolean active;
-    private String telephone;
-    private String tel1;
-    private String tel2;
-    private String tel3;
-    private String email1;
-    private String email2;
-    private String email3;
     private Boolean recrutable;
     private Boolean excluDeclaration;
     private String matriculeRecrutement;
-    private String observation;
-    private Date creeLe;
-    private String creePar;
-    private Date majLe;
-    private String majPar;
-    private String civNomPrenom;
-    private String civPrenomNom;
-    private String phots;
+    private Boolean observation;
+    private Long observateur_id;
+//    private Date creeLe;
+//    private String creePar;
+//    private Date majLe;
+//    private String majPar;
+    private Long companyId;
 }

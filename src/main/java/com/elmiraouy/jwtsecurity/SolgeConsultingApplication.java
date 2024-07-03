@@ -57,7 +57,7 @@ public class SolgeConsultingApplication {
 			Company companyIdOne = companyRepository.findById(1L).orElseThrow(
 					() -> new EntityNotFoundException("Company not found")
 			);
-		    TypeUnitOrganisational typeUnitOrganisationalOne=TypeUnitOrganisational
+			TypeUnitOrganisational typeUnitOrganisationalOne=TypeUnitOrganisational
 					.builder()
 					.active(true)
 					.name("Direction Générale")
@@ -96,7 +96,7 @@ public class SolgeConsultingApplication {
 					.company(companyIdOne)
 					.createDate(LocalDateTime.now())
 					.build();
-            typeUnitOrganisationalFour.setCompany(companyIdOne);
+			typeUnitOrganisationalFour.setCompany(companyIdOne);
 			typeUnitOrganisationalRepository.save(typeUnitOrganisationalOne);
 			typeUnitOrganisationalRepository.save(typeUnitOrganisationalTwo);
 			typeUnitOrganisationalRepository.save(typeUnitOrganisationalThree);
