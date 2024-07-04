@@ -17,7 +17,7 @@ public interface AppUserService {
     public AppUserResponseDto delete(Long id);
     public AppUserResponseDto update(Long id ,AppUserRequestDto userRequestDto) throws AppUserException;
     public void addTokenToUser(AppUser appUser, Token token) throws AppUserException;
-    public void addImageToUser(Long idImage,Long idUser) throws EntityNotFoundException, CompanyException;
+    public void addImageToUser(Long idImage,Long idUser) throws EntityNotFoundException, CompanyException, AppUserException;
     public AppUserResponseDto register(AppUserRequestDto appUserRequestDto) throws EntityNotFoundException, AppUserException, CompanyException;
     public  AppUserResponseDto confirmedEmail(AppUserRequestDto appUserRequestDto) throws AppUserException;
     public void addRoleToUser(Long idRole, Long idUser) throws EntityNotFoundException, CompanyException ;

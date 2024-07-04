@@ -123,14 +123,14 @@ public class AppUserServiceImpl implements AppUserService {
         return appUserDtoMapper.apply(saveUser);
     }
     @Override
-    public void addImageToUser(Long idImage, Long idUser) throws EntityNotFoundException, CompanyException {
+    public void addImageToUser(Long idImage, Long idUser) throws EntityNotFoundException, AppUserException {
 
         Image image =imageRepository.findById(idImage)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "Image With id [%s] not ".formatted(idImage)));
+                        "Image With id [%s] not Found".formatted(idImage)));
         AppUser appUser=appUserRepository.findAppUserById(idUser)
-                .orElseThrow(() -> new CompanyException(
-                        "Company With id [%s] not ".formatted(idUser)));
+                .orElseThrow(() -> new AppUserException(
+                        "User With id [%s] not Found".formatted(idUser)));
         appUser.setImage(image);
         appUserRepository.save(appUser);
     }
