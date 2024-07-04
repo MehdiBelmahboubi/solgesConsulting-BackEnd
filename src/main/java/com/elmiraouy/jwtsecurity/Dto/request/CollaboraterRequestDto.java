@@ -1,23 +1,12 @@
-package com.elmiraouy.jwtsecurity.entities;
+package com.elmiraouy.jwtsecurity.Dto.request;
 
 import com.elmiraouy.jwtsecurity.enums.Sexe;
-import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.Date;
 
-@Entity
+@Data
 @Builder
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class Collaborateur {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    //Info Personnels - nv1
+public class CollaboraterRequestDto {
     private String matricule;
     private String civilite;
     private String initiales;
@@ -30,7 +19,6 @@ public class Collaborateur {
     private String civPrenomNom;
     private String photos;
     private String signature;
-    //Info Immatriculation - nv2
     private String cnie;
     private Date cnieDelivreeLe;
     private Date cnieExpireLe;
@@ -49,7 +37,6 @@ public class Collaborateur {
     private Date passePortDelivreLe;
     private Date passePortExpireLe;
     private String passePortDelivrePar;
-    //Coordonnees - nv3
     private String telephone;
     private String tel1;
     private String tel2;
@@ -57,7 +44,6 @@ public class Collaborateur {
     private String email1;
     private String email2;
     private String email3;
-    //Famille - nv4
     private Integer nbEnfantsSaisi;
     private Integer nbEnfants;
     private Integer nbEnfantsChargeSaisi;
@@ -66,7 +52,6 @@ public class Collaborateur {
     private Integer nbPersCharge;
     private Integer nbEpousesSaisi;
     private Integer nbEpouses;
-    //Autre Infos - nv5
     private Date dateDeces;
     private Date dateCertifDeces;
     private String nationalite;
@@ -76,14 +61,11 @@ public class Collaborateur {
     private Boolean recrutable;
     private Boolean excluDeclaration;
     private String matriculeRecrutement;
-    //Systeme - nv0
     private Boolean observation;
+    private Long observateur_id;
     private Date creeLe;
     private String creePar;
     private Date majLe;
     private String majPar;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "company_id")
-    private Company company;
+    private Long companyId;
 }

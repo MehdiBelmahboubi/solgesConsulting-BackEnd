@@ -1,7 +1,7 @@
 package com.elmiraouy.jwtsecurity.repository;
 
-import com.elmiraouy.jwtsecurity.entities.Collaborateur;
+import com.elmiraouy.jwtsecurity.entities.Collaborater;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CollaborateurRepository extends JpaRepository<Collaborateur,Long> {
+public interface CollaboraterRepository extends JpaRepository<Collaborater,Long> {
 }

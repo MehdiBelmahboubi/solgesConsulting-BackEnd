@@ -1,12 +1,16 @@
-package com.elmiraouy.jwtsecurity.Dto.request;
+package com.elmiraouy.jwtsecurity.Dto.response;
 
 import com.elmiraouy.jwtsecurity.enums.Sexe;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import java.util.Date;
 
-@Data
 @Builder
-public class CollaborateurRequestDto {
+@Data
+@AllArgsConstructor
+public class CollaboraterResponseDto {
+    private Long id;
     private String matricule;
     private String civilite;
     private String initiales;
@@ -62,10 +66,9 @@ public class CollaborateurRequestDto {
     private Boolean excluDeclaration;
     private String matriculeRecrutement;
     private Boolean observation;
-    private Long observateur_id;
-//    private Date creeLe;
-//    private String creePar;
-//    private Date majLe;
-//    private String majPar;
+    private Date creeLe;
+    private String creePar;
+    private Date majLe;
+    private String majPar;
     private Long companyId;
 }
