@@ -1,6 +1,6 @@
 package com.elmiraouy.jwtsecurity.enums;
 
-public enum Sexe {
-    Homme,
-    Femme
+public enum Civilite {
+    Mr,
+    Mme
 }
