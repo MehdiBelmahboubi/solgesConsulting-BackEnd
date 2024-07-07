@@ -65,7 +65,6 @@ public class AuthenticationService {
         BeanUtils.copyProperties(saveUser,response);
 
         return sendUuidToUser(request);
-
     }
 
 

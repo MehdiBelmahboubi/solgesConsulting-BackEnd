@@ -5,6 +5,7 @@ import com.elmiraouy.jwtsecurity.enums.Sexe;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 
@@ -22,12 +23,14 @@ public class Collaborater {
     //Info Personnels - nv1
     @Column(nullable = false)
     private String matricule;
+    @Enumerated(EnumType.STRING)
     private Civilite civilite;
     private String initiales;
     private String firstname;
     private String lastname;
     private Date dateNaissance;
     private String lieuNaissance;
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Sexe sexe;
     @Column(nullable = false)
@@ -75,8 +78,8 @@ public class Collaborater {
     //Other Infos - nv5
     private Date dateDeces;
     private Date dateCertifDeces;
-    private String nationalite;
-    private String nationalite2;
+//    private String nationalite;
+//    private String nationalite2;
     private Date dateNaturalisation;
     private Boolean active;
     private Boolean recrutable;
@@ -84,15 +87,26 @@ public class Collaborater {
     private String matriculeRecrutement;
     //System - nv0
     private String observation;
-    private Date dateCreation;
+    private LocalDateTime dateCreation;
     private String creePar;
-    private Date dateUpdate;
+    private LocalDateTime dateUpdate;
     private String majPar;
 
     @OneToMany(mappedBy = "collaborater",fetch = FetchType.LAZY)
     private Collection<Contract> contracts;
 
+    @OneToMany(mappedBy = "collaborater",fetch = FetchType.LAZY)
+    private Collection<Classification> classifications;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
     private Company company;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "collaborater_nationality",
+            joinColumns = @JoinColumn(name = "collaborater_id"),
+            inverseJoinColumns = @JoinColumn(name = "country_code")
+    )
+    private Collection<Country> nationalities;
 }

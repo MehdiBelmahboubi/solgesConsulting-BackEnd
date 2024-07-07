@@ -1,10 +1,9 @@
 package com.elmiraouy.jwtsecurity.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.Date;
 
 @Entity
 @Builder
@@ -17,4 +16,24 @@ public class Classification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Date dateClassification;
+    private String refClassification;
+    private String categorieProf;
+    private Date dateCategorieProf;
+    private Date dateFin;
+
+    //System - nv0
+    private String observation;
+    private Date dateCreation;
+    private String creePar;
+    private Date dateUpdate;
+    private String majPar;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "type_id")
+    private ClassificationType classificationType;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "collaborater_id")
+    private Collaborater collaborater;
 }

@@ -1,6 +1,9 @@
 package com.elmiraouy.jwtsecurity.Dto.request;
 
+import com.elmiraouy.jwtsecurity.entities.Company;
+import com.elmiraouy.jwtsecurity.enums.Civilite;
 import com.elmiraouy.jwtsecurity.enums.Sexe;
+import jakarta.persistence.Column;
 import lombok.*;
 import java.util.Date;
 
@@ -8,13 +11,12 @@ import java.util.Date;
 @Builder
 public class CollaboraterRequestDto {
     private String matricule;
-    private String civilite;
+    private Civilite civilite;
     private String initiales;
-    private String nom;
-    private String prenom;
+    private String firstname;
+    private String lastname;
     private Date dateNaissance;
     private String lieuNaissance;
-    private Sexe sexe;
     private String civNomPrenom;
     private String civPrenomNom;
     private String photos;
@@ -44,28 +46,25 @@ public class CollaboraterRequestDto {
     private String email1;
     private String email2;
     private String email3;
-    private Integer nbEnfantsSaisi;
+    private Boolean nbEnfantsSaisi;
     private Integer nbEnfants;
-    private Integer nbEnfantsChargeSaisi;
+    private Boolean nbEnfantsChargeSaisi;
     private Integer nbEnfantCharge;
     private String nomJeuneFille;
     private Integer nbPersCharge;
-    private Integer nbEpousesSaisi;
+    private Boolean nbEpousesSaisi;
     private Integer nbEpouses;
     private Date dateDeces;
     private Date dateCertifDeces;
-    private String nationalite;
-    private String nationalite2;
     private Date dateNaturalisation;
     private Boolean active;
     private Boolean recrutable;
     private Boolean excluDeclaration;
     private String matriculeRecrutement;
-    private Boolean observation;
-    private Long observateur_id;
-    private Date creeLe;
+    private String observation;
+    private Date dateCreation;
     private String creePar;
-    private Date majLe;
+    private Date dateUpdate;
     private String majPar;
-    private Long companyId;
+    private Company company;
 }

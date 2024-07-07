@@ -18,6 +18,7 @@ public class ContractType {
 
     private String code;
     private String description;
+
     @OneToMany(mappedBy = "contractType",fetch = FetchType.LAZY)
     private Collection<Contract> contracts;
 }

@@ -90,7 +90,6 @@ public class CompanyServiceImpl implements CompanyService {
     company.setAdmin(appUser);
     userRepository.save(appUser);
     companyRepository.save(company);
-
     }
 
 
