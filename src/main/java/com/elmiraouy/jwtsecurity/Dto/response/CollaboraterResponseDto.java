@@ -1,6 +1,7 @@
 package com.elmiraouy.jwtsecurity.Dto.response;
 
 import com.elmiraouy.jwtsecurity.entities.Classification;
+import com.elmiraouy.jwtsecurity.entities.Company;
 import com.elmiraouy.jwtsecurity.entities.Contract;
 import com.elmiraouy.jwtsecurity.enums.Sexe;
 import lombok.AllArgsConstructor;
@@ -73,15 +74,18 @@ public class CollaboraterResponseDto {
     private String creePar;
     private Date majLe;
     private String majPar;
+    private Company company;
 
 
-    public CollaboraterResponseDto(Long id, String matricule, String civNomPrenom, String cnie, Date dateNaissance, String email1,String telephone) {
+    public CollaboraterResponseDto(Long id, String matricule, String civNomPrenom, String cnie, String email1, String telephone,String initiales,String lieuNaissance,Sexe sexe) {
         this.id=id;
         this.matricule=matricule;
         this.civNomPrenom=civNomPrenom;
         this.cnie=cnie;
-        this.dateNaissance=dateNaissance;
         this.email1=email1;
         this.telephone=telephone;
+        this.initiales=initiales;
+        this.lieuNaissance=lieuNaissance;
+        this.sexe=sexe;
     }
 }

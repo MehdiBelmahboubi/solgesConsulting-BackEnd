@@ -1,13 +1,9 @@
 package com.elmiraouy.jwtsecurity;
 
 import com.elmiraouy.jwtsecurity.Dto.response.AppUserResponseDto;
-import com.elmiraouy.jwtsecurity.entities.AppRole;
-import com.elmiraouy.jwtsecurity.entities.Company;
-import com.elmiraouy.jwtsecurity.entities.TypeUnitOrganisational;
+import com.elmiraouy.jwtsecurity.entities.*;
 import com.elmiraouy.jwtsecurity.handlerException.EntityNotFoundException;
-import com.elmiraouy.jwtsecurity.repository.AppRoleRepository;
-import com.elmiraouy.jwtsecurity.repository.CompanyRepository;
-import com.elmiraouy.jwtsecurity.repository.TypeUnitOrganisationalRepository;
+import com.elmiraouy.jwtsecurity.repository.*;
 import com.elmiraouy.jwtsecurity.service.AppUserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -33,6 +29,34 @@ public class SolgeConsultingApplication {
 			roleRepository.save(role);
 			role =AppRole.builder().roleName("Admin").build();
 			roleRepository.save(role);
+		};
+	}
+	//@Bean
+	CommandLineRunner commandLineRunner(ContractTypeRepository contractTypeRepository){
+		return args -> {
+			ContractType contractType=ContractType.builder().code("CDI").description("Contrat à Durée Indéterminée : Le contrat n'a pas de date de fin prédéterminée et offre une stabilité d'emploi.").build();
+			contractTypeRepository.save(contractType);
+			contractType=ContractType.builder().code("CDD").description("Contrat à Durée Déterminée : Le contrat a une date de fin précise, souvent utilisé pour des missions temporaires ou des projets spécifiques.").build();
+			contractTypeRepository.save(contractType);
+			contractType=ContractType.builder().code("Intérim").description("Contrat de travail temporaire  : Le salarié est mis à disposition par une agence de travail temporaire pour une mission chez un client, similaire à l'intérim.").build();
+			contractTypeRepository.save(contractType);
+			contractType=ContractType.builder().code("Stage").description("Contrat de stage : Souvent utilisé pour les étudiants ou jeunes diplômés pour acquérir de l'expérience professionnelle.").build();
+			contractTypeRepository.save(contractType);
+		};
+	}
+	//@Bean
+	public CommandLineRunner testAddCountry(CountryRepository countryRepository) {
+		return args -> {
+			Country country = Country.builder()
+					.codeAlpha1("USA")
+					.codeAlpha2("US")
+					.name("United States")
+					.capital("Washington, D.C.")
+					.country("United States")
+					.nationality("American")
+					.build();
+
+			countryRepository.save(country);
 		};
 	}
 	//@Bean

@@ -4,18 +4,22 @@ import com.elmiraouy.jwtsecurity.Dto.request.CollaboraterRequestDto;
 import com.elmiraouy.jwtsecurity.Dto.response.CollaboraterResponseDto;
 import com.elmiraouy.jwtsecurity.entities.Collaborater;
 import com.elmiraouy.jwtsecurity.entities.Company;
+import com.elmiraouy.jwtsecurity.entities.Country;
 import com.elmiraouy.jwtsecurity.enums.Civilite;
 import com.elmiraouy.jwtsecurity.enums.Sexe;
 import com.elmiraouy.jwtsecurity.handlerException.CollaboraterException;
+import com.elmiraouy.jwtsecurity.handlerException.CompanyException;
+import com.elmiraouy.jwtsecurity.handlerException.CountryException;
 import com.elmiraouy.jwtsecurity.mappers.CollaboraterDtoMapper;
 import com.elmiraouy.jwtsecurity.repository.CollaboraterRepository;
 import com.elmiraouy.jwtsecurity.repository.CompanyRepository;
+import com.elmiraouy.jwtsecurity.repository.CountryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,27 +27,33 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     private final CollaboraterRepository collaboraterRepository;
     private final CompanyRepository companyRepository;
     private final CollaboraterDtoMapper collaboraterDtoMapper;
+    private final CountryRepository countryRepository;
     @Override
-    public List<CollaboraterResponseDto> findAll() {
-        List<Collaborater> collaboraters=collaboraterRepository.findAll();
+    public List<CollaboraterResponseDto> findByCompany(Long companyId) throws CompanyException {
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new CompanyException("Company with this Id Introuvable: [%s] :".formatted(companyId)));
+        List<Collaborater> collaboraters=collaboraterRepository.findAllByCompany(company);
         return collaboraters.stream().map(collaboraterDtoMapper).toList();
     }
 
     @Override
-    public CollaboraterResponseDto createCollab(CollaboraterRequestDto request) throws CollaboraterException {
-        Optional<Collaborater> oCollaborater = collaboraterRepository.findByMatriculeAndCompany(request.getMatricule(),request.getCompany());
-        if(oCollaborater.isPresent())
+    public CollaboraterResponseDto createCollab(CollaboraterRequestDto request) throws CollaboraterException, CompanyException, CountryException {
+        Company company = companyRepository.findById(request.getCompany_id())
+                .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(request.getCompany_id())));
+        if(collaboraterRepository.findByCnie(request.getCnie()).isPresent()){
+            throw new CollaboraterException("un collaborateur avec ce CNIE est deja creer: [%s] :".formatted(request.getCnie()));
+        }else if (collaboraterRepository.findByMatriculeAndCompany(request.getMatricule(), company).isPresent()) {
             throw new CollaboraterException("un collaborateur avec ce Matricule deja creer dans cette company: [%s] :".formatted(request.getMatricule()));
-        Sexe sexe;
-        if(request.getCivilite()==Civilite.Mr){
-            sexe=Sexe.Homme;
-        }else {
-            sexe=Sexe.Femme;
         }
-        boolean nbEnfantsSaisi = request.getNbEnfants() != null;
-        boolean nbEnfantsChargeSaisi = request.getNbEnfantCharge() != null;
-        boolean nbEpousesSaisi = request.getNbEpouses() != null;
-        var collaborater = Collaborater.builder()
+        Collaborater collaborater = buildCollaborater(request, company);
+        Collaborater saveCollaborater = collaboraterRepository.save(collaborater);
+        addNationalitiesToCollaborater(saveCollaborater, request.getCountryCode1(), request.getCountryCode2());
+        return collaboraterDtoMapper.apply(saveCollaborater);
+    }
+
+    public Collaborater buildCollaborater(CollaboraterRequestDto request, Company company) {
+        Sexe sexe = request.getCivilite() == Civilite.Mr ? Sexe.Homme : Sexe.Femme;
+        return Collaborater.builder()
                 .matricule(request.getMatricule())
                 .civilite(request.getCivilite())
                 .initiales(request.getInitiales())
@@ -52,14 +62,14 @@ public class CollaboraterServiceImpl implements CollaboraterService{
                 .dateNaissance(request.getDateNaissance())
                 .lieuNaissance(request.getLieuNaissance())
                 .sexe(sexe)
-                .civNomPrenom(request.getFirstname()+" "+request.getLastname())
-                .civPrenomNom(request.getLastname()+" "+request.getFirstname())
+                .civNomPrenom(request.getFirstname() + " " + request.getLastname())
+                .civPrenomNom(request.getLastname() + " " + request.getFirstname())
                 .cnie(request.getCnie())
                 .cnieDelivreeLe(request.getCnieDelivreeLe())
                 .cnieDelivreePar(request.getCnieDelivreePar())
                 .cnieExpireLe(request.getCnieExpireLe())
                 .numPermisSejour(request.getNumPermisSejour())
-                .natPermisSejour(request.getNumPermisSejour())
+                .natPermisSejour(request.getNatPermisSejour())
                 .permisSejourDelivreLe(request.getPermisSejourDelivreLe())
                 .permisSejourDebVal(request.getPermisSejourDebVal())
                 .permisSejourFinVal(request.getPermisSejourFinVal())
@@ -80,24 +90,40 @@ public class CollaboraterServiceImpl implements CollaboraterService{
                 .email2(request.getEmail2())
                 .email3(request.getEmail3())
                 .nbEnfants(request.getNbEnfants())
-                .nbEnfantsSaisi(nbEnfantsSaisi)
+                .nbEnfantsSaisi(request.getNbEnfants() != null)
                 .nbEnfantCharge(request.getNbEnfantCharge())
-                .nbEnfantsChargeSaisi(nbEnfantsChargeSaisi)
+                .nbEnfantsChargeSaisi(request.getNbEnfantCharge() != null)
                 .nbPersCharge(request.getNbPersCharge())
                 .nomJeuneFille(request.getNomJeuneFille())
                 .nbEpouses(request.getNbEpouses())
-                .nbEpousesSaisi(nbEpousesSaisi)
+                .nbEpousesSaisi(request.getNbEpouses() != null)
                 .dateNaturalisation(request.getDateNaturalisation())
                 .active(request.getActive())
                 .recrutable(request.getRecrutable())
                 .excluDeclaration(request.getExcluDeclaration())
                 .matriculeRecrutement(request.getMatriculeRecrutement())
-                .observation(request.getObservation())
                 .dateCreation(LocalDateTime.now())
-                .creePar(request.getCreePar())
+                .company(company)
+                .countries(new ArrayList<>())
                 .build();
-        Collaborater saveCollaborater = collaboraterRepository.save(collaborater);
-        return collaboraterDtoMapper.apply(saveCollaborater);
+    }
+
+    @Override
+    public void addNationalitiesToCollaborater(Collaborater collaborater, Long countryCode1, Long countryCode2) throws CountryException {
+        if (countryCode1 != null) {
+            Country country1 = countryRepository.findById(countryCode1)
+                    .orElseThrow(() -> new CountryException("Country not found with code: " + countryCode1));
+            collaborater.getCountries().add(country1);
+            country1.getCollaborators().add(collaborater);
+            countryRepository.save(country1);
+        }
+        if (countryCode2 != null) {
+            Country country2 = countryRepository.findById(countryCode2)
+                    .orElseThrow(() -> new CountryException("Country not found with code: " + countryCode2));
+            collaborater.getCountries().add(country2);
+            country2.getCollaborators().add(collaborater);
+            countryRepository.save(country2);
+        }
     }
 
     @Override

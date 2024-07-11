@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -102,11 +103,6 @@ public class Collaborater {
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "collaborater_nationality",
-            joinColumns = @JoinColumn(name = "collaborater_id"),
-            inverseJoinColumns = @JoinColumn(name = "country_code")
-    )
-    private Collection<Country> nationalities;
+    @ManyToMany(mappedBy = "collaborators",fetch = FetchType.EAGER)
+    private Collection<Country> countries= new ArrayList<>();
 }

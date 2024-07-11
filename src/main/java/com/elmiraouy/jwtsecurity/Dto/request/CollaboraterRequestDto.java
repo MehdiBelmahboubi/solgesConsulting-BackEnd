@@ -61,10 +61,7 @@ public class CollaboraterRequestDto {
     private Boolean recrutable;
     private Boolean excluDeclaration;
     private String matriculeRecrutement;
-    private String observation;
-    private Date dateCreation;
-    private String creePar;
-    private Date dateUpdate;
-    private String majPar;
-    private Company company;
+    private Long countryCode1;
+    private Long countryCode2;
+    private Long company_id;
 }
