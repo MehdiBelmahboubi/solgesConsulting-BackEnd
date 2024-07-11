@@ -3,6 +3,7 @@ package com.elmiraouy.jwtsecurity.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
@@ -23,6 +24,6 @@ public class Country {
     private String country;
     private String nationality;
 
-    @ManyToMany(mappedBy = "nationalities", fetch = FetchType.LAZY)
-    private Collection<Collaborater> collaborators;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Collection<Collaborater> collaborators= new ArrayList<>();
 }
