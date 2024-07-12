@@ -32,8 +32,8 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     public List<CollaboraterResponseDto> findByCompany(Long companyId) throws CompanyException {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new CompanyException("Company with this Id Introuvable: [%s] :".formatted(companyId)));
-        List<Collaborater> collaboraters=collaboraterRepository.findAllByCompany(company);
-        return collaboraters.stream().map(collaboraterDtoMapper).toList();
+        List<CollaboraterResponseDto> collaboraters=collaboraterRepository.findAllByCompany(company);
+        return collaboraters;
     }
 
     @Override

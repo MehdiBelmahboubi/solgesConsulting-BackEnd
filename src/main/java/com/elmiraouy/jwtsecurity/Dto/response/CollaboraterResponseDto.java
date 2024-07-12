@@ -1,36 +1,31 @@
 package com.elmiraouy.jwtsecurity.Dto.response;
 
-import com.elmiraouy.jwtsecurity.entities.Classification;
-import com.elmiraouy.jwtsecurity.entities.Company;
-import com.elmiraouy.jwtsecurity.entities.Contract;
+import com.elmiraouy.jwtsecurity.enums.Civilite;
 import com.elmiraouy.jwtsecurity.enums.Sexe;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.Date;
-import java.util.List;
 
 @Builder
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class CollaboraterResponseDto {
     private Long id;
     private String matricule;
-    private String civilite;
+    private Civilite civilite;
     private String initiales;
-    private String nom;
-    private String prenom;
+    private String civNomPrenom;
     private Date dateNaissance;
     private String lieuNaissance;
     private Sexe sexe;
-    private String civNomPrenom;
-    private String civPrenomNom;
-    private String photos;
-    private String signature;
     private String cnie;
     private Date cnieDelivreeLe;
-    private Date cnieExpireLe;
     private String cnieDelivreePar;
+    private Date cnieExpireLe;
     private String numPermisSejour;
     private String natPermisSejour;
     private Date permisSejourDelivreLe;
@@ -52,32 +47,23 @@ public class CollaboraterResponseDto {
     private String email1;
     private String email2;
     private String email3;
-    private Integer nbEnfantsSaisi;
+    private Boolean nbEnfantsSaisi;
     private Integer nbEnfants;
-    private Integer nbEnfantsChargeSaisi;
+    private Boolean nbEnfantsChargeSaisi;
     private Integer nbEnfantCharge;
     private String nomJeuneFille;
     private Integer nbPersCharge;
-    private Integer nbEpousesSaisi;
+    private Boolean nbEpousesSaisi;
     private Integer nbEpouses;
-    private Date dateDeces;
-    private Date dateCertifDeces;
-    private String nationalite;
-    private String nationalite2;
     private Date dateNaturalisation;
     private Boolean active;
     private Boolean recrutable;
     private Boolean excluDeclaration;
     private String matriculeRecrutement;
-    private Boolean observation;
-    private Date creeLe;
-    private String creePar;
-    private Date majLe;
-    private String majPar;
-    private Company company;
+    private Integer companyId;
 
 
-    public CollaboraterResponseDto(Long id, String matricule, String civNomPrenom, String cnie, String email1, String telephone,String initiales,String lieuNaissance,Sexe sexe) {
+    public CollaboraterResponseDto(Long id, String matricule, String civNomPrenom, String cnie, String email1, String telephone, String initiales, String lieuNaissance, Sexe sexe) {
         this.id=id;
         this.matricule=matricule;
         this.civNomPrenom=civNomPrenom;
@@ -87,5 +73,65 @@ public class CollaboraterResponseDto {
         this.initiales=initiales;
         this.lieuNaissance=lieuNaissance;
         this.sexe=sexe;
+    }
+
+    public CollaboraterResponseDto(Long id, String matricule, Civilite civilite, String initiales, String civNomPrenom,
+                                   Date dateNaissance, String lieuNaissance, Sexe sexe, String cnie, Date cnieDelivreeLe,
+                                   String cnieDelivreePar, Date cnieExpireLe, String numPermisSejour, String natPermisSejour,
+                                   Date permisSejourDelivreLe, Date permisSejourDebVal, Date permisSejourFinVal,
+                                   String numPermisTravail, String natPermisTravail, Date permisTravailDelivreLe,
+                                   Date permisTravailDebVal, Date permisTravailFinVal, String numPassePort,
+                                   Date passePortDelivreLe, Date passePortExpireLe, String passePortDelivrePar,
+                                   String telephone, String tel1, String tel2, String tel3, String email1, String email2,
+                                   String email3, Boolean nbEnfantsSaisi, Integer nbEnfants, Boolean nbEnfantsChargeSaisi,
+                                   Integer nbEnfantCharge, String nomJeuneFille, Integer nbPersCharge, Boolean nbEpousesSaisi,
+                                   Integer nbEpouses, Date dateNaturalisation, Boolean active, Boolean recrutable,
+                                   Boolean excluDeclaration, String matriculeRecrutement) {
+        this.id = id;
+        this.matricule = matricule;
+        this.civilite = civilite;
+        this.initiales = initiales;
+        this.civNomPrenom = civNomPrenom;
+        this.dateNaissance = dateNaissance;
+        this.lieuNaissance = lieuNaissance;
+        this.sexe = sexe;
+        this.cnie = cnie;
+        this.cnieDelivreeLe = cnieDelivreeLe;
+        this.cnieDelivreePar = cnieDelivreePar;
+        this.cnieExpireLe = cnieExpireLe;
+        this.numPermisSejour = numPermisSejour;
+        this.natPermisSejour = natPermisSejour;
+        this.permisSejourDelivreLe = permisSejourDelivreLe;
+        this.permisSejourDebVal = permisSejourDebVal;
+        this.permisSejourFinVal = permisSejourFinVal;
+        this.numPermisTravail = numPermisTravail;
+        this.natPermisTravail = natPermisTravail;
+        this.permisTravailDelivreLe = permisTravailDelivreLe;
+        this.permisTravailDebVal = permisTravailDebVal;
+        this.permisTravailFinVal = permisTravailFinVal;
+        this.numPassePort = numPassePort;
+        this.passePortDelivreLe = passePortDelivreLe;
+        this.passePortExpireLe = passePortExpireLe;
+        this.passePortDelivrePar = passePortDelivrePar;
+        this.telephone = telephone;
+        this.tel1 = tel1;
+        this.tel2 = tel2;
+        this.tel3 = tel3;
+        this.email1 = email1;
+        this.email2 = email2;
+        this.email3 = email3;
+        this.nbEnfantsSaisi = nbEnfantsSaisi;
+        this.nbEnfants = nbEnfants;
+        this.nbEnfantsChargeSaisi = nbEnfantsChargeSaisi;
+        this.nbEnfantCharge = nbEnfantCharge;
+        this.nomJeuneFille = nomJeuneFille;
+        this.nbPersCharge = nbPersCharge;
+        this.nbEpousesSaisi = nbEpousesSaisi;
+        this.nbEpouses = nbEpouses;
+        this.dateNaturalisation = dateNaturalisation;
+        this.active = active;
+        this.recrutable = recrutable;
+        this.excluDeclaration = excluDeclaration;
+        this.matriculeRecrutement = matriculeRecrutement;
     }
 }
