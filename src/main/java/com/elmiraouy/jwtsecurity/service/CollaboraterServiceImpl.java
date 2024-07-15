@@ -37,6 +37,13 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     }
 
     @Override
+    public CollaboraterResponseDto findById(Long id) throws CollaboraterException {
+        Collaborater collaborater = collaboraterRepository.findById(id)
+                .orElseThrow(() -> new CollaboraterException("Collaborater with this Id Introuvable: [%s] :".formatted(id)));
+        return collaboraterDtoMapper.apply(collaborater);
+    }
+
+    @Override
     public CollaboraterResponseDto createCollab(CollaboraterRequestDto request) throws CollaboraterException, CompanyException, CountryException {
         Company company = companyRepository.findById(request.getCompany_id())
                 .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(request.getCompany_id())));
@@ -57,13 +64,13 @@ public class CollaboraterServiceImpl implements CollaboraterService{
                 .matricule(request.getMatricule())
                 .civilite(request.getCivilite())
                 .initiales(request.getInitiales())
-                .firstname(request.getFirstname())
-                .lastname(request.getLastname())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
                 .dateNaissance(request.getDateNaissance())
                 .lieuNaissance(request.getLieuNaissance())
                 .sexe(sexe)
-                .civNomPrenom(request.getFirstname() + " " + request.getLastname())
-                .civPrenomNom(request.getLastname() + " " + request.getFirstname())
+                .civNomPrenom(request.getFirstName() + " " + request.getLastName())
+                .civPrenomNom(request.getLastName() + " " + request.getFirstName())
                 .cnie(request.getCnie())
                 .cnieDelivreeLe(request.getCnieDelivreeLe())
                 .cnieDelivreePar(request.getCnieDelivreePar())

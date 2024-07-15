@@ -27,8 +27,8 @@ public class Collaborater {
     @Enumerated(EnumType.STRING)
     private Civilite civilite;
     private String initiales;
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private Date dateNaissance;
     private String lieuNaissance;
     @Enumerated(EnumType.STRING)

@@ -19,6 +19,8 @@ public class CollaboraterResponseDto {
     private Civilite civilite;
     private String initiales;
     private String civNomPrenom;
+    private String firstName;
+    private String lastName;
     private Date dateNaissance;
     private String lieuNaissance;
     private Sexe sexe;
@@ -62,20 +64,7 @@ public class CollaboraterResponseDto {
     private String matriculeRecrutement;
     private Integer companyId;
 
-
-    public CollaboraterResponseDto(Long id, String matricule, String civNomPrenom, String cnie, String email1, String telephone, String initiales, String lieuNaissance, Sexe sexe) {
-        this.id=id;
-        this.matricule=matricule;
-        this.civNomPrenom=civNomPrenom;
-        this.cnie=cnie;
-        this.email1=email1;
-        this.telephone=telephone;
-        this.initiales=initiales;
-        this.lieuNaissance=lieuNaissance;
-        this.sexe=sexe;
-    }
-
-    public CollaboraterResponseDto(Long id, String matricule, Civilite civilite, String initiales, String civNomPrenom,
+    public CollaboraterResponseDto(Long id, String matricule, Civilite civilite,String firstName,String lastName, String initiales, String civNomPrenom,
                                    Date dateNaissance, String lieuNaissance, Sexe sexe, String cnie, Date cnieDelivreeLe,
                                    String cnieDelivreePar, Date cnieExpireLe, String numPermisSejour, String natPermisSejour,
                                    Date permisSejourDelivreLe, Date permisSejourDebVal, Date permisSejourFinVal,
@@ -90,6 +79,8 @@ public class CollaboraterResponseDto {
         this.id = id;
         this.matricule = matricule;
         this.civilite = civilite;
+        this.firstName=firstName;
+        this.lastName=lastName;
         this.initiales = initiales;
         this.civNomPrenom = civNomPrenom;
         this.dateNaissance = dateNaissance;
@@ -133,5 +124,19 @@ public class CollaboraterResponseDto {
         this.recrutable = recrutable;
         this.excluDeclaration = excluDeclaration;
         this.matriculeRecrutement = matriculeRecrutement;
+    }
+
+    public CollaboraterResponseDto(Long id, String matricule, String civNomPrenom, String cnie, String firstName, String lastName, Civilite civilite, Date dateNaissance, String initiales, String lieuNaissance, Sexe sexe) {
+        this.id=id;
+        this.matricule=matricule;
+        this.civNomPrenom=civNomPrenom;
+        this.cnie=cnie;
+        this.firstName=firstName;
+        this.lastName=lastName;
+        this.civilite=civilite;
+        this.dateNaissance=dateNaissance;
+        this.initiales=initiales;
+        this.lieuNaissance=lieuNaissance;
+        this.sexe=sexe;
     }
 }

@@ -14,8 +14,10 @@ public class CollaboraterDtoMapper implements Function<Collaborater, Collaborate
                 collaborater.getMatricule(),
                 collaborater.getCivNomPrenom(),
                 collaborater.getCnie(),
-                collaborater.getEmail1(),
-                collaborater.getTelephone(),
+                collaborater.getFirstName(),
+                collaborater.getLastName(),
+                collaborater.getCivilite(),
+                collaborater.getDateNaissance(),
                 collaborater.getInitiales(),
                 collaborater.getLieuNaissance(),
                 collaborater.getSexe()

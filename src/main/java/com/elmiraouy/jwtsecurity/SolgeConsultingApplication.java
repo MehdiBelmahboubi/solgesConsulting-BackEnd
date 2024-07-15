@@ -32,7 +32,7 @@ public class SolgeConsultingApplication {
 		};
 	}
 	//@Bean
-	CommandLineRunner commandLineRunner(ContractTypeRepository contractTypeRepository){
+	CommandLineRunner commandLineRunner1(ContractTypeRepository contractTypeRepository){
 		return args -> {
 			ContractType contractType=ContractType.builder().code("CDI").description("Contrat à Durée Indéterminée : Le contrat n'a pas de date de fin prédéterminée et offre une stabilité d'emploi.").build();
 			contractTypeRepository.save(contractType);

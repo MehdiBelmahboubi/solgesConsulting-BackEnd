@@ -13,8 +13,8 @@ public class CollaboraterRequestDto {
     private String matricule;
     private Civilite civilite;
     private String initiales;
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private Date dateNaissance;
     private String lieuNaissance;
     private String civNomPrenom;
