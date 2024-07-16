@@ -34,4 +34,9 @@ public class CollaboraterController {
     public ResponseEntity<CollaboraterResponseDto> createCollab(@RequestBody CollaboraterRequestDto collaboraterRequestDto) throws CollaboraterException, CompanyException, CountryException {
         return ResponseEntity.ok(collaboraterService.createCollab(collaboraterRequestDto));
     }
+
+    @PostMapping("/update")
+    public ResponseEntity<CollaboraterResponseDto> updateCollab(@RequestBody CollaboraterRequestDto collaboraterRequestDto) throws CollaboraterException {
+        return ResponseEntity.ok(collaboraterService.updateCollab(collaboraterRequestDto));
+    }
 }

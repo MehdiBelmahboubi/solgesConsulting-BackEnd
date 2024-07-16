@@ -17,5 +17,5 @@ public interface CollaboraterService {
     public Collaborater buildCollaborater(CollaboraterRequestDto request, Company company);
     public void addNationalitiesToCollaborater(Collaborater collaborater, Long countryCode1, Long countryCode2) throws CountryException;
     public CollaboraterResponseDto deleteCollab(Long id);
-    public CollaboraterResponseDto updateCollab(Long id , CollaboraterRequestDto CollaboraterRequestDto);
+    public CollaboraterResponseDto updateCollab(CollaboraterRequestDto CollaboraterRequestDto) throws CollaboraterException;
 }

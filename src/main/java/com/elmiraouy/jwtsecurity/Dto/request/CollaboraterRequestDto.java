@@ -10,6 +10,7 @@ import java.util.Date;
 @Data
 @Builder
 public class CollaboraterRequestDto {
+    private Long id;
     private String matricule;
     private Civilite civilite;
     private String initiales;

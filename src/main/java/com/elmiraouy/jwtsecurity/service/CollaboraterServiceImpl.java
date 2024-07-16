@@ -139,7 +139,57 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     }
 
     @Override
-    public CollaboraterResponseDto updateCollab(Long id, CollaboraterRequestDto CollaboraterRequestDto) {
-        return null;
+    public CollaboraterResponseDto updateCollab( CollaboraterRequestDto request) throws CollaboraterException {
+        Collaborater collaborater = collaboraterRepository.findById(request.getId())
+                .orElseThrow(() -> new CollaboraterException("Collaborater with this Id Introuvable: [%s] :".formatted(request.getId())));
+        collaborater.setCivilite(request.getCivilite());
+        collaborater.setInitiales(request.getInitiales());
+        collaborater.setFirstName(request.getFirstName());
+        collaborater.setLastName(request.getLastName());
+        collaborater.setDateNaissance(request.getDateNaissance());
+        collaborater.setLieuNaissance(request.getLieuNaissance());
+        collaborater.setSexe(request.getCivilite() == Civilite.Mr ? Sexe.Homme : Sexe.Femme);
+        collaborater.setCivNomPrenom(request.getFirstName() + " " + request.getLastName());
+        collaborater.setCivPrenomNom(request.getLastName() + " " + request.getFirstName());
+        collaborater.setCnieDelivreeLe(request.getCnieDelivreeLe());
+        collaborater.setCnieDelivreePar(request.getCnieDelivreePar());
+        collaborater.setCnieExpireLe(request.getCnieExpireLe());
+        collaborater.setNatPermisSejour(request.getNatPermisSejour());
+        collaborater.setPermisSejourDelivreLe(request.getPermisSejourDelivreLe());
+        collaborater.setPermisSejourDebVal(request.getPermisSejourDebVal());
+        collaborater.setPermisSejourFinVal(request.getPermisSejourFinVal());
+        collaborater.setNumPermisTravail(request.getNumPermisTravail());
+        collaborater.setNatPermisTravail(request.getNatPermisTravail());
+        collaborater.setPermisTravailDelivreLe(request.getPermisTravailDelivreLe());
+        collaborater.setPermisTravailDebVal(request.getPermisTravailDebVal());
+        collaborater.setPermisTravailFinVal(request.getPermisTravailFinVal());
+        collaborater.setNumPassePort(request.getNumPassePort());
+        collaborater.setPassePortDelivreLe(request.getPassePortDelivreLe());
+        collaborater.setPassePortDelivrePar(request.getPassePortDelivrePar());
+        collaborater.setPassePortExpireLe(request.getPassePortExpireLe());
+        collaborater.setTelephone(request.getTelephone());
+        collaborater.setTel1(request.getTel1());
+        collaborater.setTel2(request.getTel2());
+        collaborater.setTel3(request.getTel3());
+        collaborater.setEmail1(request.getEmail1());
+        collaborater.setEmail2(request.getEmail2());
+        collaborater.setEmail3(request.getEmail3());
+        collaborater.setNbEnfants(request.getNbEnfants());
+        collaborater.setNbEnfantsSaisi(request.getNbEnfants() != null);
+        collaborater.setNbEnfantCharge(request.getNbEnfantCharge());
+        collaborater.setNbEnfantsChargeSaisi(request.getNbEnfantCharge() != null);
+        collaborater.setNbPersCharge(request.getNbPersCharge());
+        collaborater.setNomJeuneFille(request.getNomJeuneFille());
+        collaborater.setNbEpouses(request.getNbEpouses());
+        collaborater.setNbEpousesSaisi(request.getNbEpouses() != null);
+        collaborater.setDateNaturalisation(request.getDateNaturalisation());
+        collaborater.setActive(request.getActive());
+        collaborater.setRecrutable(request.getRecrutable());
+        collaborater.setExcluDeclaration(request.getExcluDeclaration());
+        collaborater.setMatriculeRecrutement(request.getMatriculeRecrutement());
+
+        Collaborater updatedCollaborater = collaboraterRepository.save(collaborater);
+
+        return collaboraterDtoMapper.apply(updatedCollaborater);
     }
 }
