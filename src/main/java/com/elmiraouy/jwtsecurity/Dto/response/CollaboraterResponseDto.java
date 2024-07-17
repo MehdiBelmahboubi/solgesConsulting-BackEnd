@@ -64,6 +64,7 @@ public class CollaboraterResponseDto {
     private String matriculeRecrutement;
     private Integer companyId;
 
+
     public CollaboraterResponseDto(Long id, String matricule, Civilite civilite,String firstName,String lastName, String initiales, String civNomPrenom,
                                    Date dateNaissance, String lieuNaissance, Sexe sexe, String cnie, Date cnieDelivreeLe,
                                    String cnieDelivreePar, Date cnieExpireLe, String numPermisSejour, String natPermisSejour,

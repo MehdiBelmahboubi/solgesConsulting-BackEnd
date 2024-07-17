@@ -20,8 +20,8 @@ public class ContractController {
 
     private final ContractService contractService;
 
-    @GetMapping("/collaborater/{id}/contracts")
-    public ResponseEntity<ContractResponseDto> findByCollaborater(@PathVariable Long id) throws CollaboraterException, ContractException {
+    @GetMapping("/collaborater")
+    public ResponseEntity<ContractResponseDto> findByCollaborater(@RequestParam Long id) throws CollaboraterException, ContractException {
         return ResponseEntity.ok(contractService.findByCollaborater(id));
     }
 

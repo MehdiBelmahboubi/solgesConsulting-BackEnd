@@ -20,8 +20,8 @@ public class CollaboraterController {
 
     private final CollaboraterService collaboraterService;
 
-    @GetMapping("/company/{id}/collaboraters")
-    public ResponseEntity<List<CollaboraterResponseDto>> getAll(@PathVariable Long id) throws  CompanyException {
+    @GetMapping("/getAll")
+    public ResponseEntity<List<CollaboraterResponseDto>> getAll(@RequestParam Long id) throws  CompanyException {
         return ResponseEntity.ok(collaboraterService.findByCompany(id));
     }
 
