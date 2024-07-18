@@ -15,6 +15,8 @@ public class ClassificationType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String nom;
+    private String description;
 
     @OneToMany(mappedBy = "classificationType",fetch = FetchType.LAZY)
     private Collection<Classification> classifications;
