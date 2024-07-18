@@ -3,6 +3,7 @@ package com.elmiraouy.jwtsecurity.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -24,9 +25,9 @@ public class Classification {
 
     //System - nv0
     private String observation;
-    private Date dateCreation;
+    private LocalDateTime dateCreation;
     private String creePar;
-    private Date dateUpdate;
+    private LocalDateTime dateUpdate;
     private String majPar;
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -14,7 +14,7 @@ public interface CollaboraterService {
     public List<CollaboraterResponseDto> findByCompany(Long companyId) throws CompanyException;
     public CollaboraterResponseDto findById(Long id) throws CollaboraterException;
     public CollaboraterResponseDto createCollab(CollaboraterRequestDto CollaboraterRequestDto) throws CollaboraterException, CompanyException, CountryException;
-    public Collaborater buildCollaborater(CollaboraterRequestDto request, Company company);
+    public Collaborater buildCollaborater(CollaboraterRequestDto request, Company company) throws CollaboraterException;
     public void addNationalitiesToCollaborater(Collaborater collaborater, Long countryCode1, Long countryCode2) throws CountryException;
     public CollaboraterResponseDto deleteCollab(Long id);
     public CollaboraterResponseDto updateCollab(CollaboraterRequestDto CollaboraterRequestDto) throws CollaboraterException;

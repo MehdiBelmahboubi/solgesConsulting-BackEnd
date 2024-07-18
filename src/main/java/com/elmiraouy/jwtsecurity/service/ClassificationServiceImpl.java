@@ -3,6 +3,7 @@ package com.elmiraouy.jwtsecurity.service;
 import com.elmiraouy.jwtsecurity.Dto.request.ClassificationRequestDto;
 import com.elmiraouy.jwtsecurity.Dto.response.ClassificationResponseDto;
 import com.elmiraouy.jwtsecurity.entities.Classification;
+import com.elmiraouy.jwtsecurity.entities.ClassificationType;
 import com.elmiraouy.jwtsecurity.entities.Collaborater;
 import com.elmiraouy.jwtsecurity.handlerException.ClassificationException;
 import com.elmiraouy.jwtsecurity.handlerException.ClassificationTypeException;
@@ -15,6 +16,8 @@ import com.elmiraouy.jwtsecurity.repository.CollaboraterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Service
@@ -35,7 +38,21 @@ public class ClassificationServiceImpl implements ClassificationService{
     }
 
     @Override
-    public ClassificationResponseDto addClassificationToCollaborater(ClassificationRequestDto classificationRequestDto) throws CollaboraterException, ClassificationTypeException {
-        return null;
+    public ClassificationResponseDto addClassificationToCollaborater(ClassificationRequestDto request) throws CollaboraterException, ClassificationTypeException {
+        Collaborater collaborater = collaboraterRepository.findById(request.getCollaboraterId())
+                .orElseThrow(() -> new CollaboraterException("Collaborater avec  Id Introuvable: [%s] :".formatted(request.getCollaboraterId())));
+        ClassificationType classificationType = classificationTypeRepository.findById(request.getTypeId())
+                .orElseThrow(()->new ClassificationTypeException("classification avec  Id Introuvable: [%s] : ".formatted(request.getTypeId())));
+        Classification classification = Classification.builder()
+                .dateClassification(request.getDateClassification())
+                .refClassification(request.getRefClassification())
+                .categorieProf(request.getCategorieProf())
+                .dateCategorieProf(request.getDateCategorieProf())
+                .dateFin(request.getDateFin())
+                .dateCreation(LocalDateTime.now())
+                .collaborater(collaborater)
+                .classificationType(classificationType)
+                .build();
+        return classificationDtoMapper.apply(classification);
     }
 }

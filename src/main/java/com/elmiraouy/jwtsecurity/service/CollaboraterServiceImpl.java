@@ -17,8 +17,10 @@ import com.elmiraouy.jwtsecurity.repository.CountryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -58,8 +60,12 @@ public class CollaboraterServiceImpl implements CollaboraterService{
         return collaboraterDtoMapper.apply(saveCollaborater);
     }
 
-    public Collaborater buildCollaborater(CollaboraterRequestDto request, Company company) {
+    public Collaborater buildCollaborater(CollaboraterRequestDto request, Company company) throws CollaboraterException {
         Sexe sexe = request.getCivilite() == Civilite.Mr ? Sexe.Homme : Sexe.Femme;
+        Date dateNaissance = request.getDateNaissance();
+        if (dateNaissance.after(new Date())) {
+            throw new CollaboraterException("Date Naissance Error : " + dateNaissance);
+        }
         return Collaborater.builder()
                 .matricule(request.getMatricule())
                 .civilite(request.getCivilite())
