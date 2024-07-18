@@ -20,13 +20,13 @@ public class ContractController {
 
     private final ContractService contractService;
 
-    @GetMapping("/collaborater")
+    @GetMapping("/get")
     public ResponseEntity<ContractResponseDto> findByCollaborater(@RequestParam Long id) throws CollaboraterException, ContractException {
         return ResponseEntity.ok(contractService.findByCollaborater(id));
     }
 
     @PostMapping("/add")
-    public ResponseEntity<ContractResponseDto> addContractToCollaborator(@RequestBody ContractRequestDto contractRequestDto) throws ContractTypeException, CollaboraterException {
+    public ResponseEntity<ContractResponseDto> addContractToCollaborater(@RequestBody ContractRequestDto contractRequestDto) throws ContractTypeException, CollaboraterException {
         return ResponseEntity.ok(contractService.addContractToCollaborator(contractRequestDto));
     }
 }
