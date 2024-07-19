@@ -45,6 +45,19 @@ public class SolgeConsultingApplication {
 		};
 	}
 	//@Bean
+	CommandLineRunner commandLineRunner2(ClassificationTypeRepository classificationTypeRepository){
+		return args -> {
+			ClassificationType classificationType=ClassificationType.builder().nom("Employé").description("Travaille dans des tâches administratives ou de soutien, généralement sous la supervision d'un cadre.").build();
+			classificationTypeRepository.save(classificationType);
+			classificationType=ClassificationType.builder().nom("Ouvrier").description("Exerce des tâches manuelles ou techniques dans des secteurs comme l'industrie ou la construction.").build();
+			classificationTypeRepository.save(classificationType);
+			classificationType=ClassificationType.builder().nom("Cadre").description("Responsable de la supervision et de la gestion des autres employés, souvent impliqué dans la prise de décisions stratégiques.").build();
+			classificationTypeRepository.save(classificationType);
+			classificationType=ClassificationType.builder().nom("Agent de maîtrise").description("Occupe un poste intermédiaire entre l'ouvrier et le cadre, souvent responsable de la supervision directe des équipes.").build();
+			classificationTypeRepository.save(classificationType);
+		};
+	}
+	//@Bean
 	public CommandLineRunner testAddCountry(CountryRepository countryRepository) {
 		return args -> {
 			Country country = Country.builder().codeAlpha1("USA").codeAlpha2("US").name("United States").capital("Washington, D.C.").country("United States").nationality("American").build();

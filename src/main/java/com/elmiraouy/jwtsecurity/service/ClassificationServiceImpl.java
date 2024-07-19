@@ -2,6 +2,7 @@ package com.elmiraouy.jwtsecurity.service;
 
 import com.elmiraouy.jwtsecurity.Dto.request.ClassificationRequestDto;
 import com.elmiraouy.jwtsecurity.Dto.response.ClassificationResponseDto;
+import com.elmiraouy.jwtsecurity.Dto.response.ClassificationTypeResponseDto;
 import com.elmiraouy.jwtsecurity.entities.Classification;
 import com.elmiraouy.jwtsecurity.entities.ClassificationType;
 import com.elmiraouy.jwtsecurity.entities.Collaborater;
@@ -10,6 +11,7 @@ import com.elmiraouy.jwtsecurity.handlerException.ClassificationTypeException;
 import com.elmiraouy.jwtsecurity.handlerException.CollaboraterException;
 import com.elmiraouy.jwtsecurity.handlerException.ContractException;
 import com.elmiraouy.jwtsecurity.mappers.ClassificationDtoMapper;
+import com.elmiraouy.jwtsecurity.mappers.ClassificationTypeDtoMapper;
 import com.elmiraouy.jwtsecurity.repository.ClassificationRepository;
 import com.elmiraouy.jwtsecurity.repository.ClassificationTypeRepository;
 import com.elmiraouy.jwtsecurity.repository.CollaboraterRepository;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +30,7 @@ public class ClassificationServiceImpl implements ClassificationService{
     private final CollaboraterRepository collaboraterRepository;
     private final ClassificationDtoMapper classificationDtoMapper;
     private final ClassificationTypeRepository classificationTypeRepository;
+    private final ClassificationTypeDtoMapper classificationTypeDtoMapper;
     @Override
     public ClassificationResponseDto findByCollaborater(Long collaboraterId) throws CollaboraterException, ClassificationException {
         Collaborater collaborater = collaboraterRepository.findById(collaboraterId)
@@ -54,5 +58,11 @@ public class ClassificationServiceImpl implements ClassificationService{
                 .classificationType(classificationType)
                 .build();
         return classificationDtoMapper.apply(classification);
+    }
+
+    @Override
+    public List<ClassificationTypeResponseDto> getAllTypes() {
+        List<ClassificationType> classificationTypes = classificationTypeRepository.findAll();
+        return classificationTypes.stream().map(classificationTypeDtoMapper).toList();
     }
 }
