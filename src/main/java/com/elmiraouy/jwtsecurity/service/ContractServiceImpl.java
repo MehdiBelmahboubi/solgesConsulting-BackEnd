@@ -2,6 +2,7 @@ package com.elmiraouy.jwtsecurity.service;
 
 import com.elmiraouy.jwtsecurity.Dto.request.ContractRequestDto;
 import com.elmiraouy.jwtsecurity.Dto.response.ContractResponseDto;
+import com.elmiraouy.jwtsecurity.Dto.response.ContractTypeResponseDTO;
 import com.elmiraouy.jwtsecurity.entities.Collaborater;
 import com.elmiraouy.jwtsecurity.entities.Contract;
 import com.elmiraouy.jwtsecurity.entities.ContractType;
@@ -9,6 +10,7 @@ import com.elmiraouy.jwtsecurity.handlerException.CollaboraterException;
 import com.elmiraouy.jwtsecurity.handlerException.ContractException;
 import com.elmiraouy.jwtsecurity.handlerException.ContractTypeException;
 import com.elmiraouy.jwtsecurity.mappers.ContractDtoMapper;
+import com.elmiraouy.jwtsecurity.mappers.ContractTypeDtoMapper;
 import com.elmiraouy.jwtsecurity.repository.CollaboraterRepository;
 import com.elmiraouy.jwtsecurity.repository.ContractRepository;
 import com.elmiraouy.jwtsecurity.repository.ContractTypeRepository;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,6 +29,7 @@ public class ContractServiceImpl implements ContractService{
     private final CollaboraterRepository collaboraterRepository;
     private final ContractDtoMapper contractDtoMapper;
     private final ContractTypeRepository contractTypeRepository;
+    private final ContractTypeDtoMapper contractTypeDtoMapper;
 
     @Override
     public ContractResponseDto findByCollaborater(Long collaboraterId) throws CollaboraterException,ContractException {
@@ -63,5 +67,11 @@ public class ContractServiceImpl implements ContractService{
     @Override
     public ContractResponseDto deleteContractToCollaborater(ContractRequestDto contractRequestDto) throws CollaboraterException, ContractException {
         return null;
+    }
+
+    @Override
+    public List<ContractTypeResponseDTO> getAllTypes() {
+        List<ContractType> contractTypes = contractTypeRepository.findAll();
+        return contractTypes.stream().map(contractTypeDtoMapper).toList();
     }
 }

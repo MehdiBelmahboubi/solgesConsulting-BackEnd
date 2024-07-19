@@ -2,6 +2,7 @@ package com.elmiraouy.jwtsecurity.controller;
 
 import com.elmiraouy.jwtsecurity.Dto.request.ContractRequestDto;
 import com.elmiraouy.jwtsecurity.Dto.response.ContractResponseDto;
+import com.elmiraouy.jwtsecurity.Dto.response.ContractTypeResponseDTO;
 import com.elmiraouy.jwtsecurity.handlerException.CollaboraterException;
 import com.elmiraouy.jwtsecurity.handlerException.ContractException;
 import com.elmiraouy.jwtsecurity.handlerException.ContractTypeException;
@@ -28,5 +29,10 @@ public class ContractController {
     @PostMapping("/add")
     public ResponseEntity<ContractResponseDto> addContractToCollaborater(@RequestBody ContractRequestDto contractRequestDto) throws ContractTypeException, CollaboraterException {
         return ResponseEntity.ok(contractService.addContractToCollaborator(contractRequestDto));
+    }
+
+    @GetMapping("/getTypes")
+    public ResponseEntity<List<ContractTypeResponseDTO>> getAllTypes(){
+        return ResponseEntity.ok(contractService.getAllTypes());
     }
 }
