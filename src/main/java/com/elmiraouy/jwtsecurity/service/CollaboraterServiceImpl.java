@@ -1,27 +1,21 @@
 package com.elmiraouy.jwtsecurity.service;
 
 import com.elmiraouy.jwtsecurity.Dto.request.CollaboraterRequestDto;
+import com.elmiraouy.jwtsecurity.Dto.response.ClassificationResponseDto;
 import com.elmiraouy.jwtsecurity.Dto.response.CollaboraterResponseDto;
-import com.elmiraouy.jwtsecurity.entities.Collaborater;
-import com.elmiraouy.jwtsecurity.entities.Company;
-import com.elmiraouy.jwtsecurity.entities.Country;
+import com.elmiraouy.jwtsecurity.Dto.response.ContractResponseDto;
+import com.elmiraouy.jwtsecurity.entities.*;
 import com.elmiraouy.jwtsecurity.enums.Civilite;
 import com.elmiraouy.jwtsecurity.enums.Sexe;
-import com.elmiraouy.jwtsecurity.handlerException.CollaboraterException;
-import com.elmiraouy.jwtsecurity.handlerException.CompanyException;
-import com.elmiraouy.jwtsecurity.handlerException.CountryException;
+import com.elmiraouy.jwtsecurity.handlerException.*;
 import com.elmiraouy.jwtsecurity.mappers.CollaboraterDtoMapper;
-import com.elmiraouy.jwtsecurity.repository.CollaboraterRepository;
-import com.elmiraouy.jwtsecurity.repository.CompanyRepository;
-import com.elmiraouy.jwtsecurity.repository.CountryRepository;
+import com.elmiraouy.jwtsecurity.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +24,8 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     private final CompanyRepository companyRepository;
     private final CollaboraterDtoMapper collaboraterDtoMapper;
     private final CountryRepository countryRepository;
+    private final ContractRepository contractRepository;
+    private final ClassificationRepository classificationRepository;
     @Override
     public List<CollaboraterResponseDto> findByCompany(Long companyId) throws CompanyException {
         Company company = companyRepository.findById(companyId)
@@ -39,19 +35,34 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     }
 
     @Override
-    public CollaboraterResponseDto findById(Long id) throws CollaboraterException {
+    public CollaboraterResponseDto findById(Long id) throws CollaboraterException, ContractException {
         Collaborater collaborater = collaboraterRepository.findById(id)
                 .orElseThrow(() -> new CollaboraterException("Collaborater with this Id Introuvable: [%s] :".formatted(id)));
-        return collaboraterDtoMapper.apply(collaborater);
+        CollaboraterResponseDto collaboraterResponseDto = collaboraterDtoMapper.apply(collaborater);
+        Date currentDate = new Date();
+        Optional<ContractResponseDto> contractOptional = contractRepository.findByCollaboraterAndDateFinGreaterThan(collaborater, currentDate);
+        if (contractOptional.isPresent()) {
+            collaboraterResponseDto.setContract(contractOptional.get());
+        } else {
+            collaboraterResponseDto.setContract(null);
+        }
+        Optional<ClassificationResponseDto> classificationOptional = classificationRepository.findByCollaboraterAndDateFinGreaterThan(collaborater,currentDate);
+        if (contractOptional.isPresent()) {
+            collaboraterResponseDto.setClassification(classificationOptional.get());
+        } else {
+            collaboraterResponseDto.setContract(null);
+        }
+        return collaboraterResponseDto;
     }
 
     @Override
     public CollaboraterResponseDto createCollab(CollaboraterRequestDto request) throws CollaboraterException, CompanyException, CountryException {
         Company company = companyRepository.findById(request.getCompany_id())
                 .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(request.getCompany_id())));
-        if(collaboraterRepository.findByCnie(request.getCnie()).isPresent()){
-            throw new CollaboraterException("un collaborateur avec ce CNIE est deja creer: [%s] :".formatted(request.getCnie()));
-        }else if (collaboraterRepository.findByMatriculeAndCompany(request.getMatricule(), company).isPresent()) {
+//        if(collaboraterRepository.findByCnie(request.getCnie()).isPresent()){
+//            throw new CollaboraterException("un collaborateur avec ce CNIE est deja creer: [%s] :".formatted(request.getCnie()));
+//        }else
+          if(collaboraterRepository.findByMatriculeAndCompany(request.getMatricule(), company).isPresent()) {
             throw new CollaboraterException("un collaborateur avec ce Matricule deja creer dans cette company: [%s] :".formatted(request.getMatricule()));
         }
         Collaborater collaborater = buildCollaborater(request, company);
@@ -61,20 +72,20 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     }
 
     public Collaborater buildCollaborater(CollaboraterRequestDto request, Company company) throws CollaboraterException {
-        Sexe sexe = request.getCivilite() == Civilite.Mr ? Sexe.Homme : Sexe.Femme;
+        Civilite civilite = request.getSexe() == Sexe.Homme ? Civilite.Mr : Civilite.Mme;
         Date dateNaissance = request.getDateNaissance();
         if (dateNaissance.after(new Date())) {
             throw new CollaboraterException("Date Naissance Error : " + dateNaissance);
         }
         return Collaborater.builder()
                 .matricule(request.getMatricule())
-                .civilite(request.getCivilite())
+                .civilite(civilite)
                 .initiales(request.getInitiales())
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .dateNaissance(request.getDateNaissance())
                 .lieuNaissance(request.getLieuNaissance())
-                .sexe(sexe)
+                .sexe(request.getSexe())
                 .civNomPrenom(request.getFirstName() + " " + request.getLastName())
                 .civPrenomNom(request.getLastName() + " " + request.getFirstName())
                 .dateCreation(LocalDateTime.now())

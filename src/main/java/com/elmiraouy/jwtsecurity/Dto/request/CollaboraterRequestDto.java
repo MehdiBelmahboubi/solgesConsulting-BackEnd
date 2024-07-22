@@ -18,6 +18,7 @@ public class CollaboraterRequestDto {
     private String lastName;
     private Date dateNaissance;
     private String lieuNaissance;
+    private Sexe sexe;
     private String civNomPrenom;
     private String civPrenomNom;
     private String photos;

@@ -4,6 +4,7 @@ import com.elmiraouy.jwtsecurity.Dto.request.CollaboraterRequestDto;
 import com.elmiraouy.jwtsecurity.Dto.response.CollaboraterResponseDto;
 import com.elmiraouy.jwtsecurity.handlerException.CollaboraterException;
 import com.elmiraouy.jwtsecurity.handlerException.CompanyException;
+import com.elmiraouy.jwtsecurity.handlerException.ContractException;
 import com.elmiraouy.jwtsecurity.handlerException.CountryException;
 import com.elmiraouy.jwtsecurity.service.CollaboraterService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class CollaboraterController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<CollaboraterResponseDto> getById(@RequestParam Long id) throws CollaboraterException {
+    public ResponseEntity<CollaboraterResponseDto> getById(@RequestParam Long id) throws CollaboraterException, ContractException {
         return ResponseEntity.ok(collaboraterService.findById(id));
     }
 

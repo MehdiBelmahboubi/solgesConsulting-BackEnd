@@ -1,5 +1,6 @@
 package com.elmiraouy.jwtsecurity.Dto.response;
 
+import com.elmiraouy.jwtsecurity.entities.Contract;
 import com.elmiraouy.jwtsecurity.enums.Civilite;
 import com.elmiraouy.jwtsecurity.enums.Sexe;
 import lombok.AllArgsConstructor;
@@ -63,6 +64,8 @@ public class CollaboraterResponseDto {
     private Boolean excluDeclaration;
     private String matriculeRecrutement;
     private Integer companyId;
+    private ContractResponseDto contract;
+    private ClassificationResponseDto classification;
 
 
     public CollaboraterResponseDto(Long id, String matricule, Civilite civilite,String firstName,String lastName, String initiales, String civNomPrenom,

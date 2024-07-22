@@ -15,7 +15,7 @@ public interface CollaboraterRepository extends JpaRepository<Collaborater, Long
 
     @Query("""
         select new com.elmiraouy.jwtsecurity.Dto.response.CollaboraterResponseDto(
-            c.id, c.matricule, c.civilite, c.initiales,c.firstName,c.lastName, c.civNomPrenom, c.dateNaissance,
+            c.id, c.matricule, c.civilite,c.firstName,c.lastName, c.initiales, c.civNomPrenom, c.dateNaissance,
             c.lieuNaissance, c.sexe, c.cnie, c.cnieDelivreeLe, c.cnieDelivreePar, c.cnieExpireLe,
             c.numPermisSejour, c.natPermisSejour, c.permisSejourDelivreLe, c.permisSejourDebVal,
             c.permisSejourFinVal, c.numPermisTravail, c.natPermisTravail, c.permisTravailDelivreLe,

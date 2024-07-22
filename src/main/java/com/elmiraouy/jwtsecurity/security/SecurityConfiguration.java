@@ -42,7 +42,7 @@ public class SecurityConfiguration {
                         }
                 )
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/client/auth/**","/api/client/cloudinary/*","/api/client/**","/api/client/users/register")
+                        .requestMatchers("/api/client/auth/**","/api/client/cloudinary/*","/api/client/users/register")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
