@@ -28,9 +28,10 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     private final ClassificationRepository classificationRepository;
     @Override
     public List<CollaboraterResponseDto> findByCompany(Long companyId) throws CompanyException {
-        Company company = companyRepository.findById(companyId)
-                .orElseThrow(() -> new CompanyException("Company with this Id Introuvable: [%s] :".formatted(companyId)));
-        List<CollaboraterResponseDto> collaboraters=collaboraterRepository.findAllByCompany(company);
+        List<CollaboraterResponseDto> collaboraters=collaboraterRepository.findAllByCompany(companyId);
+        if(collaboraters.isEmpty()){
+            return new ArrayList<>();
+        }
         return collaboraters;
     }
 
@@ -60,10 +61,9 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     public CollaboraterResponseDto createCollab(CollaboraterRequestDto request) throws CollaboraterException, CompanyException, CountryException {
         Company company = companyRepository.findById(request.getCompany_id())
                 .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(request.getCompany_id())));
-//        if(collaboraterRepository.findByCnie(request.getCnie()).isPresent()){
-//            throw new CollaboraterException("un collaborateur avec ce CNIE est deja creer: [%s] :".formatted(request.getCnie()));
-//        }else
-          if(collaboraterRepository.findByMatriculeAndCompany(request.getMatricule(), company).isPresent()) {
+        if(collaboraterRepository.findByCnie(request.getCnie()).isPresent()){
+            throw new CollaboraterException("un collaborateur avec ce CNIE est deja creer: [%s] :".formatted(request.getCnie()));
+        }else if(collaboraterRepository.findByMatriculeAndCompany(request.getMatricule(), company).isPresent()) {
             throw new CollaboraterException("un collaborateur avec ce Matricule deja creer dans cette company: [%s] :".formatted(request.getMatricule()));
         }
         Collaborater collaborater = buildCollaborater(request, company);
@@ -122,15 +122,27 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     public CollaboraterResponseDto updateCollab( CollaboraterRequestDto request) throws CollaboraterException {
         Collaborater collaborater = collaboraterRepository.findById(request.getId())
                 .orElseThrow(() -> new CollaboraterException("Collaborater with this Id Introuvable: [%s] :".formatted(request.getId())));
-        collaborater.setCivilite(request.getCivilite());
+        Civilite civilite = request.getSexe() == Sexe.Homme ? Civilite.Mr : Civilite.Mme;
+        Date dateNaissance = request.getDateNaissance();
+        if (dateNaissance.after(new Date())) {
+            throw new CollaboraterException("Date Naissance Error : " + dateNaissance);
+        }
+        if(collaboraterRepository.findByCnie(request.getCnie()).isPresent()){
+            throw new CollaboraterException("un collaborateur avec ce CNIE est deja creer: [%s] :".formatted(request.getCnie()));
+        }else if(collaboraterRepository.findByMatriculeAndCompanyId(request.getMatricule(), request.getCompany_id()).isPresent()) {
+            throw new CollaboraterException("un collaborateur avec ce Matricule deja creer dans cette company: [%s] :".formatted(request.getMatricule()));
+        }
+        collaborater.setMatricule(request.getMatricule());
+        collaborater.setCivilite(civilite);
         collaborater.setInitiales(request.getInitiales());
         collaborater.setFirstName(request.getFirstName());
         collaborater.setLastName(request.getLastName());
         collaborater.setDateNaissance(request.getDateNaissance());
         collaborater.setLieuNaissance(request.getLieuNaissance());
-        collaborater.setSexe(request.getCivilite() == Civilite.Mr ? Sexe.Homme : Sexe.Femme);
+        collaborater.setSexe(request.getSexe());
         collaborater.setCivNomPrenom(request.getFirstName() + " " + request.getLastName());
         collaborater.setCivPrenomNom(request.getLastName() + " " + request.getFirstName());
+        collaborater.setCnie(request.getCnie());
         collaborater.setCnieDelivreeLe(request.getCnieDelivreeLe());
         collaborater.setCnieDelivreePar(request.getCnieDelivreePar());
         collaborater.setCnieExpireLe(request.getCnieExpireLe());

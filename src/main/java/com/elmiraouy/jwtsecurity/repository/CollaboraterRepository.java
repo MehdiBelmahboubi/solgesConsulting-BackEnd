@@ -11,6 +11,7 @@ import java.util.Optional;
 
 public interface CollaboraterRepository extends JpaRepository<Collaborater, Long> {
     Optional<Collaborater> findByMatriculeAndCompany(String matricule, Company company);
+    Optional<Collaborater> findByMatriculeAndCompanyId(String matricule, Long companyId);
     Optional<Collaborater> findByCnie(String cnie);
 
     @Query("""
@@ -23,7 +24,7 @@ public interface CollaboraterRepository extends JpaRepository<Collaborater, Long
             c.passePortDelivrePar, c.telephone, c.tel1, c.tel2, c.tel3, c.email1, c.email2, c.email3, c.nbEnfantsSaisi,
             c.nbEnfants, c.nbEnfantsChargeSaisi, c.nbEnfantCharge, c.nomJeuneFille, c.nbPersCharge, c.nbEpousesSaisi, c.nbEpouses,
             c.dateNaturalisation, c.active, c.recrutable, c.excluDeclaration, c.matriculeRecrutement)
-        from Collaborater c where c.company = :company
+        from Collaborater c where c.company.id= :companyId
         """)
-    List<CollaboraterResponseDto> findAllByCompany(Company company);
+    List<CollaboraterResponseDto> findAllByCompany(Long companyId);
 }
