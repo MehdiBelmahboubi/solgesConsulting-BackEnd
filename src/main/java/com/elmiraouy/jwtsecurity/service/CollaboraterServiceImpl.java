@@ -37,23 +37,24 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     @Override
     public CollaboraterResponseDto findById(Long id) throws CollaboraterException, ContractException {
         Collaborater collaborater = collaboraterRepository.findById(id)
-                .orElseThrow(() -> new CollaboraterException("Collaborater with this Id Introuvable: [%s] :".formatted(id)));
+                .orElseThrow(() -> new CollaboraterException(String.format("Collaborater with this Id Introuvable: [%s]", id)));
+
         CollaboraterResponseDto collaboraterResponseDto = collaboraterDtoMapper.apply(collaborater);
         Date currentDate = new Date();
         Optional<ContractResponseDto> contractOptional = contractRepository.findByCollaboraterAndDateFinGreaterThan(collaborater, currentDate);
-        if (contractOptional.isPresent()) {
-            collaboraterResponseDto.setContract(contractOptional.get());
-        } else {
-            collaboraterResponseDto.setContract(null);
-        }
-        Optional<ClassificationResponseDto> classificationOptional = classificationRepository.findByCollaboraterAndDateFinGreaterThan(collaborater,currentDate);
-        if (contractOptional.isPresent()) {
-            collaboraterResponseDto.setClassification(classificationOptional.get());
-        } else {
-            collaboraterResponseDto.setContract(null);
-        }
+        contractOptional.ifPresentOrElse(
+                collaboraterResponseDto::setContract,
+                () -> collaboraterResponseDto.setContract(null)
+        );
+
+        Optional<ClassificationResponseDto> classificationOptional = classificationRepository.findByCollaboraterAndDateFinGreaterThan(collaborater, currentDate);
+        classificationOptional.ifPresentOrElse(
+                collaboraterResponseDto::setClassification,
+                () -> collaboraterResponseDto.setClassification(null)
+        );
         return collaboraterResponseDto;
     }
+
 
     @Override
     public CollaboraterResponseDto createCollab(CollaboraterRequestDto request) throws CollaboraterException, CompanyException, CountryException {

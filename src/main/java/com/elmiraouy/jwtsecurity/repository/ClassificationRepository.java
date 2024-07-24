@@ -15,7 +15,7 @@ public interface ClassificationRepository extends JpaRepository<Classification,L
         c.id,c.dateClassification,c.refClassification,c.categorieProf,
         c.dateCategorieProf,c.dateFin)
         from Classification c
-        where c.collaborater =:collaborateur and c.dateFin > :currentDate
+        where c.collaborater =:collaborater and c.dateFin > :currentDate
         """)
     Optional<ClassificationResponseDto> findByCollaboraterAndDateFinGreaterThan(Collaborater collaborater, Date currentDate);
 }
