@@ -8,6 +8,7 @@ import com.elmiraouy.jwtsecurity.handlerException.ContractException;
 import com.elmiraouy.jwtsecurity.handlerException.CountryException;
 import com.elmiraouy.jwtsecurity.service.CollaboraterService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +23,19 @@ public class CollaboraterController {
     private final CollaboraterService collaboraterService;
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<CollaboraterResponseDto>> getAll(@RequestParam Long id) throws  CompanyException {
-        return ResponseEntity.ok(collaboraterService.findByCompany(id));
+    public ResponseEntity<Page<CollaboraterResponseDto>> getAll(
+            @RequestParam Long id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) throws CompanyException {
+        return ResponseEntity.ok(collaboraterService.findByCompany(id, page, size));
+    }
+
+    @GetMapping("/getArchived")
+    public ResponseEntity<Page<CollaboraterResponseDto>> getArchived(
+            @RequestParam Long id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) throws CompanyException {
+        return ResponseEntity.ok(collaboraterService.findArchivedByCompany(id, page, size));
     }
 
     @GetMapping("/get")
@@ -39,5 +51,10 @@ public class CollaboraterController {
     @PutMapping("/update")
     public ResponseEntity<CollaboraterResponseDto> updateCollab(@RequestBody CollaboraterRequestDto collaboraterRequestDto) throws CollaboraterException {
         return ResponseEntity.ok(collaboraterService.updateCollab(collaboraterRequestDto));
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<CollaboraterResponseDto> deleteCollab(@RequestParam Long id) throws CollaboraterException {
+        return ResponseEntity.ok(collaboraterService.deleteCollab(id));
     }
 }

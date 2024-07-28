@@ -4,6 +4,7 @@ import com.elmiraouy.jwtsecurity.Dto.request.CollaboraterRequestDto;
 import com.elmiraouy.jwtsecurity.Dto.response.ClassificationResponseDto;
 import com.elmiraouy.jwtsecurity.Dto.response.CollaboraterResponseDto;
 import com.elmiraouy.jwtsecurity.Dto.response.ContractResponseDto;
+import com.elmiraouy.jwtsecurity.Dto.response.CountryResponseDto;
 import com.elmiraouy.jwtsecurity.entities.*;
 import com.elmiraouy.jwtsecurity.enums.Civilite;
 import com.elmiraouy.jwtsecurity.enums.Sexe;
@@ -11,11 +12,16 @@ import com.elmiraouy.jwtsecurity.handlerException.*;
 import com.elmiraouy.jwtsecurity.mappers.CollaboraterDtoMapper;
 import com.elmiraouy.jwtsecurity.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,12 +33,25 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     private final ContractRepository contractRepository;
     private final ClassificationRepository classificationRepository;
     @Override
-    public List<CollaboraterResponseDto> findByCompany(Long companyId) throws CompanyException {
-        List<CollaboraterResponseDto> collaboraters=collaboraterRepository.findAllByCompany(companyId);
-        if(collaboraters.isEmpty()){
-            return new ArrayList<>();
+    public Page<CollaboraterResponseDto> findByCompany(Long companyId, int page, int size) throws CompanyException {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+        Page<CollaboraterResponseDto> collaboratersPage = collaboraterRepository.findAllByCompanyAndActive(companyId, pageable);
+
+        if (collaboratersPage.isEmpty()) {
+            return Page.empty();
         }
-        return collaboraters;
+        return collaboratersPage;
+    }
+
+    @Override
+    public Page<CollaboraterResponseDto> findArchivedByCompany(Long companyId, int page, int size) throws CompanyException {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+        Page<CollaboraterResponseDto> collaboratersPage = collaboraterRepository.findByCompanyAndActive(companyId, pageable);
+
+        if (collaboratersPage.isEmpty()) {
+            return Page.empty();
+        }
+        return collaboratersPage;
     }
 
     @Override
@@ -53,6 +72,11 @@ public class CollaboraterServiceImpl implements CollaboraterService{
                 collaboraterResponseDto::setClassification,
                 () -> collaboraterResponseDto.setClassification(null)
         );
+
+        List<CountryResponseDto> countries = collaborater.getCountries().stream()
+                .map(country -> new CountryResponseDto(country.getCode(), country.getNationality()))
+                .collect(Collectors.toList());
+        collaboraterResponseDto.setCountries(countries);
         return collaboraterResponseDto;
     }
 
@@ -61,9 +85,10 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     public CollaboraterResponseDto createCollab(CollaboraterRequestDto request) throws CollaboraterException, CompanyException, CountryException {
         Company company = companyRepository.findById(request.getCompany_id())
                 .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(request.getCompany_id())));
-        if(collaboraterRepository.findByCnie(request.getCnie()).isPresent()){
-            throw new CollaboraterException("un collaborateur avec ce CNIE est deja creer: [%s] :".formatted(request.getCnie()));
-        }else if(collaboraterRepository.findByMatriculeAndCompany(request.getMatricule(), company).isPresent()) {
+//        if(collaboraterRepository.findByCnie(request.getCnie()).isPresent()){
+//            throw new CollaboraterException("un collaborateur avec ce CNIE est deja creer: [%s] :".formatted(request.getCnie()));
+//        }else
+          if(collaboraterRepository.findByMatriculeAndCompany(request.getMatricule(), company).isPresent()) {
             throw new CollaboraterException("un collaborateur avec ce Matricule deja creer dans cette company: [%s] :".formatted(request.getMatricule()));
         }
         Collaborater collaborater = buildCollaborater(request, company);
@@ -90,6 +115,7 @@ public class CollaboraterServiceImpl implements CollaboraterService{
                 .civNomPrenom(request.getFirstName() + " " + request.getLastName())
                 .civPrenomNom(request.getLastName() + " " + request.getFirstName())
                 .dateCreation(LocalDateTime.now())
+                .active(true)
                 .company(company)
                 .countries(new ArrayList<>())
                 .build();
@@ -114,8 +140,12 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     }
 
     @Override
-    public CollaboraterResponseDto deleteCollab(Long id) {
-        return null;
+    public CollaboraterResponseDto deleteCollab(Long id) throws CollaboraterException {
+        Collaborater collaborater = collaboraterRepository.findById(id)
+                .orElseThrow(() -> new CollaboraterException("Collaborater with this Id Introuvable: [%s] :".formatted(id)));
+        collaborater.setActive(false);
+        collaboraterRepository.save(collaborater);
+        return collaboraterDtoMapper.apply(collaborater);
     }
 
     @Override
@@ -180,8 +210,8 @@ public class CollaboraterServiceImpl implements CollaboraterService{
         collaborater.setExcluDeclaration(request.getExcluDeclaration());
         collaborater.setMatriculeRecrutement(request.getMatriculeRecrutement());
 
-        Collaborater updatedCollaborater = collaboraterRepository.save(collaborater);
+        collaboraterRepository.save(collaborater);
 
-        return collaboraterDtoMapper.apply(updatedCollaborater);
+        return collaboraterDtoMapper.apply(collaborater);
     }
 }

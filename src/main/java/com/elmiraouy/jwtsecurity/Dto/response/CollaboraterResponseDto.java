@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Builder
 @Data
@@ -66,6 +67,7 @@ public class CollaboraterResponseDto {
     private Integer companyId;
     private ContractResponseDto contract;
     private ClassificationResponseDto classification;
+    private List<CountryResponseDto> countries;
 
 
     public CollaboraterResponseDto(Long id, String matricule, Civilite civilite,String firstName,String lastName, String initiales, String civNomPrenom,
