@@ -55,7 +55,7 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     }
 
     @Override
-    public CollaboraterResponseDto findById(Long id) throws CollaboraterException, ContractException {
+    public CollaboraterResponseDto findById(Long id) throws CollaboraterException,ClassificationException {
         Collaborater collaborater = collaboraterRepository.findById(id)
                 .orElseThrow(() -> new CollaboraterException(String.format("Collaborater with this Id Introuvable: [%s]", id)));
 
@@ -157,11 +157,11 @@ public class CollaboraterServiceImpl implements CollaboraterService{
         if (dateNaissance.after(new Date())) {
             throw new CollaboraterException("Date Naissance Error : " + dateNaissance);
         }
-        if(collaboraterRepository.findByCnie(request.getCnie()).isPresent()){
-            throw new CollaboraterException("un collaborateur avec ce CNIE est deja creer: [%s] :".formatted(request.getCnie()));
-        }else if(collaboraterRepository.findByMatriculeAndCompanyId(request.getMatricule(), request.getCompany_id()).isPresent()) {
-            throw new CollaboraterException("un collaborateur avec ce Matricule deja creer dans cette company: [%s] :".formatted(request.getMatricule()));
-        }
+//        if(collaboraterRepository.findByCnie(request.getCnie()).isPresent()){
+//            throw new CollaboraterException("un collaborateur avec ce CNIE est deja creer: [%s] :".formatted(request.getCnie()));
+//        }else if(collaboraterRepository.findByMatriculeAndCompanyId(request.getMatricule(), request.getCompany_id()).isPresent()) {
+//            throw new CollaboraterException("un collaborateur avec ce Matricule deja creer dans cette company: [%s] :".formatted(request.getMatricule()));
+//        }
         collaborater.setMatricule(request.getMatricule());
         collaborater.setCivilite(civilite);
         collaborater.setInitiales(request.getInitiales());

@@ -2,10 +2,7 @@ package com.elmiraouy.jwtsecurity.controller;
 
 import com.elmiraouy.jwtsecurity.Dto.request.CollaboraterRequestDto;
 import com.elmiraouy.jwtsecurity.Dto.response.CollaboraterResponseDto;
-import com.elmiraouy.jwtsecurity.handlerException.CollaboraterException;
-import com.elmiraouy.jwtsecurity.handlerException.CompanyException;
-import com.elmiraouy.jwtsecurity.handlerException.ContractException;
-import com.elmiraouy.jwtsecurity.handlerException.CountryException;
+import com.elmiraouy.jwtsecurity.handlerException.*;
 import com.elmiraouy.jwtsecurity.service.CollaboraterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -39,7 +36,7 @@ public class CollaboraterController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<CollaboraterResponseDto> getById(@RequestParam Long id) throws CollaboraterException, ContractException {
+    public ResponseEntity<CollaboraterResponseDto> getById(@RequestParam Long id) throws CollaboraterException, ContractException , ClassificationException {
         return ResponseEntity.ok(collaboraterService.findById(id));
     }
 

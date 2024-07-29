@@ -14,7 +14,7 @@ public interface ContractRepository extends JpaRepository<Contract,Long> {
         select new com.elmiraouy.jwtsecurity.Dto.response.ContractResponseDto(
         c.id, c.contractRef, c.motifRecrutement, c.dateEntree, c.periodNegocible, c.regimeFiscal,
         c.exonerationFiscale, c.motifDepart, c.dateFin)
-        from Contract c 
+        from Contract c
         where c.collaborater = :collaborater and c.dateFin > :currentDate
         """)
     Optional<ContractResponseDto> findByCollaboraterAndDateFinGreaterThan(Collaborater collaborater, Date currentDate);
