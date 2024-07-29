@@ -13,7 +13,7 @@ public interface ClassificationRepository extends JpaRepository<Classification,L
     @Query("""
         select new com.elmiraouy.jwtsecurity.Dto.response.ClassificationResponseDto(
         c.id,c.dateClassification,c.refClassification,c.categorieProf,
-        c.dateCategorieProf,c.dateFin)
+        c.dateCategorieProf,c.dateFin,c.classificationType.id)
         from Classification c
         where c.collaborater =:collaborater and c.dateFin > :currentDate
         """)

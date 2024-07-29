@@ -1,15 +1,14 @@
 package com.elmiraouy.jwtsecurity.service;
 
 import com.elmiraouy.jwtsecurity.Dto.request.CollaboraterRequestDto;
-import com.elmiraouy.jwtsecurity.Dto.response.ClassificationResponseDto;
-import com.elmiraouy.jwtsecurity.Dto.response.CollaboraterResponseDto;
-import com.elmiraouy.jwtsecurity.Dto.response.ContractResponseDto;
-import com.elmiraouy.jwtsecurity.Dto.response.CountryResponseDto;
+import com.elmiraouy.jwtsecurity.Dto.response.*;
 import com.elmiraouy.jwtsecurity.entities.*;
 import com.elmiraouy.jwtsecurity.enums.Civilite;
 import com.elmiraouy.jwtsecurity.enums.Sexe;
 import com.elmiraouy.jwtsecurity.handlerException.*;
 import com.elmiraouy.jwtsecurity.mappers.CollaboraterDtoMapper;
+import com.elmiraouy.jwtsecurity.mappers.ContractDtoMapper;
+import com.elmiraouy.jwtsecurity.mappers.ContractTypeDtoMapper;
 import com.elmiraouy.jwtsecurity.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,7 +30,9 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     private final CollaboraterDtoMapper collaboraterDtoMapper;
     private final CountryRepository countryRepository;
     private final ContractRepository contractRepository;
+    private final ContractTypeRepository contractTypeRepository;
     private final ClassificationRepository classificationRepository;
+    private final ContractTypeDtoMapper contractTypeDtoMapper;
     @Override
     public Page<CollaboraterResponseDto> findByCompany(Long companyId, int page, int size) throws CompanyException {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());

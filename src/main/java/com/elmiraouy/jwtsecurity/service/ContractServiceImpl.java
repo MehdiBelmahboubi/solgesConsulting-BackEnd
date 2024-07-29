@@ -46,8 +46,8 @@ public class ContractServiceImpl implements ContractService{
     public ContractResponseDto addContractToCollaborator(ContractRequestDto request) throws CollaboraterException, ContractTypeException {
         Collaborater collaborater = collaboraterRepository.findById(request.getCollaboraterId())
                 .orElseThrow(() -> new CollaboraterException("Collaborater avec  Id Introuvable: [%s] :".formatted(request.getCollaboraterId())));
-        ContractType contractType = contractTypeRepository.findById(request.getTypeId())
-                .orElseThrow(() -> new ContractTypeException("Contract avec  Id Introuvable: [%s] : ".formatted(request.getTypeId())));
+        ContractType contractType = contractTypeRepository.findById(request.getContractType())
+                .orElseThrow(() -> new ContractTypeException("Contract avec  Id Introuvable: [%s] : ".formatted(request.getContractType())));
         Contract contract = Contract.builder()
                 .contractRef(request.getContractRef())
                 .motifRecrutement(request.getMotifRecrutement())

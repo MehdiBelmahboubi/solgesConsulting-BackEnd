@@ -15,7 +15,8 @@ public class ClassificationDtoMapper implements Function<Classification, Classif
                 classification.getRefClassification(),
                 classification.getCategorieProf(),
                 classification.getDateCategorieProf(),
-                classification.getDateFin()
+                classification.getDateFin(),
+                classification.getClassificationType().getId()
         );
     }
 }

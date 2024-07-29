@@ -21,10 +21,10 @@ public class ContractResponseDto {
     private String motifDepart;
     private Date dateFin;
     private Collaborater collaborater;
-    private ContractType contractType;
+    private Long contractType;
 
 
-    public ContractResponseDto(Long id, String contractRef, String motifRecrutement, Date dateEntree, Integer periodNegocible, String regimeFiscal, Integer exonerationFiscale, String motifDepart, Date dateFin) {
+    public ContractResponseDto(Long id, String contractRef, String motifRecrutement, Date dateEntree, Integer periodNegocible, String regimeFiscal, Integer exonerationFiscale, String motifDepart, Date dateFin,Long contractType) {
         this.id=id;
         this.contractRef=contractRef;
         this.motifRecrutement=motifRecrutement;
@@ -34,5 +34,6 @@ public class ContractResponseDto {
         this.exonerationFiscale=exonerationFiscale;
         this.motifDepart=motifDepart;
         this.dateFin=dateFin;
+        this.contractType=contractType;
     }
 }

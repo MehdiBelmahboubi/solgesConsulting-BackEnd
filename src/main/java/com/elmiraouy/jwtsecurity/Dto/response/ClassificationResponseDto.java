@@ -19,14 +19,15 @@ public class ClassificationResponseDto {
     private Date dateCategorieProf;
     private Date dateFin;
     private Collaborater collaborater;
-    private ClassificationType classificationType;
+    private Long classificationType;
 
-    public ClassificationResponseDto(Long id, Date dateClassification, String refClassification, String categorieProf, Date dateCategorieProf, Date dateFin) {
+    public ClassificationResponseDto(Long id, Date dateClassification, String refClassification, String categorieProf, Date dateCategorieProf, Date dateFin,Long classificationType) {
         this.id=id;
         this.dateClassification=dateClassification;
         this.refClassification=refClassification;
         this.categorieProf=categorieProf;
         this.dateCategorieProf=dateCategorieProf;
         this.dateFin=dateFin;
+        this.classificationType=classificationType;
     }
 }

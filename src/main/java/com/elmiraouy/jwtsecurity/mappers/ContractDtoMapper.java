@@ -20,7 +20,8 @@ public class ContractDtoMapper implements Function<Contract, ContractResponseDto
                 contract.getRegimeFiscal(),
                 contract.getExonerationFiscale(),
                 contract.getMotifDepart(),
-                contract.getDateFin()
+                contract.getDateFin(),
+                contract.getContractType().getId()
         );
     }
 }

@@ -17,5 +17,5 @@ public class ContractRequestDto {
     private String motifDepart;
     private Date dateFin;
     private Long collaboraterId;
-    private Long typeId;
+    private Long contractType;
 }
