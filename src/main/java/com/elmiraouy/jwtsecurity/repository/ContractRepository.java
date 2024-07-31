@@ -15,7 +15,9 @@ public interface ContractRepository extends JpaRepository<Contract,Long> {
         c.id, c.contractRef, c.motifRecrutement, c.dateEntree, c.periodNegocible, c.regimeFiscal,
         c.exonerationFiscale, c.motifDepart, c.dateFin,c.contractType.id)
         from Contract c
-        where c.collaborater = :collaborater and c.dateFin > :currentDate
+        where c.collaborater = :collaborater and c.active = true
         """)
-    Optional<ContractResponseDto> findByCollaboraterAndDateFinGreaterThan(Collaborater collaborater, Date currentDate);
+    Optional<ContractResponseDto> findByCollaboraterAndActive(Collaborater collaborater);
+
+    Contract findByCollaboraterAndActive(Collaborater collaborater, Boolean active);
 }

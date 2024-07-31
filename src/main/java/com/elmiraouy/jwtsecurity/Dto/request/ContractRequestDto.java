@@ -8,6 +8,7 @@ import java.util.Date;
 @Data
 @Builder
 public class ContractRequestDto {
+    private Long id;
     private String contractRef;
     private String motifRecrutement;
     private Date dateEntree;

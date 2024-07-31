@@ -25,6 +25,7 @@ public class Contract {
     private Integer exonerationFiscale;
     private String motifDepart;
     private Date dateFin;
+    private Boolean active;
     //System - nv0
     private String observation;
     private LocalDateTime dateCreation;

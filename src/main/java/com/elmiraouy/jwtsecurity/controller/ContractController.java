@@ -27,8 +27,13 @@ public class ContractController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<ContractResponseDto> addContractToCollaborater(@RequestBody ContractRequestDto contractRequestDto) throws ContractTypeException, CollaboraterException {
+    public ResponseEntity<ContractResponseDto> addContractToCollaborater(@RequestBody ContractRequestDto contractRequestDto) throws ContractTypeException, CollaboraterException ,ContractException{
         return ResponseEntity.ok(contractService.addContractToCollaborator(contractRequestDto));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ContractResponseDto> updateContract(@RequestBody ContractRequestDto contractRequestDto) throws ContractTypeException, CollaboraterException ,ContractException{
+        return ResponseEntity.ok(contractService.updateContract(contractRequestDto));
     }
 
     @GetMapping("/getTypes")

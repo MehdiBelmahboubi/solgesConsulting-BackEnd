@@ -20,6 +20,7 @@ public class ContractResponseDto {
     private Integer exonerationFiscale;
     private String motifDepart;
     private Date dateFin;
+    private Boolean active;
     private Collaborater collaborater;
     private Long contractType;
 

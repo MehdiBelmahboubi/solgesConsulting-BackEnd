@@ -61,14 +61,14 @@ public class CollaboraterServiceImpl implements CollaboraterService{
                 .orElseThrow(() -> new CollaboraterException(String.format("Collaborater with this Id Introuvable: [%s]", id)));
 
         CollaboraterResponseDto collaboraterResponseDto = collaboraterDtoMapper.apply(collaborater);
-        Date currentDate = new Date();
-        Optional<ContractResponseDto> contractOptional = contractRepository.findByCollaboraterAndDateFinGreaterThan(collaborater, currentDate);
+
+        Optional<ContractResponseDto> contractOptional = contractRepository.findByCollaboraterAndActive(collaborater);
         contractOptional.ifPresentOrElse(
                 collaboraterResponseDto::setContract,
                 () -> collaboraterResponseDto.setContract(null)
         );
-
-        Optional<ClassificationResponseDto> classificationOptional = classificationRepository.findByCollaboraterAndDateFinGreaterThan(collaborater, currentDate);
+        Date currentDate = new Date();
+        Optional<ClassificationResponseDto> classificationOptional = classificationRepository.findByCollaboraterAndActive(collaborater);
         classificationOptional.ifPresentOrElse(
                 collaboraterResponseDto::setClassification,
                 () -> collaboraterResponseDto.setClassification(null)
