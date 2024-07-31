@@ -6,6 +6,7 @@ import com.elmiraouy.jwtsecurity.entities.TypeUnitOrganisational;
 import com.elmiraouy.jwtsecurity.handlerException.CompanyException;
 import com.elmiraouy.jwtsecurity.handlerException.EntityNotFoundException;
 import com.elmiraouy.jwtsecurity.handlerException.TypeUnityException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,5 +17,5 @@ public interface TypeUnitOrganisationalService {
     public List<TypeUnitOrganisationalResponseDto> getAll(Long companyId) throws EntityNotFoundException;
     public TypeUnitOrganisationalResponseDto findByNameOrCode(String criteria) throws EntityNotFoundException;
     public List<TypeUnitOrganisationalResponseDto> findByCompanyId(Long companyId) throws EntityNotFoundException;
-
+    void persistFromFile(MultipartFile file, String table, Long companyId, Long userCreatedId);
 }

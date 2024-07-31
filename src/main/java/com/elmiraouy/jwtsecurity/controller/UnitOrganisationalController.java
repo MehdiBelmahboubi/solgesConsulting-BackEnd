@@ -30,8 +30,5 @@ public class UnitOrganisationalController {
     }
 
 
-    @GetMapping("/{criteria}")
-    public  UnitOrganisationalResponseDto findByNameOrCode(String criteria) throws EntityNotFoundException {
-        return null;
-    }
+
 }
