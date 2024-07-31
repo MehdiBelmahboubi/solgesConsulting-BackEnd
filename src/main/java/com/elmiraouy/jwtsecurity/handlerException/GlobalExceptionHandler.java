@@ -186,7 +186,7 @@ public class GlobalExceptionHandler {
                                 .build()
                 );
     }
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ExceptionResponse> handlerAnyException(RuntimeException exception){
         log.error("Handled   exception: {}", exception.getClass().getSimpleName(), exception);
         exception.printStackTrace();
