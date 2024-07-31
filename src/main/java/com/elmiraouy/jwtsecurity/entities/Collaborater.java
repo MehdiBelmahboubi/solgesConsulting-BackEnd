@@ -29,7 +29,7 @@ public class Collaborater {
     private String initiales;
     private String firstName;
     private String lastName;
-    private Date dateNaissance;
+    private LocalDateTime dateNaissance;
     private String lieuNaissance;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -38,26 +38,27 @@ public class Collaborater {
     private String civNomPrenom;
     @Column(nullable = false)
     private String civPrenomNom;
+    private String nomJeuneFille;
     private String photos;
     private String signature;
     //Info Immatriculation - nv2
     private String cnie;
-    private Date cnieDelivreeLe;
-    private Date cnieExpireLe;
+    private LocalDateTime cnieDelivreeLe;
+    private LocalDateTime cnieExpireLe;
     private String cnieDelivreePar;
     private String numPermisSejour;
     private String natPermisSejour;
-    private Date permisSejourDelivreLe;
-    private Date permisSejourDebVal;
-    private Date permisSejourFinVal;
+    private LocalDateTime permisSejourDelivreLe;
+    private LocalDateTime permisSejourDebVal;
+    private LocalDateTime permisSejourFinVal;
     private String numPermisTravail;
     private String natPermisTravail;
-    private Date permisTravailDelivreLe;
-    private Date permisTravailDebVal;
-    private Date permisTravailFinVal;
+    private LocalDateTime permisTravailDelivreLe;
+    private LocalDateTime permisTravailDebVal;
+    private LocalDateTime permisTravailFinVal;
     private String numPassePort;
-    private Date passePortDelivreLe;
-    private Date passePortExpireLe;
+    private LocalDateTime passePortDelivreLe;
+    private LocalDateTime passePortExpireLe;
     private String passePortDelivrePar;
     //Coordonnees - nv3
     private String telephone;
@@ -67,21 +68,21 @@ public class Collaborater {
     private String email1;
     private String email2;
     private String email3;
+    private String adresse1;
+    private String adresse2;
+    private String adresse3;
     //Famille - nv4
     private Boolean nbEnfantsSaisi;
     private Integer nbEnfants;
     private Boolean nbEnfantsChargeSaisi;
     private Integer nbEnfantCharge;
-    private String nomJeuneFille;
-    private Integer nbPersCharge;
     private Boolean nbEpousesSaisi;
     private Integer nbEpouses;
+    private Integer nbPersCharge;
     //Other Infos - nv5
-    private Date dateDeces;
-    private Date dateCertifDeces;
-//    private String nationalite;
-//    private String nationalite2;
-    private Date dateNaturalisation;
+    private LocalDateTime dateDeces;
+    private LocalDateTime dateCertifDeces;
+    private LocalDateTime dateNaturalisation;
     private Boolean active;
     private Boolean recrutable;
     private Boolean excluDeclaration;
@@ -92,6 +93,7 @@ public class Collaborater {
     private String creePar;
     private LocalDateTime dateUpdate;
     private String majPar;
+    private Boolean addedInBulk;
 
     @OneToMany(mappedBy = "collaborater",fetch = FetchType.LAZY)
     private Collection<Contract> contracts;

@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -23,26 +23,26 @@ public class CollaboraterResponseDto {
     private String civNomPrenom;
     private String firstName;
     private String lastName;
-    private Date dateNaissance;
+    private LocalDateTime dateNaissance;
     private String lieuNaissance;
     private Sexe sexe;
     private String cnie;
-    private Date cnieDelivreeLe;
+    private LocalDateTime cnieDelivreeLe;
     private String cnieDelivreePar;
-    private Date cnieExpireLe;
+    private LocalDateTime cnieExpireLe;
     private String numPermisSejour;
     private String natPermisSejour;
-    private Date permisSejourDelivreLe;
-    private Date permisSejourDebVal;
-    private Date permisSejourFinVal;
+    private LocalDateTime permisSejourDelivreLe;
+    private LocalDateTime permisSejourDebVal;
+    private LocalDateTime permisSejourFinVal;
     private String numPermisTravail;
     private String natPermisTravail;
-    private Date permisTravailDelivreLe;
-    private Date permisTravailDebVal;
-    private Date permisTravailFinVal;
+    private LocalDateTime permisTravailDelivreLe;
+    private LocalDateTime permisTravailDebVal;
+    private LocalDateTime permisTravailFinVal;
     private String numPassePort;
-    private Date passePortDelivreLe;
-    private Date passePortExpireLe;
+    private LocalDateTime passePortDelivreLe;
+    private LocalDateTime passePortExpireLe;
     private String passePortDelivrePar;
     private String telephone;
     private String tel1;
@@ -51,6 +51,9 @@ public class CollaboraterResponseDto {
     private String email1;
     private String email2;
     private String email3;
+    private String adresse1;
+    private String adresse2;
+    private String adresse3;
     private Boolean nbEnfantsSaisi;
     private Integer nbEnfants;
     private Boolean nbEnfantsChargeSaisi;
@@ -59,7 +62,7 @@ public class CollaboraterResponseDto {
     private Integer nbPersCharge;
     private Boolean nbEpousesSaisi;
     private Integer nbEpouses;
-    private Date dateNaturalisation;
+    private LocalDateTime dateNaturalisation;
     private Boolean active;
     private Boolean recrutable;
     private Boolean excluDeclaration;
@@ -71,16 +74,16 @@ public class CollaboraterResponseDto {
 
 
     public CollaboraterResponseDto(Long id, String matricule, Civilite civilite,String firstName,String lastName, String initiales, String civNomPrenom,
-                                   Date dateNaissance, String lieuNaissance, Sexe sexe, String cnie, Date cnieDelivreeLe,
-                                   String cnieDelivreePar, Date cnieExpireLe, String numPermisSejour, String natPermisSejour,
-                                   Date permisSejourDelivreLe, Date permisSejourDebVal, Date permisSejourFinVal,
-                                   String numPermisTravail, String natPermisTravail, Date permisTravailDelivreLe,
-                                   Date permisTravailDebVal, Date permisTravailFinVal, String numPassePort,
-                                   Date passePortDelivreLe, Date passePortExpireLe, String passePortDelivrePar,
+                                   LocalDateTime dateNaissance, String lieuNaissance, Sexe sexe, String cnie, LocalDateTime cnieDelivreeLe,
+                                   String cnieDelivreePar, LocalDateTime cnieExpireLe, String numPermisSejour, String natPermisSejour,
+                                   LocalDateTime permisSejourDelivreLe, LocalDateTime permisSejourDebVal, LocalDateTime permisSejourFinVal,
+                                   String numPermisTravail, String natPermisTravail, LocalDateTime permisTravailDelivreLe,
+                                   LocalDateTime permisTravailDebVal, LocalDateTime permisTravailFinVal, String numPassePort,
+                                   LocalDateTime passePortDelivreLe, LocalDateTime passePortExpireLe, String passePortDelivrePar,
                                    String telephone, String tel1, String tel2, String tel3, String email1, String email2,
-                                   String email3, Boolean nbEnfantsSaisi, Integer nbEnfants, Boolean nbEnfantsChargeSaisi,
-                                   Integer nbEnfantCharge, String nomJeuneFille, Integer nbPersCharge, Boolean nbEpousesSaisi,
-                                   Integer nbEpouses, Date dateNaturalisation, Boolean active, Boolean recrutable,
+                                   String email3,String adresse1,String adresse2,String adresse3, Boolean nbEnfantsSaisi, Integer nbEnfants,
+                                   Boolean nbEnfantsChargeSaisi, Integer nbEnfantCharge, String nomJeuneFille, Integer nbPersCharge,
+                                   Boolean nbEpousesSaisi, Integer nbEpouses, LocalDateTime dateNaturalisation, Boolean active, Boolean recrutable,
                                    Boolean excluDeclaration, String matriculeRecrutement) {
         this.id = id;
         this.matricule = matricule;
@@ -117,6 +120,9 @@ public class CollaboraterResponseDto {
         this.email1 = email1;
         this.email2 = email2;
         this.email3 = email3;
+        this.adresse1 = adresse1;
+        this.adresse2 = adresse2;
+        this.adresse3 = adresse3;
         this.nbEnfantsSaisi = nbEnfantsSaisi;
         this.nbEnfants = nbEnfants;
         this.nbEnfantsChargeSaisi = nbEnfantsChargeSaisi;
@@ -132,7 +138,7 @@ public class CollaboraterResponseDto {
         this.matriculeRecrutement = matriculeRecrutement;
     }
 
-    public CollaboraterResponseDto(Long id, String matricule, String civNomPrenom, String cnie, String firstName, String lastName, Civilite civilite, Date dateNaissance, String initiales, String lieuNaissance, Sexe sexe) {
+    public CollaboraterResponseDto(Long id, String matricule, String civNomPrenom, String cnie, String firstName, String lastName, Civilite civilite, LocalDateTime dateNaissance, String initiales, String lieuNaissance, Sexe sexe) {
         this.id=id;
         this.matricule=matricule;
         this.civNomPrenom=civNomPrenom;

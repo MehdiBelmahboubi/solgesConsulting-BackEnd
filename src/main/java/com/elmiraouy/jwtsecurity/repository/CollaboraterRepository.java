@@ -24,7 +24,7 @@ public interface CollaboraterRepository extends JpaRepository<Collaborater, Long
             c.numPermisSejour, c.natPermisSejour, c.permisSejourDelivreLe, c.permisSejourDebVal,
             c.permisSejourFinVal, c.numPermisTravail, c.natPermisTravail, c.permisTravailDelivreLe,
             c.permisTravailDebVal, c.permisTravailFinVal, c.numPassePort, c.passePortDelivreLe, c.passePortExpireLe,
-            c.passePortDelivrePar, c.telephone, c.tel1, c.tel2, c.tel3, c.email1, c.email2, c.email3, c.nbEnfantsSaisi,
+            c.passePortDelivrePar, c.telephone, c.tel1, c.tel2, c.tel3, c.email1, c.email2, c.email3,c.adresse1,c.adresse2,c.adresse3, c.nbEnfantsSaisi,
             c.nbEnfants, c.nbEnfantsChargeSaisi, c.nbEnfantCharge, c.nomJeuneFille, c.nbPersCharge, c.nbEpousesSaisi, c.nbEpouses,
             c.dateNaturalisation, c.active, c.recrutable, c.excluDeclaration, c.matriculeRecrutement)
         from Collaborater c where c.company.id= :companyId and c.active=true
@@ -38,7 +38,7 @@ public interface CollaboraterRepository extends JpaRepository<Collaborater, Long
             c.numPermisSejour, c.natPermisSejour, c.permisSejourDelivreLe, c.permisSejourDebVal,
             c.permisSejourFinVal, c.numPermisTravail, c.natPermisTravail, c.permisTravailDelivreLe,
             c.permisTravailDebVal, c.permisTravailFinVal, c.numPassePort, c.passePortDelivreLe, c.passePortExpireLe,
-            c.passePortDelivrePar, c.telephone, c.tel1, c.tel2, c.tel3, c.email1, c.email2, c.email3, c.nbEnfantsSaisi,
+            c.passePortDelivrePar, c.telephone, c.tel1, c.tel2, c.tel3, c.email1, c.email2, c.email3,c.adresse1,c.adresse2,c.adresse3, c.nbEnfantsSaisi,
             c.nbEnfants, c.nbEnfantsChargeSaisi, c.nbEnfantCharge, c.nomJeuneFille, c.nbPersCharge, c.nbEpousesSaisi, c.nbEpouses,
             c.dateNaturalisation, c.active, c.recrutable, c.excluDeclaration, c.matriculeRecrutement)
         from Collaborater c where c.company.id= :companyId and c.active=false

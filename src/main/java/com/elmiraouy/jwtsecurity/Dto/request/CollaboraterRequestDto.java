@@ -5,6 +5,8 @@ import com.elmiraouy.jwtsecurity.enums.Civilite;
 import com.elmiraouy.jwtsecurity.enums.Sexe;
 import jakarta.persistence.Column;
 import lombok.*;
+
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -16,7 +18,7 @@ public class CollaboraterRequestDto {
     private String initiales;
     private String firstName;
     private String lastName;
-    private Date dateNaissance;
+    private LocalDateTime dateNaissance;
     private String lieuNaissance;
     private Sexe sexe;
     private String civNomPrenom;
@@ -24,22 +26,22 @@ public class CollaboraterRequestDto {
     private String photos;
     private String signature;
     private String cnie;
-    private Date cnieDelivreeLe;
-    private Date cnieExpireLe;
+    private LocalDateTime cnieDelivreeLe;
+    private LocalDateTime cnieExpireLe;
     private String cnieDelivreePar;
     private String numPermisSejour;
     private String natPermisSejour;
-    private Date permisSejourDelivreLe;
-    private Date permisSejourDebVal;
-    private Date permisSejourFinVal;
+    private LocalDateTime permisSejourDelivreLe;
+    private LocalDateTime permisSejourDebVal;
+    private LocalDateTime permisSejourFinVal;
     private String numPermisTravail;
     private String natPermisTravail;
-    private Date permisTravailDelivreLe;
-    private Date permisTravailDebVal;
-    private Date permisTravailFinVal;
+    private LocalDateTime permisTravailDelivreLe;
+    private LocalDateTime permisTravailDebVal;
+    private LocalDateTime permisTravailFinVal;
     private String numPassePort;
-    private Date passePortDelivreLe;
-    private Date passePortExpireLe;
+    private LocalDateTime passePortDelivreLe;
+    private LocalDateTime passePortExpireLe;
     private String passePortDelivrePar;
     private String telephone;
     private String tel1;
@@ -48,6 +50,9 @@ public class CollaboraterRequestDto {
     private String email1;
     private String email2;
     private String email3;
+    private String adresse1;
+    private String adresse2;
+    private String adresse3;
     private Boolean nbEnfantsSaisi;
     private Integer nbEnfants;
     private Boolean nbEnfantsChargeSaisi;
@@ -56,9 +61,9 @@ public class CollaboraterRequestDto {
     private Integer nbPersCharge;
     private Boolean nbEpousesSaisi;
     private Integer nbEpouses;
-    private Date dateDeces;
-    private Date dateCertifDeces;
-    private Date dateNaturalisation;
+    private LocalDateTime dateDeces;
+    private LocalDateTime dateCertifDeces;
+    private LocalDateTime dateNaturalisation;
     private Boolean active;
     private Boolean recrutable;
     private Boolean excluDeclaration;
