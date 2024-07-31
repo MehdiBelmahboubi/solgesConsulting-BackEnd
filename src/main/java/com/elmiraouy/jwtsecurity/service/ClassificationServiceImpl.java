@@ -43,21 +43,63 @@ public class ClassificationServiceImpl implements ClassificationService{
     }
 
     @Override
-    public ClassificationResponseDto addClassificationToCollaborater(ClassificationRequestDto request) throws CollaboraterException, ClassificationTypeException {
+    public ClassificationResponseDto addClassificationToCollaborater(ClassificationRequestDto request) throws CollaboraterException, ClassificationTypeException, ClassificationException {
+        Date currentDate = new Date();
+        if (request.getDateFin().before(currentDate)) {
+            throw new ClassificationException("Date fin is before current date");
+        } else if (request.getDateClassification().after(request.getDateFin())) {
+            throw new ClassificationException("Date Classification is after Date Fin");
+        }
+
         Collaborater collaborater = collaboraterRepository.findById(request.getCollaboraterId())
                 .orElseThrow(() -> new CollaboraterException("Collaborater avec  Id Introuvable: [%s] :".formatted(request.getCollaboraterId())));
-        ClassificationType classificationType = classificationTypeRepository.findById(request.getTypeId())
-                .orElseThrow(()->new ClassificationTypeException("classification avec  Id Introuvable: [%s] : ".formatted(request.getTypeId())));
+
+        Classification activeClassification = classificationRepository.findByCollaboraterAndActive(collaborater,true);
+        if(activeClassification != null)
+        {
+            activeClassification.setActive(false);
+            classificationRepository.save(activeClassification);
+        }
+
+        ClassificationType classificationType = classificationTypeRepository.findById(request.getClassificationType())
+                .orElseThrow(()->new ClassificationTypeException("Classification Type avec  Id Introuvable: [%s] : ".formatted(request.getClassificationType())));
         Classification classification = Classification.builder()
                 .dateClassification(request.getDateClassification())
                 .refClassification(request.getRefClassification())
                 .categorieProf(request.getCategorieProf())
                 .dateCategorieProf(request.getDateCategorieProf())
                 .dateFin(request.getDateFin())
+                .active(true)
                 .dateCreation(LocalDateTime.now())
                 .collaborater(collaborater)
                 .classificationType(classificationType)
                 .build();
+        classificationRepository.save(classification);
+        return classificationDtoMapper.apply(classification);
+    }
+
+    @Override
+    public ClassificationResponseDto updateClassification(ClassificationRequestDto request) throws CollaboraterException, ClassificationTypeException, ClassificationException {
+        Date currentDate = new Date();
+        if (request.getDateFin().before(currentDate)) {
+            throw new ClassificationException("Date fin is before current date");
+        } else if (request.getDateClassification().after(request.getDateFin())) {
+            throw new ClassificationException("Date Classification is after Date Fin");
+        }
+        Classification classification = classificationRepository.findById(request.getId())
+                .orElseThrow(()->new ClassificationException("Classification avec  Id Introuvable: [%s] : ".formatted(request.getId())));
+        Collaborater collaborater = collaboraterRepository.findById(request.getCollaboraterId())
+                .orElseThrow(() -> new CollaboraterException("Collaborater avec  Id Introuvable: [%s] :".formatted(request.getCollaboraterId())));
+        ClassificationType classificationType = classificationTypeRepository.findById(request.getClassificationType())
+                .orElseThrow(()->new ClassificationTypeException("Classification Type avec  Id Introuvable: [%s] : ".formatted(request.getClassificationType())));
+        classification.setDateClassification(request.getDateClassification());
+        classification.setRefClassification(request.getRefClassification());
+        classification.setCategorieProf(request.getCategorieProf());
+        classification.setDateCategorieProf(request.getDateCategorieProf());
+        classification.setDateFin(request.getDateFin());
+        classification.setCollaborater(collaborater);
+        classification.setClassificationType(classificationType);
+        classificationRepository.save(classification);
         return classificationDtoMapper.apply(classification);
     }
 

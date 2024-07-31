@@ -15,5 +15,5 @@ public class ClassificationRequestDto {
     private Date dateCategorieProf;
     private Date dateFin;
     private Long collaboraterId;
-    private Long typeId;
+    private Long classificationType;
 }

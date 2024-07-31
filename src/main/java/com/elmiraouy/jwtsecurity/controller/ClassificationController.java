@@ -26,8 +26,13 @@ public class ClassificationController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<ClassificationResponseDto> addClassificationToCollaborater(@RequestBody ClassificationRequestDto classificationRequestDto) throws CollaboraterException, ClassificationTypeException {
+    public ResponseEntity<ClassificationResponseDto> addClassificationToCollaborater(@RequestBody ClassificationRequestDto classificationRequestDto) throws CollaboraterException, ClassificationTypeException , ClassificationException {
         return ResponseEntity.ok(classificationService.addClassificationToCollaborater(classificationRequestDto));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ClassificationResponseDto> updateClassification(@RequestBody ClassificationRequestDto classificationRequestDto) throws CollaboraterException, ClassificationTypeException , ClassificationException {
+        return ResponseEntity.ok(classificationService.updateClassification(classificationRequestDto));
     }
 
     @GetMapping("/getTypes")

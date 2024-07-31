@@ -22,6 +22,7 @@ public class Classification {
     private String categorieProf;
     private Date dateCategorieProf;
     private Date dateFin;
+    private Boolean active;
 
     //System - nv0
     private String observation;

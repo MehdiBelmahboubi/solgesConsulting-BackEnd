@@ -18,6 +18,7 @@ public class ClassificationResponseDto {
     private String categorieProf;
     private Date dateCategorieProf;
     private Date dateFin;
+    private Boolean active;
     private Collaborater collaborater;
     private Long classificationType;
 
