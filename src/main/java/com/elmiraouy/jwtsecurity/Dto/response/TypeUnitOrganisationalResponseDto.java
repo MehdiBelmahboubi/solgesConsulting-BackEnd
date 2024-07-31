@@ -25,6 +25,7 @@ public class TypeUnitOrganisationalResponseDto {
     private LocalDateTime endDate;
     private Boolean active;
     private String color;
+    private Boolean addedInBulk;
     public TypeUnitOrganisationalResponseDto(Long id, String name, String code, Long companyId, int level, Boolean active,
                                              LocalDateTime createDate, LocalDateTime updateDate, LocalDateTime startDate, LocalDateTime endDate,String color) {
         this.id = id;

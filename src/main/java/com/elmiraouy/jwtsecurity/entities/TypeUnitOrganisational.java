@@ -39,4 +39,4 @@ public class TypeUnitOrganisational {
     @JoinColumn(name = "company_id")
     private Company company;
     private String color;
-}
+    private Boolean addedInBulk;}
