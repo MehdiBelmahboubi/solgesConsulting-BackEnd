@@ -1,6 +1,7 @@
 package com.elmiraouy.jwtsecurity.controller;
 
 import com.elmiraouy.jwtsecurity.Dto.response.ResponseDto;
+import com.elmiraouy.jwtsecurity.service.CollaboraterService;
 import com.elmiraouy.jwtsecurity.service.TypeUnitOrganisationalService;
 import com.elmiraouy.jwtsecurity.service.UnitOrganisationalService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileController {
     private final TypeUnitOrganisationalService typeUnitOrganisationalService;
     private final UnitOrganisationalService unitOrganisationalService;
+    private final CollaboraterService collaboraterService;
 
     @PostMapping("/uploadFile")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file,@RequestParam("table") String table,@RequestParam("companyId") Long companyId,@RequestParam("userCreatedId") Long userCreatedId)  {
@@ -34,8 +36,9 @@ public class FileController {
                     if(!table.isEmpty()){
                         if(table.equals("Type_Unity")){
                             typeUnitOrganisationalService.persistFromFile(file,table, companyId, userCreatedId);
+                        } else if (table.equals("Collaborater")) {
+                            collaboraterService.persistFromFile(file,table, companyId);
                         }
-
                     }
                     responseDto.setMessage("Fichier  importer avec succes");
                     log.info("Fichier importer avec succes");

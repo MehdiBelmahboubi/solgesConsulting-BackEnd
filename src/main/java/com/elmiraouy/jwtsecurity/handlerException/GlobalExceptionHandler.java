@@ -1,4 +1,5 @@
 package com.elmiraouy.jwtsecurity.handlerException;
+import com.elmiraouy.jwtsecurity.entities.Classification;
 import jakarta.mail.MessagingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
@@ -195,6 +196,84 @@ public class GlobalExceptionHandler {
                 .body(
                         ExceptionResponse.builder()
                                 .businessErrorCode(500)
+                                .businessErrorDescription(exception.getMessage())
+                                .error(exception.getMessage())
+                                .build()
+                );
+    }
+    @ExceptionHandler({CollaboraterException.class})
+    public ResponseEntity<ExceptionResponse> handleException(CollaboraterException  exception){
+        log.error("Handled   exception: {}", exception.getClass().getSimpleName(), exception);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(
+                        ExceptionResponse.builder()
+                                .businessErrorCode(400)
+                                .businessErrorDescription(exception.getMessage())
+                                .error(exception.getMessage())
+                                .build()
+                );
+    }
+    @ExceptionHandler({ContractException.class})
+    public ResponseEntity<ExceptionResponse> handleException(ContractException  exception){
+        log.error("Handled   exception: {}", exception.getClass().getSimpleName(), exception);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(
+                        ExceptionResponse.builder()
+                                .businessErrorCode(400)
+                                .businessErrorDescription(exception.getMessage())
+                                .error(exception.getMessage())
+                                .build()
+                );
+    }
+    @ExceptionHandler({ContractTypeException.class})
+    public ResponseEntity<ExceptionResponse> handleException(ContractTypeException  exception){
+        log.error("Handled   exception: {}", exception.getClass().getSimpleName(), exception);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(
+                        ExceptionResponse.builder()
+                                .businessErrorCode(400)
+                                .businessErrorDescription(exception.getMessage())
+                                .error(exception.getMessage())
+                                .build()
+                );
+    }
+    @ExceptionHandler({ClassificationException.class})
+    public ResponseEntity<ExceptionResponse> handleException(ClassificationException exception){
+        log.error("Handled   exception: {}", exception.getClass().getSimpleName(), exception);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(
+                        ExceptionResponse.builder()
+                                .businessErrorCode(400)
+                                .businessErrorDescription(exception.getMessage())
+                                .error(exception.getMessage())
+                                .build()
+                );
+    }
+    @ExceptionHandler({ClassificationTypeException.class})
+    public ResponseEntity<ExceptionResponse> handleException(ClassificationTypeException exception){
+        log.error("Handled   exception: {}", exception.getClass().getSimpleName(), exception);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(
+                        ExceptionResponse.builder()
+                                .businessErrorCode(400)
+                                .businessErrorDescription(exception.getMessage())
+                                .error(exception.getMessage())
+                                .build()
+                );
+    }
+    @ExceptionHandler({CountryException.class})
+    public ResponseEntity<ExceptionResponse> handleException(CountryException exception){
+        log.error("Handled   exception: {}", exception.getClass().getSimpleName(), exception);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(
+                        ExceptionResponse.builder()
+                                .businessErrorCode(400)
                                 .businessErrorDescription(exception.getMessage())
                                 .error(exception.getMessage())
                                 .build()

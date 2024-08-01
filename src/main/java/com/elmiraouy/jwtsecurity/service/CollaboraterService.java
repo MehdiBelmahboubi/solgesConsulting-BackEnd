@@ -6,6 +6,7 @@ import com.elmiraouy.jwtsecurity.entities.Collaborater;
 import com.elmiraouy.jwtsecurity.entities.Company;
 import com.elmiraouy.jwtsecurity.handlerException.*;
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface CollaboraterService {
     public void addNationalitiesToCollaborater(Collaborater collaborater, Long countryCode1, Long countryCode2) throws CountryException;
     public CollaboraterResponseDto deleteCollab(Long id) throws CollaboraterException;
     public CollaboraterResponseDto updateCollab(CollaboraterRequestDto CollaboraterRequestDto) throws CollaboraterException;
+
+    void persistFromFile(MultipartFile file, String table, Long companyId);
 }

@@ -34,7 +34,7 @@ public class TypeUnitOrganisationalServiceImpl implements TypeUnitOrganisational
     private final CompanyRepository companyRepository;
 
     @Transactional
-        @Override
+    @Override
     public TypeUnitOrganisationalResponseDto findById(Long id) throws EntityNotFoundException {
         return null;
     }
@@ -55,14 +55,13 @@ public class TypeUnitOrganisationalServiceImpl implements TypeUnitOrganisational
 
     @Override
     public List<TypeUnitOrganisationalResponseDto> findByCompanyId(Long companyId) throws EntityNotFoundException {
-          List<TypeUnitOrganisational> typeUnitOrganisationalList=typeUnitOrganisationalRepository.findAll();
-          return typeUnitOrganisationalList.stream().map(typeUnitOrganisationalDtoMapper).toList();
+        List<TypeUnitOrganisational> typeUnitOrganisationalList=typeUnitOrganisationalRepository.findAll();
+        return typeUnitOrganisationalList.stream().map(typeUnitOrganisationalDtoMapper).toList();
     }
     @Transactional
     @Override
     public void persistFromFile(MultipartFile file, String table, Long companyId, Long userCreatedId) {
         List<TypeUnitOrganisationalRequest> types=null;
-        //List<TypeUnitOrganisationalResponseDto> typesSave=new ArrayList<>();
         try {
             types =excelToTypesUnity(file.getInputStream(),table, companyId, userCreatedId);
 
