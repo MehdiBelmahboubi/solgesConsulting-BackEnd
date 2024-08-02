@@ -7,11 +7,11 @@ import com.elmiraouy.jwtsecurity.enums.Civilite;
 import com.elmiraouy.jwtsecurity.enums.Sexe;
 import com.elmiraouy.jwtsecurity.handlerException.*;
 import com.elmiraouy.jwtsecurity.mappers.CollaboraterDtoMapper;
-import com.elmiraouy.jwtsecurity.mappers.ContractDtoMapper;
 import com.elmiraouy.jwtsecurity.mappers.ContractTypeDtoMapper;
 import com.elmiraouy.jwtsecurity.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -94,8 +94,7 @@ public class CollaboraterServiceImpl implements CollaboraterService{
 //            throw new CollaboraterException("un collaborateur avec ce CNIE est deja creer: [%s] :".formatted(request.getCnie()));
 //        }else
           if(collaboraterRepository.findByMatriculeAndCompany(request.getMatricule(), company).isPresent()) {
-            throw new CollaboraterException("un collaborateur avec ce Matricule deja creer dans cette company: [%s] :".formatted(request.getMatricule()));
-        }
+            throw new CollaboraterException("un collaborateur avec ce Matricule deja creer dans cette company: [%s] :".formatted(request.getMatricule()));}
         Collaborater collaborater = buildCollaborater(request, company);
         Collaborater saveCollaborater = collaboraterRepository.save(collaborater);
         addNationalitiesToCollaborater(saveCollaborater, request.getCountryCode1(), request.getCountryCode2());
@@ -143,6 +142,7 @@ public class CollaboraterServiceImpl implements CollaboraterService{
             country2.getCollaborators().add(collaborater);
             countryRepository.save(country2);
         }
+        System.out.println("nationa added to collaborater : "+collaborater.getCivNomPrenom());
     }
 
     @Override
@@ -262,14 +262,15 @@ public class CollaboraterServiceImpl implements CollaboraterService{
         }
     }
 
-    public static List<CollaboraterRequestDto> excelToCollaboraters(InputStream is, String table, Long companyId) {
+    public List<CollaboraterRequestDto> excelToCollaboraters(InputStream is, String table, Long companyId) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         List<CollaboraterRequestDto> collaboraterRequests = new ArrayList<>();
         Workbook workbook = null;
 
         try {
             System.out.println("Attempting to create workbook from input stream.");
-            workbook = WorkbookFactory.create(is);
+//            workbook = WorkbookFactory.create(is);
+            workbook = new XSSFWorkbook(is);
             System.out.println("Workbook created successfully.");
 
             Sheet sheet = workbook.getSheet(table);
@@ -279,13 +280,15 @@ public class CollaboraterServiceImpl implements CollaboraterService{
             System.out.println("Processing Sheet: " + sheet.getSheetName());
 
             Iterator<Row> rows = sheet.iterator();
+            System.out.println("up1");
             int rowNumber = 0;
             Map<String, Integer> columnMap = new HashMap<>();
             if (!rows.hasNext()) {
-                throw new RuntimeException("The file is empty; it must contain records...");
+                throw new RuntimeException("The file is empty, it must contain records...");
             }
 
             while (rows.hasNext()) {
+                System.out.println("up2");
                 Row currentRow = rows.next();
                 if (rowNumber == 0) {
                     Iterator<Cell> header = currentRow.iterator();
@@ -299,51 +302,60 @@ public class CollaboraterServiceImpl implements CollaboraterService{
                     rowNumber++;
                     continue;
                 }
+                System.out.println("up3");
 
                 CollaboraterRequestDto collaboraterRequest = CollaboraterRequestDto.builder().build();
                 collaboraterRequest.setCompany_id(companyId);
+                System.out.println("up4");
 
                 if (columnMap.containsKey("matricule")) {
                     collaboraterRequest.setMatricule(currentRow.getCell(columnMap.get("matricule")).getStringCellValue());
                 }else {
                         throw new CollaboraterException("Le matricule Not null.");
                 }
+                System.out.println("up5");
 
                 if (columnMap.containsKey("civilite")) {
-                    collaboraterRequest.setMatricule(currentRow.getCell(columnMap.get("civilite")).getStringCellValue());
+                    collaboraterRequest.setCivilite(Civilite.valueOf(currentRow.getCell(columnMap.get("civilite")).getStringCellValue()));
                 }else {
                     throw new CollaboraterException("Le civilite Not null.");
                 }
+                System.out.println("up6");
 
                 if (columnMap.containsKey("initiales")) {
-                    collaboraterRequest.setMatricule(currentRow.getCell(columnMap.get("initiales")).getStringCellValue());
+                    collaboraterRequest.setInitiales(currentRow.getCell(columnMap.get("initiales")).getStringCellValue());
                 }else {
                     throw new CollaboraterException("Le initiales Not null.");
                 }
+                System.out.println("up7");
 
                 if (columnMap.containsKey("first_name")) {
-                    collaboraterRequest.setFirstName(currentRow.getCell(columnMap.get("firstName")).getStringCellValue());
+                    collaboraterRequest.setFirstName(currentRow.getCell(columnMap.get("first_name")).getStringCellValue());
                 }else {
                     throw new CollaboraterException("firstName Not null.");
                 }
+                System.out.println("up8");
 
                 if (columnMap.containsKey("last_name")) {
-                    collaboraterRequest.setLastName(currentRow.getCell(columnMap.get("lastName")).getStringCellValue());
+                    collaboraterRequest.setLastName(currentRow.getCell(columnMap.get("last_name")).getStringCellValue());
                 }else {
                     throw new CollaboraterException("lastName Not null.");
                 }
+                System.out.println("up9");
 
                 if (columnMap.containsKey("sexe")) {
                     collaboraterRequest.setSexe(Sexe.valueOf(currentRow.getCell(columnMap.get("sexe")).getStringCellValue()));
                 }else {
                     throw new CollaboraterException("sexe Not null.");
                 }
+                System.out.println("up10");
 
                 if (columnMap.containsKey("date_naissance")) {
                     collaboraterRequest.setDateNaissance( SharedService.handleDate(columnMap, currentRow, "date_naissance", formatter));
                 }else {
                     throw new CollaboraterException("dateNaissance Not null.");
                 }
+                System.out.println("up11");
 
                 if (columnMap.containsKey("lieu_naissance")) {
                     collaboraterRequest.setLieuNaissance(currentRow.getCell(columnMap.get("lieu_naissance")).getStringCellValue());
@@ -413,20 +425,20 @@ public class CollaboraterServiceImpl implements CollaboraterService{
                     collaboraterRequest.setPermisTravailFinVal(SharedService.handleDate(columnMap, currentRow, "permis_travail_fin_val", formatter));
                 }
 
-                if (columnMap.containsKey("num_passport")) {
-                    collaboraterRequest.setNumPassePort(currentRow.getCell(columnMap.get("num_passport")).getStringCellValue());
+                if (columnMap.containsKey("num_passeport")) {
+                    collaboraterRequest.setNumPassePort(currentRow.getCell(columnMap.get("num_passeport")).getStringCellValue());
                 }
 
-                if (columnMap.containsKey("passport_delivre_le")) {
-                    collaboraterRequest.setPassePortDelivreLe(SharedService.handleDate(columnMap, currentRow, "passport_delivre_le", formatter));
+                if (columnMap.containsKey("passeport_delivre_le")) {
+                    collaboraterRequest.setPassePortDelivreLe(SharedService.handleDate(columnMap, currentRow, "passeport_delivre_le", formatter));
                 }
 
-                if (columnMap.containsKey("passport_expire_le")) {
-                    collaboraterRequest.setPassePortExpireLe(SharedService.handleDate(columnMap, currentRow, "passport_expire_le", formatter));
+                if (columnMap.containsKey("passeport_expire_le")) {
+                    collaboraterRequest.setPassePortExpireLe(SharedService.handleDate(columnMap, currentRow, "passeport_expire_le", formatter));
                 }
 
-                if (columnMap.containsKey("passport_delivre_par")) {
-                    collaboraterRequest.setPassePortDelivrePar(currentRow.getCell(columnMap.get("passport_delivre_par")).getStringCellValue());
+                if (columnMap.containsKey("passeport_delivre_par")) {
+                    collaboraterRequest.setPassePortDelivrePar(currentRow.getCell(columnMap.get("passeport_delivre_par")).getStringCellValue());
                 }
 
                 if (columnMap.containsKey("telephone")) {
@@ -469,7 +481,6 @@ public class CollaboraterServiceImpl implements CollaboraterService{
                     collaboraterRequest.setAdresse3(currentRow.getCell(columnMap.get("adresse3")).getStringCellValue());
                 }
 
-
                 if (columnMap.containsKey("nb_enfants_saisi")) {
                     Cell cell = currentRow.getCell(columnMap.get("nb_enfants_saisi"));
                     boolean bool = cell != null && cell.getNumericCellValue() == 1;
@@ -477,36 +488,43 @@ public class CollaboraterServiceImpl implements CollaboraterService{
                 }
 
                 if (columnMap.containsKey("nb_enfants")) {
-                    collaboraterRequest.setNbEnfants(Integer.valueOf(currentRow.getCell(columnMap.get("nb_enfants")).getStringCellValue()));
+                    collaboraterRequest.setNbEnfants((int) currentRow.getCell(columnMap.get("nb_enfants")).getNumericCellValue());
                 }
+                System.out.println("up12");
 
                 if (columnMap.containsKey("nb_enfants_charge_saisi")) {
                     Cell cell = currentRow.getCell(columnMap.get("nb_enfants_charge_saisi"));
                     boolean bool = cell != null && cell.getNumericCellValue() == 1;
                     collaboraterRequest.setNbEnfantsChargeSaisi(bool);
                 }
+                System.out.println("up13");
 
                 if (columnMap.containsKey("nb_enfants_charge")) {
-                    collaboraterRequest.setNbEnfantCharge(Integer.valueOf(currentRow.getCell(columnMap.get("nb_enfants_charge")).getStringCellValue()));
+                    collaboraterRequest.setNbEnfantCharge((int) currentRow.getCell(columnMap.get("nb_enfants_charge")).getNumericCellValue());
                 }
+                System.out.println("up14");
 
                 if (columnMap.containsKey("nb_epouses_saisi")) {
                     Cell cell = currentRow.getCell(columnMap.get("nb_epouses_saisi"));
                     boolean bool = cell != null && cell.getNumericCellValue() == 1;
                     collaboraterRequest.setNbEpousesSaisi(bool);
                 }
+                System.out.println("up15");
+
 
                 if (columnMap.containsKey("nb_epouses")) {
-                    collaboraterRequest.setNbEpouses(Integer.valueOf(currentRow.getCell(columnMap.get("nb_epouses")).getStringCellValue()));
+                    collaboraterRequest.setNbEpouses((int) currentRow.getCell(columnMap.get("nb_epouses")).getNumericCellValue());
                 }
 
-                if (columnMap.containsKey("nb_personnes_charge")) {
-                    collaboraterRequest.setNbPersCharge(Integer.valueOf(currentRow.getCell(columnMap.get("nb_personnes_charge")).getStringCellValue()));
+                if (columnMap.containsKey("nb_pers_charge")) {
+                    collaboraterRequest.setNbPersCharge((int) currentRow.getCell(columnMap.get("nb_pers_charge")).getNumericCellValue());
                 }
+                System.out.println("up15");
 
                 if (columnMap.containsKey("date_deces")) {
                     collaboraterRequest.setDateDeces(SharedService.handleDate(columnMap, currentRow, "date_deces", formatter));
                 }
+                System.out.println("up16");
 
                 if (columnMap.containsKey("date_certif_deces")) {
                     collaboraterRequest.setDateCertifDeces(SharedService.handleDate(columnMap, currentRow, "date_certif_deces", formatter));
@@ -538,28 +556,31 @@ public class CollaboraterServiceImpl implements CollaboraterService{
                     collaboraterRequest.setMatriculeRecrutement(currentRow.getCell(columnMap.get("matricule_recrutement")).getStringCellValue());
                 }
 
-//                if (columnMap.containsKey("nationnality1")) {
-//                    Long coutrycode1 = countryRepository.findByNationality(currentRow.getCell(columnMap.get("nationnality1")).getStringCellValue());
-//                    collaboraterRequest.setCountryCode1(coutrycode1);
-//                }
-//
-//                if (columnMap.containsKey("nationnality2")) {
-//                    Long coutrycode2 = countryRepository.findByNationality(currentRow.getCell(columnMap.get("nationnality2")).getStringCellValue());
-//                    collaboraterRequest.setCountryCode2(coutrycode2);
-//                }
+                if (columnMap.containsKey("nationality1")) {
+                    Long coutrycode1 = countryRepository.findByNationality(currentRow.getCell(columnMap.get("nationality1")).getStringCellValue());
+                    System.out.println("code country "+coutrycode1);
+                    collaboraterRequest.setCountryCode1(coutrycode1);
+                }
+
+                if (columnMap.containsKey("nationality2")) {
+                    Long coutrycode2 = countryRepository.findByNationality(currentRow.getCell(columnMap.get("nationality2")).getStringCellValue());
+                    collaboraterRequest.setCountryCode2(coutrycode2);
+                }
 
                 collaboraterRequests.add(collaboraterRequest);
             }
             workbook.close();
+            return collaboraterRequests;
         } catch (IOException e) {
             throw new RuntimeException("Erreur Au moment de lecture du fichier verifier les informations : " + e.getMessage());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return collaboraterRequests;
     }
 
-    public void saveInBulk(CollaboraterRequestDto request) throws CountryException {
+    public void saveInBulk(CollaboraterRequestDto request) throws CountryException, CompanyException, CollaboraterException {
+        Company company = companyRepository.findById(request.getCompany_id())
+                .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(request.getCompany_id())));
         Collaborater collaborater = Collaborater.builder()
                 .matricule(request.getMatricule())
                 .civilite(request.getCivilite())
@@ -614,9 +635,13 @@ public class CollaboraterServiceImpl implements CollaboraterService{
                 .matriculeRecrutement(request.getMatriculeRecrutement())
                 .dateCreation(LocalDateTime.now())
                 .addedInBulk(true)
+                .company(company)
+                .countries(new ArrayList<>())
                 .build();
         Collaborater saveCollaborater = collaboraterRepository.save(collaborater);
-//        addNationalitiesToCollaborater(saveCollaborater, request.getCountryCode1(), request.getCountryCode2());
+        System.out.println("test fin "+request.getCountryCode1());
+        System.out.println("test fin "+request.getCountryCode2());
+        addNationalitiesToCollaborater(saveCollaborater, request.getCountryCode1(), request.getCountryCode2());
     }
 
 }
