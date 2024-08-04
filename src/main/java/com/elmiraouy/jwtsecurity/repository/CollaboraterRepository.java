@@ -44,4 +44,9 @@ public interface CollaboraterRepository extends JpaRepository<Collaborater, Long
         from Collaborater c where c.company.id= :companyId and c.active=false
         """)
     Page<CollaboraterResponseDto> findByCompanyAndActive(Long companyId, Pageable pageable);
+
+    @Query("""
+        select c.id from Collaborater c where c.matricule like :matricule
+    """)
+    Long findByMatricule(String matricule);
 }
