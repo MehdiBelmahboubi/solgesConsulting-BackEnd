@@ -19,12 +19,12 @@ public class Contract {
 
     private String contractRef;
     private String motifRecrutement;
-    private Date dateEntree;
+    private LocalDateTime dateEntree;
     private Integer periodNegocible;
     private String regimeFiscal;
     private Integer exonerationFiscale;
     private String motifDepart;
-    private Date dateFin;
+    private LocalDateTime dateFin;
     private Boolean active;
     //System - nv0
     private String observation;
@@ -32,6 +32,7 @@ public class Contract {
     private String creePar;
     private LocalDateTime dateUpdate;
     private String majPar;
+    private Boolean addedInBulk;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "collaborater_id")

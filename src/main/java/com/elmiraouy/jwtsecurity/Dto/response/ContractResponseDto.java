@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 @Builder
 @Data
@@ -14,18 +15,18 @@ public class ContractResponseDto {
     private Long id;
     private String contractRef;
     private String motifRecrutement;
-    private Date dateEntree;
+    private LocalDateTime dateEntree;
     private Integer periodNegocible;
     private String regimeFiscal;
     private Integer exonerationFiscale;
     private String motifDepart;
-    private Date dateFin;
+    private LocalDateTime dateFin;
     private Boolean active;
     private Collaborater collaborater;
     private Long contractType;
 
 
-    public ContractResponseDto(Long id, String contractRef, String motifRecrutement, Date dateEntree, Integer periodNegocible, String regimeFiscal, Integer exonerationFiscale, String motifDepart, Date dateFin,Long contractType) {
+    public ContractResponseDto(Long id, String contractRef, String motifRecrutement, LocalDateTime dateEntree, Integer periodNegocible, String regimeFiscal, Integer exonerationFiscale, String motifDepart, LocalDateTime dateFin,Long contractType) {
         this.id=id;
         this.contractRef=contractRef;
         this.motifRecrutement=motifRecrutement;
