@@ -1,9 +1,8 @@
 package com.elmiraouy.jwtsecurity.controller;
 
 import com.elmiraouy.jwtsecurity.Dto.response.ResponseDto;
-import com.elmiraouy.jwtsecurity.service.CollaboraterService;
-import com.elmiraouy.jwtsecurity.service.TypeUnitOrganisationalService;
-import com.elmiraouy.jwtsecurity.service.UnitOrganisationalService;
+import com.elmiraouy.jwtsecurity.repository.ContractRepository;
+import com.elmiraouy.jwtsecurity.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/client")
 public class FileController {
     private final TypeUnitOrganisationalService typeUnitOrganisationalService;
-    private final UnitOrganisationalService unitOrganisationalService;
     private final CollaboraterService collaboraterService;
+    private final ContractService contractService;
+    private final ClassificationService classificationService;
 
     @PostMapping("/uploadFile")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file,@RequestParam("table") String table,@RequestParam("companyId") Long companyId,@RequestParam("userCreatedId") Long userCreatedId)  {
@@ -38,6 +38,10 @@ public class FileController {
                             typeUnitOrganisationalService.persistFromFile(file,table, companyId, userCreatedId);
                         } else if (table.equals("Collaborater")) {
                             collaboraterService.persistFromFile(file,table, companyId);
+                        } else if (table.equals("Contract")) {
+                            contractService.persistFromFile(file,table);
+                        } else if (table.equals("Classification")) {
+                            classificationService.persistFromFile(file,table);
                         }
                     }
                     responseDto.setMessage("Fichier  importer avec succes");

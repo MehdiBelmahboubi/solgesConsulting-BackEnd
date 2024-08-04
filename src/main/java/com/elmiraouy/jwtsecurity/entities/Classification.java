@@ -17,11 +17,11 @@ public class Classification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date dateClassification;
+    private LocalDateTime dateClassification;
     private String refClassification;
     private String categorieProf;
-    private Date dateCategorieProf;
-    private Date dateFin;
+    private LocalDateTime dateCategorieProf;
+    private LocalDateTime dateFin;
     private Boolean active;
 
     //System - nv0
@@ -30,6 +30,7 @@ public class Classification {
     private String creePar;
     private LocalDateTime dateUpdate;
     private String majPar;
+    private Boolean addedInBulk;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "type_id")
