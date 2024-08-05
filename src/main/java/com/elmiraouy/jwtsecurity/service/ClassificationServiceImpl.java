@@ -1,7 +1,6 @@
 package com.elmiraouy.jwtsecurity.service;
 
 import com.elmiraouy.jwtsecurity.Dto.request.ClassificationRequestDto;
-import com.elmiraouy.jwtsecurity.Dto.request.ContractRequestDto;
 import com.elmiraouy.jwtsecurity.Dto.response.ClassificationResponseDto;
 import com.elmiraouy.jwtsecurity.Dto.response.ClassificationTypeResponseDto;
 import com.elmiraouy.jwtsecurity.entities.Classification;
@@ -10,7 +9,6 @@ import com.elmiraouy.jwtsecurity.entities.Collaborater;
 import com.elmiraouy.jwtsecurity.handlerException.ClassificationException;
 import com.elmiraouy.jwtsecurity.handlerException.ClassificationTypeException;
 import com.elmiraouy.jwtsecurity.handlerException.CollaboraterException;
-import com.elmiraouy.jwtsecurity.handlerException.ContractException;
 import com.elmiraouy.jwtsecurity.mappers.ClassificationDtoMapper;
 import com.elmiraouy.jwtsecurity.mappers.ClassificationTypeDtoMapper;
 import com.elmiraouy.jwtsecurity.repository.ClassificationRepository;
@@ -23,11 +21,11 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -118,6 +116,7 @@ public class ClassificationServiceImpl implements ClassificationService{
     }
 
     @Override
+    @Transactional
     public void persistFromFile(MultipartFile file, String table) {
         List<ClassificationRequestDto> classificationRequestDtos;
         try {

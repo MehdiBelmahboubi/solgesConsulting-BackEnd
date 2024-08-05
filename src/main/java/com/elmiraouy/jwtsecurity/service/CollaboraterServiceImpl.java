@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -241,6 +242,7 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     }
 
     @Override
+    @Transactional
     public void persistFromFile(MultipartFile file, String table, Long companyId) {
         List<CollaboraterRequestDto> collaboraterRequests;
         try {
