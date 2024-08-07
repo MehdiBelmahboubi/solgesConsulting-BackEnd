@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 
 
@@ -39,4 +40,7 @@ public class TypeUnitOrganisational {
     @JoinColumn(name = "company_id")
     private Company company;
     private String color;
-    private Boolean addedInBulk;}
+    private Boolean addedInBulk;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Collection<Droit> droits= new ArrayList<>();
+}
