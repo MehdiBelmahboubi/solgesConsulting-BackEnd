@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface ContractService {
-    public ContractResponseDto findByCollaborater(Long collaboraterId) throws CollaboraterException,ContractException;
     public ContractResponseDto addContractToCollaborator(ContractRequestDto contractRequestDto) throws CollaboraterException, ContractTypeException, ContractException;
     public ContractResponseDto updateContract(ContractRequestDto contractRequestDto) throws CollaboraterException, ContractTypeException, ContractException;
     public ContractResponseDto deleteContractToCollaborater(ContractRequestDto contractRequestDto) throws CollaboraterException, ContractException;

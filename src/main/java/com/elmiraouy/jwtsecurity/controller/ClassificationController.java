@@ -16,26 +16,21 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@RequestMapping("/api/client/classification")
+@RequestMapping("/api/client/classifications")
 public class ClassificationController {
     private final ClassificationService classificationService;
 
-    @GetMapping("/get")
-    public ResponseEntity<ClassificationResponseDto> findByCollaborater(@RequestParam Long id) throws ClassificationException, CollaboraterException {
-        return ResponseEntity.ok(classificationService.findByCollaborater(id));
-    }
-
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<ClassificationResponseDto> addClassificationToCollaborater(@RequestBody ClassificationRequestDto classificationRequestDto) throws CollaboraterException, ClassificationTypeException , ClassificationException {
         return ResponseEntity.ok(classificationService.addClassificationToCollaborater(classificationRequestDto));
     }
 
-    @PutMapping("/update")
+    @PutMapping
     public ResponseEntity<ClassificationResponseDto> updateClassification(@RequestBody ClassificationRequestDto classificationRequestDto) throws CollaboraterException, ClassificationTypeException , ClassificationException {
         return ResponseEntity.ok(classificationService.updateClassification(classificationRequestDto));
     }
 
-    @GetMapping("/getTypes")
+    @GetMapping("/types")
     public ResponseEntity<List<ClassificationTypeResponseDto>> getTypes(){
         return ResponseEntity.ok(classificationService.getAllTypes());
     }

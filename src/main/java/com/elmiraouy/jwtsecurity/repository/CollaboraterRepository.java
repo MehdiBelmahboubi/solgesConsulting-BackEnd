@@ -13,7 +13,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CollaboraterRepository extends JpaRepository<Collaborater, Long> {
-    Optional<Collaborater> findByMatriculeAndCompany(String matricule, Company company);
+    @Query("""
+    select c from Collaborater c where c.cnie = :cnie or (c.matricule = :matricule and c.company.id=:companyId)
+    """)
+    Optional<Collaborater> findByMatriculeAndCompanyIdOrCnie(String matricule,Long companyId,String cnie);
     Optional<Collaborater> findByMatriculeAndCompanyId(String matricule, Long companyId);
     Optional<Collaborater> findByCnie(String cnie);
 

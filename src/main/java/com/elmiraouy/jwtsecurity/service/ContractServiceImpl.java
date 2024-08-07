@@ -39,16 +39,6 @@ public class ContractServiceImpl implements ContractService{
     private final ContractTypeRepository contractTypeRepository;
     private final ContractTypeDtoMapper contractTypeDtoMapper;
 
-    @Override
-    public ContractResponseDto findByCollaborater(Long collaboraterId) throws CollaboraterException,ContractException {
-//        Collaborater collaborater = collaboraterRepository.findById(collaboraterId)
-//                .orElseThrow(() -> new CollaboraterException("Collaborater with this Id Introuvable: [%s] :".formatted(collaboraterId)));
-//        Date currentDate = new Date();
-//        ContractResponseDto contract = contractRepository.findByCollaboraterAndDateFinGreaterThan(collaborater,currentDate)
-//                .orElseThrow(() -> new ContractException("This User Dont Have a Current Contract"));
-//        return contractDtoMapper.apply(contract);
-        return null;
-    }
 
     @Override
     public ContractResponseDto addContractToCollaborator(ContractRequestDto request) throws CollaboraterException, ContractTypeException, ContractException {

@@ -16,27 +16,22 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@RequestMapping("/api/client/contract")
+@RequestMapping("/api/client/contracts")
 public class ContractController {
 
     private final ContractService contractService;
 
-    @GetMapping("/get")
-    public ResponseEntity<ContractResponseDto> findByCollaborater(@RequestParam Long id) throws CollaboraterException, ContractException {
-        return ResponseEntity.ok(contractService.findByCollaborater(id));
-    }
-
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<ContractResponseDto> addContractToCollaborater(@RequestBody ContractRequestDto contractRequestDto) throws ContractTypeException, CollaboraterException ,ContractException{
         return ResponseEntity.ok(contractService.addContractToCollaborator(contractRequestDto));
     }
 
-    @PutMapping("/update")
+    @PutMapping
     public ResponseEntity<ContractResponseDto> updateContract(@RequestBody ContractRequestDto contractRequestDto) throws ContractTypeException, CollaboraterException ,ContractException{
         return ResponseEntity.ok(contractService.updateContract(contractRequestDto));
     }
 
-    @GetMapping("/getTypes")
+    @GetMapping("/types")
     public ResponseEntity<List<ContractTypeResponseDTO>> getAllTypes(){
         return ResponseEntity.ok(contractService.getAllTypes());
     }

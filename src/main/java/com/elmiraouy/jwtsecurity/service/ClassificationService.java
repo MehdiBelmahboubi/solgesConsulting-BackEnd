@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface ClassificationService {
-    public ClassificationResponseDto findByCollaborater(Long collaboraterId) throws CollaboraterException, ClassificationException;
     public ClassificationResponseDto addClassificationToCollaborater(ClassificationRequestDto classificationRequestDto) throws CollaboraterException, ClassificationTypeException, ClassificationException;
     public ClassificationResponseDto updateClassification(ClassificationRequestDto classificationRequestDto) throws CollaboraterException, ClassificationTypeException, ClassificationException;
     public List<ClassificationTypeResponseDto> getAllTypes();

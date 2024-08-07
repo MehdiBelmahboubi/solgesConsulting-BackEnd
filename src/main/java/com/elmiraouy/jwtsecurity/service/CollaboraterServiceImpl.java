@@ -89,25 +89,22 @@ public class CollaboraterServiceImpl implements CollaboraterService{
 
     @Override
     public CollaboraterResponseDto createCollab(CollaboraterRequestDto request) throws CollaboraterException, CompanyException, CountryException {
-        Company company = companyRepository.findById(request.getCompany_id())
-                .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(request.getCompany_id())));
-//        if(collaboraterRepository.findByCnie(request.getCnie()).isPresent()){
-//            throw new CollaboraterException("un collaborateur avec ce CNIE est deja creer: [%s] :".formatted(request.getCnie()));
-//        }else
-          if(collaboraterRepository.findByMatriculeAndCompany(request.getMatricule(), company).isPresent()) {
+          if(collaboraterRepository.findByMatriculeAndCompanyIdOrCnie(request.getMatricule(), request.getCompany_id(),request.getCnie()).isPresent()) {
             throw new CollaboraterException("un collaborateur avec ce Matricule deja creer dans cette company: [%s] :".formatted(request.getMatricule()));}
-        Collaborater collaborater = buildCollaborater(request, company);
+        Collaborater collaborater = buildCollaborater(request);
         Collaborater saveCollaborater = collaboraterRepository.save(collaborater);
         addNationalitiesToCollaborater(saveCollaborater, request.getCountryCode1(), request.getCountryCode2());
         return collaboraterDtoMapper.apply(saveCollaborater);
     }
 
-    public Collaborater buildCollaborater(CollaboraterRequestDto request, Company company) throws CollaboraterException {
+    public Collaborater buildCollaborater(CollaboraterRequestDto request) throws CollaboraterException, CompanyException {
         Civilite civilite = request.getSexe() == Sexe.Homme ? Civilite.Mr : Civilite.Mme;
         LocalDateTime dateNaissance = request.getDateNaissance();
         if (dateNaissance.isAfter(LocalDateTime.now())) {
             throw new CollaboraterException("Date Naissance Error: " + dateNaissance);
         }
+        Company company = companyRepository.findById(request.getCompany_id())
+                .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(request.getCompany_id())));
         return Collaborater.builder()
                 .matricule(request.getMatricule())
                 .civilite(civilite)
@@ -164,11 +161,12 @@ public class CollaboraterServiceImpl implements CollaboraterService{
         if (dateNaissance.isAfter(LocalDateTime.now())) {
             throw new CollaboraterException("Date Naissance Error: " + dateNaissance);
         }
-//        if(collaboraterRepository.findByCnie(request.getCnie()).isPresent()){
-//            throw new CollaboraterException("un collaborateur avec ce CNIE est deja creer: [%s] :".formatted(request.getCnie()));
-//        }else if(collaboraterRepository.findByMatriculeAndCompanyId(request.getMatricule(), request.getCompany_id()).isPresent()) {
-//            throw new CollaboraterException("un collaborateur avec ce Matricule deja creer dans cette company: [%s] :".formatted(request.getMatricule()));
-//        }
+        if(!Objects.equals(request.getCnie(), collaborater.getCnie())){
+            throw new CollaboraterException("Impossible de changer Cnie: [%s] :".formatted(request.getCnie()));
+        }
+        if(collaboraterRepository.findByMatriculeAndCompanyId(request.getMatricule(), request.getCompany_id()).isPresent()) {
+            throw new CollaboraterException("un collaborateur avec ce Matricule deja creer dans cette company: [%s] :".formatted(request.getMatricule()));
+        }
         collaborater.setMatricule(request.getMatricule());
         collaborater.setCivilite(civilite);
         collaborater.setInitiales(request.getInitiales());

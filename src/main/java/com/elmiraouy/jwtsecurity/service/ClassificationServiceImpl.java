@@ -38,16 +38,6 @@ public class ClassificationServiceImpl implements ClassificationService{
     private final ClassificationDtoMapper classificationDtoMapper;
     private final ClassificationTypeRepository classificationTypeRepository;
     private final ClassificationTypeDtoMapper classificationTypeDtoMapper;
-    @Override
-    public ClassificationResponseDto findByCollaborater(Long collaboraterId) throws CollaboraterException, ClassificationException {
-//        Collaborater collaborater = collaboraterRepository.findById(collaboraterId)
-//                .orElseThrow(() -> new CollaboraterException("Collaborater with this Id Introuvable: [%s] :".formatted(collaboraterId)));
-//        Date currentDate = new Date();
-//        Classification classification = classificationRepository.findByCollaboraterAndDateFinGreaterThan(collaborater,currentDate)
-//                .orElseThrow(() -> new ClassificationException("This User Dont Have a Current Classification"));
-//        return classificationDtoMapper.apply(classification);
-        return null;
-    }
 
     @Override
     public ClassificationResponseDto addClassificationToCollaborater(ClassificationRequestDto request) throws CollaboraterException, ClassificationTypeException, ClassificationException {
