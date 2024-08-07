@@ -125,7 +125,7 @@ public class ContractServiceImpl implements ContractService{
 
     @Override
     public List<ContractTypeResponseDTO> getAllTypes() {
-        List<ContractType> contractTypes = contractTypeRepository.findAll();
+        List<ContractType> contractTypes = contractTypeRepository.findAllByActiveIsTrue();
         return contractTypes.stream().map(contractTypeDtoMapper).toList();
     }
 

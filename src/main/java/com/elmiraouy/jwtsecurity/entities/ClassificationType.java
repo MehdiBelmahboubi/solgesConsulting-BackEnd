@@ -17,6 +17,8 @@ public class ClassificationType {
     private Long id;
     private String nom;
     private String description;
+    private Boolean active;
+
 
     @OneToMany(mappedBy = "classificationType",fetch = FetchType.LAZY)
     private Collection<Classification> classifications;

@@ -111,7 +111,7 @@ public class ClassificationServiceImpl implements ClassificationService{
 
     @Override
     public List<ClassificationTypeResponseDto> getAllTypes() {
-        List<ClassificationType> classificationTypes = classificationTypeRepository.findAll();
+        List<ClassificationType> classificationTypes = classificationTypeRepository.findAllByActiveIsTrue();
         return classificationTypes.stream().map(classificationTypeDtoMapper).toList();
     }
 
