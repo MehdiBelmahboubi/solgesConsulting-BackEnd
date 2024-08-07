@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@RequestMapping("/api/client/conges")
+@RequestMapping("/api/client/conges/droit")
 public class DroitController {
     private final DroitService droitService;
 
