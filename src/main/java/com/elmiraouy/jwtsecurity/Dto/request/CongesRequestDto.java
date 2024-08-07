@@ -1,25 +1,17 @@
-package com.elmiraouy.jwtsecurity.entities;
+package com.elmiraouy.jwtsecurity.Dto.request;
 
-import com.elmiraouy.jwtsecurity.enums.DroitType;
 import com.elmiraouy.jwtsecurity.enums.Statut;
 import com.elmiraouy.jwtsecurity.enums.Unite;
-import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 
-@Entity
+@Data
 @Builder
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class Conges {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CongesRequestDto {
     private Long id;
-
     private String code;
     private Boolean imputablePaix;
     private Statut statut;
@@ -34,15 +26,5 @@ public class Conges {
     private Integer maxJour;
     private Boolean reliquatReconduire;
     private Integer nbrAnneeReliquat;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "company_id")
-    private Company company;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "typeId")
-    private CalendarType calendarType;
-
-    @OneToMany(mappedBy = "conges",fetch = FetchType.LAZY)
-    private Collection<Droit> droits;
+    private Collection<DroitRequestDto> droits;
 }
