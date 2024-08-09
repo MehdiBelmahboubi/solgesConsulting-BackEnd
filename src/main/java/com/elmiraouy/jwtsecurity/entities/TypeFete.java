@@ -18,7 +18,7 @@ public class TypeFete {
     private Long id;
 
     private String libelle;
-    private Boolean reduction;
+    private Boolean recondiction;
     private Boolean active;
 
     private String observation;
@@ -30,4 +30,8 @@ public class TypeFete {
 
     @OneToMany(mappedBy = "typeFete",fetch = FetchType.LAZY)
     private Collection<Fete> fetes;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id")
+    private Company company;
 }

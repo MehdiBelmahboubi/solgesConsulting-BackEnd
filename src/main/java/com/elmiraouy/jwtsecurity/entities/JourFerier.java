@@ -30,4 +30,8 @@ public class JourFerier {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fete_id")
     private Fete fete;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id")
+    private Company company;
 }
