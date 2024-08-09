@@ -34,4 +34,8 @@ public class Fete {
 
     @OneToMany(mappedBy = "fete",fetch = FetchType.LAZY)
     private Collection<JourFerier> jourFeriers;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id")
+    private Company company;
 }
