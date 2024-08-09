@@ -70,5 +70,5 @@ public class CollaboraterRequestDto {
     private String matriculeRecrutement;
     private Long countryCode1;
     private Long countryCode2;
-    private Long company_id;
+    private Long companyId;
 }

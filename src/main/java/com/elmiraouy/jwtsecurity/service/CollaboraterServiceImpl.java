@@ -89,7 +89,7 @@ public class CollaboraterServiceImpl implements CollaboraterService{
 
     @Override
     public CollaboraterResponseDto createCollab(CollaboraterRequestDto request) throws CollaboraterException, CompanyException, CountryException {
-          if(collaboraterRepository.findByMatriculeAndCompanyIdOrCnie(request.getMatricule(), request.getCompany_id(),request.getCnie()).isPresent()) {
+          if(collaboraterRepository.findByMatriculeAndCompanyIdOrCnie(request.getMatricule(), request.getCompanyId(),request.getCnie()).isPresent()) {
             throw new CollaboraterException("un collaborateur avec ce Matricule deja creer dans cette company: [%s] :".formatted(request.getMatricule()));}
         Collaborater collaborater = buildCollaborater(request);
         Collaborater saveCollaborater = collaboraterRepository.save(collaborater);
@@ -103,8 +103,8 @@ public class CollaboraterServiceImpl implements CollaboraterService{
         if (dateNaissance.isAfter(LocalDateTime.now())) {
             throw new CollaboraterException("Date Naissance Error: " + dateNaissance);
         }
-        Company company = companyRepository.findById(request.getCompany_id())
-                .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(request.getCompany_id())));
+        Company company = companyRepository.findById(request.getCompanyId())
+                .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(request.getCompanyId())));
         return Collaborater.builder()
                 .matricule(request.getMatricule())
                 .civilite(civilite)
@@ -164,7 +164,7 @@ public class CollaboraterServiceImpl implements CollaboraterService{
         if(!Objects.equals(request.getCnie(), collaborater.getCnie())){
             throw new CollaboraterException("Impossible de changer Cnie: [%s] :".formatted(request.getCnie()));
         }
-        if(collaboraterRepository.findByMatriculeAndCompanyId(request.getMatricule(), request.getCompany_id()).isPresent()) {
+        if(collaboraterRepository.findByMatriculeAndCompanyId(request.getMatricule(), request.getCompanyId()).isPresent()) {
             throw new CollaboraterException("un collaborateur avec ce Matricule deja creer dans cette company: [%s] :".formatted(request.getMatricule()));
         }
         collaborater.setMatricule(request.getMatricule());
@@ -305,7 +305,7 @@ public class CollaboraterServiceImpl implements CollaboraterService{
                 System.out.println("up3");
 
                 CollaboraterRequestDto collaboraterRequest = CollaboraterRequestDto.builder().build();
-                collaboraterRequest.setCompany_id(companyId);
+                collaboraterRequest.setCompanyId(companyId);
                 System.out.println("up4");
 
                 if (columnMap.containsKey("matricule")) {
@@ -579,8 +579,8 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     }
 
     public void saveInBulk(CollaboraterRequestDto request) throws CountryException, CompanyException, CollaboraterException {
-        Company company = companyRepository.findById(request.getCompany_id())
-                .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(request.getCompany_id())));
+        Company company = companyRepository.findById(request.getCompanyId())
+                .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(request.getCompanyId())));
         Collaborater collaborater = Collaborater.builder()
                 .matricule(request.getMatricule())
                 .civilite(request.getCivilite())
