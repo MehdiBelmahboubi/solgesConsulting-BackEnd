@@ -2,6 +2,7 @@ package com.elmiraouy.jwtsecurity.controller;
 
 import com.elmiraouy.jwtsecurity.Dto.request.JourFerierRequestDto;
 import com.elmiraouy.jwtsecurity.Dto.response.JourFerierResponseDto;
+import com.elmiraouy.jwtsecurity.handlerException.CompanyException;
 import com.elmiraouy.jwtsecurity.handlerException.FeteException;
 import com.elmiraouy.jwtsecurity.handlerException.JourFerierException;
 import com.elmiraouy.jwtsecurity.handlerException.TypeFeteException;
@@ -25,7 +26,7 @@ public class JourFerierController {
     }
 
     @PostMapping
-    public ResponseEntity<JourFerierResponseDto> addJourFerier(@RequestBody JourFerierRequestDto jourFerierRequestDto) throws TypeFeteException, FeteException, JourFerierException {
+    public ResponseEntity<JourFerierResponseDto> addJourFerier(@RequestBody JourFerierRequestDto jourFerierRequestDto) throws TypeFeteException, FeteException, JourFerierException, CompanyException {
         return ResponseEntity.ok(jourFerierService.addJourFerier(jourFerierRequestDto));
     }
 }

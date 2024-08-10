@@ -13,4 +13,5 @@ public class JourFerierRequestDto {
     private String nbrJour;
     private FeteRequestDto fete;
     private Long feteId;
+    private Long companyId;
 }

@@ -2,13 +2,16 @@ package com.elmiraouy.jwtsecurity.service;
 
 import com.elmiraouy.jwtsecurity.Dto.request.JourFerierRequestDto;
 import com.elmiraouy.jwtsecurity.Dto.response.JourFerierResponseDto;
+import com.elmiraouy.jwtsecurity.entities.Company;
 import com.elmiraouy.jwtsecurity.entities.Fete;
 import com.elmiraouy.jwtsecurity.entities.JourFerier;
 import com.elmiraouy.jwtsecurity.entities.TypeFete;
+import com.elmiraouy.jwtsecurity.handlerException.CompanyException;
 import com.elmiraouy.jwtsecurity.handlerException.FeteException;
 import com.elmiraouy.jwtsecurity.handlerException.JourFerierException;
 import com.elmiraouy.jwtsecurity.handlerException.TypeFeteException;
 import com.elmiraouy.jwtsecurity.mappers.JourFerierDtoMapper;
+import com.elmiraouy.jwtsecurity.repository.CompanyRepository;
 import com.elmiraouy.jwtsecurity.repository.FeteRepository;
 import com.elmiraouy.jwtsecurity.repository.JourFerierRepository;
 import com.elmiraouy.jwtsecurity.repository.TypeFeteRepository;
@@ -25,14 +28,17 @@ public class JourFerierServiceImpl implements JourFerierService{
     private final FeteRepository feteRepository;
     private final JourFerierRepository jourFerierRepository;
     private final JourFerierDtoMapper jourFerierDtoMapper;
+    private final CompanyRepository companyRepository;
     @Override
-    public JourFerierResponseDto addJourFerier(JourFerierRequestDto jourFerierRequestDto) throws TypeFeteException, FeteException, JourFerierException {
+    public JourFerierResponseDto addJourFerier(JourFerierRequestDto jourFerierRequestDto) throws TypeFeteException, FeteException, JourFerierException, CompanyException {
         TypeFete typeFete;
         Fete fete;
         if(jourFerierRequestDto.getDateFete().isBefore(LocalDateTime.now()))
         {
             throw new JourFerierException("Date Jour Ferie Invalide : [%s]".formatted(jourFerierRequestDto.getDateFete()));
         }
+        Company company = companyRepository.findById(jourFerierRequestDto.getCompanyId())
+                .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(jourFerierRequestDto.getCompanyId())));
         if(jourFerierRequestDto.getFete()!=null){
             if(jourFerierRequestDto.getFete().getTypeFete()!=null){
                  typeFete = TypeFete.builder()
@@ -40,7 +46,8 @@ public class JourFerierServiceImpl implements JourFerierService{
                         .recondiction(jourFerierRequestDto.getFete().getTypeFete().getRecondiction())
                         .active(true)
                         .dateCreation(LocalDateTime.now())
-                        .build();
+                         .company(company)
+                         .build();
                  typeFeteRepository.save(typeFete);
             }else {
                 typeFete = typeFeteRepository.findById(jourFerierRequestDto.getFete().getTypeId())
@@ -52,6 +59,7 @@ public class JourFerierServiceImpl implements JourFerierService{
                     .typeFete(typeFete)
                     .active(true)
                     .dateCreation(LocalDateTime.now())
+                    .company(company)
                     .build();
             feteRepository.save(fete);
         }else {
@@ -64,6 +72,7 @@ public class JourFerierServiceImpl implements JourFerierService{
                 .fete(fete)
                 .active(true)
                 .dateCreation(LocalDateTime.now())
+                .company(company)
                 .build();
         jourFerierRepository.save(jourFerier);
         return jourFerierDtoMapper.apply(jourFerier);
