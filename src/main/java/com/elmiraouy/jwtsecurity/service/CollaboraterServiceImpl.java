@@ -35,9 +35,7 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     private final CollaboraterDtoMapper collaboraterDtoMapper;
     private final CountryRepository countryRepository;
     private final ContractRepository contractRepository;
-    private final ContractTypeRepository contractTypeRepository;
     private final ClassificationRepository classificationRepository;
-    private final ContractTypeDtoMapper contractTypeDtoMapper;
     @Override
     public Page<CollaboraterResponseDto> findByCompany(Long companyId, int page, int size) throws CompanyException {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());

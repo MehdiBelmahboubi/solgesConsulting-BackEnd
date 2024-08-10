@@ -4,14 +4,17 @@ import com.elmiraouy.jwtsecurity.Dto.request.ContractRequestDto;
 import com.elmiraouy.jwtsecurity.Dto.response.ContractResponseDto;
 import com.elmiraouy.jwtsecurity.Dto.response.ContractTypeResponseDTO;
 import com.elmiraouy.jwtsecurity.entities.Collaborater;
+import com.elmiraouy.jwtsecurity.entities.Company;
 import com.elmiraouy.jwtsecurity.entities.Contract;
 import com.elmiraouy.jwtsecurity.entities.ContractType;
 import com.elmiraouy.jwtsecurity.handlerException.CollaboraterException;
+import com.elmiraouy.jwtsecurity.handlerException.CompanyException;
 import com.elmiraouy.jwtsecurity.handlerException.ContractException;
 import com.elmiraouy.jwtsecurity.handlerException.ContractTypeException;
 import com.elmiraouy.jwtsecurity.mappers.ContractDtoMapper;
 import com.elmiraouy.jwtsecurity.mappers.ContractTypeDtoMapper;
 import com.elmiraouy.jwtsecurity.repository.CollaboraterRepository;
+import com.elmiraouy.jwtsecurity.repository.CompanyRepository;
 import com.elmiraouy.jwtsecurity.repository.ContractRepository;
 import com.elmiraouy.jwtsecurity.repository.ContractTypeRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,15 +41,18 @@ public class ContractServiceImpl implements ContractService{
     private final ContractDtoMapper contractDtoMapper;
     private final ContractTypeRepository contractTypeRepository;
     private final ContractTypeDtoMapper contractTypeDtoMapper;
-
+    private final CompanyRepository companyRepository;
 
     @Override
-    public ContractResponseDto addContractToCollaborator(ContractRequestDto request) throws CollaboraterException, ContractTypeException, ContractException {
+    public ContractResponseDto addContractToCollaborator(ContractRequestDto request) throws CollaboraterException, ContractTypeException, ContractException, CompanyException {
         if (request.getDateFin().isBefore(LocalDateTime.now())) {
             throw new ContractException("Date fin is before current date");
         } else if (request.getDateEntree().isAfter(request.getDateFin())) {
             throw new ContractException("Date Entree is after Date Fin");
         }
+
+        Company company = companyRepository.findById(request.getCompanyId())
+                .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(request.getCompanyId())));
 
         Collaborater collaborater = collaboraterRepository.findById(request.getCollaboraterId())
                 .orElseThrow(() -> new CollaboraterException("Collaborater avec Id Introuvable: [%s]".formatted(request.getCollaboraterId())));
@@ -74,6 +80,7 @@ public class ContractServiceImpl implements ContractService{
                 .dateCreation(LocalDateTime.now())
                 .collaborater(collaborater)
                 .contractType(contractType)
+                .company(company)
                 .build();
 
         contractRepository.save(newContract);
@@ -121,11 +128,11 @@ public class ContractServiceImpl implements ContractService{
 
     @Override
     @Transactional
-    public void persistFromFile(MultipartFile file, String table) {
+    public void persistFromFile(MultipartFile file, String table, Long companyId) {
         List<ContractRequestDto> contractRequestDtos;
         try {
             InputStream is = file.getInputStream();
-            contractRequestDtos = excelToContracts(is, table);
+            contractRequestDtos = excelToContracts(is, table, companyId);
             contractRequestDtos.forEach(request -> {
                 try {
                     saveInBulk(request);
@@ -138,7 +145,7 @@ public class ContractServiceImpl implements ContractService{
         }
     }
 
-    private List<ContractRequestDto> excelToContracts(InputStream is, String table) {
+    private List<ContractRequestDto> excelToContracts(InputStream is, String table, Long companyId) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         List<ContractRequestDto> contractRequestDtos = new ArrayList<>();
         Workbook workbook = null;
@@ -170,6 +177,7 @@ public class ContractServiceImpl implements ContractService{
                     continue;
                 }
                 ContractRequestDto contractRequestDto = ContractRequestDto.builder().build();
+                contractRequestDto.setCompanyId(companyId);
                 if (columnMap.containsKey("contract_ref")) {
                     contractRequestDto.setContractRef(currentRow.getCell(columnMap.get("contract_ref")).getStringCellValue());
                 }else {
@@ -215,7 +223,7 @@ public class ContractServiceImpl implements ContractService{
         }
     }
 
-    private void saveInBulk(ContractRequestDto request) throws CollaboraterException, ContractTypeException, ContractException {
+    private void saveInBulk(ContractRequestDto request) throws CollaboraterException, ContractTypeException, ContractException, CompanyException {
         if(request.getDateFin() != null){
             if (request.getDateFin().isBefore(LocalDateTime.now())) {
                 throw new ContractException("Date fin is before current date");
@@ -223,6 +231,8 @@ public class ContractServiceImpl implements ContractService{
                 throw new ContractException("Date Entree is after Date Fin");
             }
         }
+        Company company = companyRepository.findById(request.getCompanyId())
+                .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(request.getCompanyId())));
         Collaborater collaborater = collaboraterRepository.findById(request.getCollaboraterId())
                 .orElseThrow(() -> new CollaboraterException("Collaborater avec Id Introuvable: [%s]".formatted(request.getCollaboraterId())));
         Contract activeContract = contractRepository.findByCollaboraterAndActive(collaborater, true);
@@ -246,6 +256,7 @@ public class ContractServiceImpl implements ContractService{
                 .dateCreation(LocalDateTime.now())
                 .collaborater(collaborater)
                 .contractType(contractType)
+                .company(company)
                 .build();
 
         contractRepository.save(newContract);

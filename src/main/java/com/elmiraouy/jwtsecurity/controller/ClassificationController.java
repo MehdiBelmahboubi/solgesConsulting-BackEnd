@@ -6,6 +6,7 @@ import com.elmiraouy.jwtsecurity.Dto.response.ClassificationTypeResponseDto;
 import com.elmiraouy.jwtsecurity.handlerException.ClassificationException;
 import com.elmiraouy.jwtsecurity.handlerException.ClassificationTypeException;
 import com.elmiraouy.jwtsecurity.handlerException.CollaboraterException;
+import com.elmiraouy.jwtsecurity.handlerException.CompanyException;
 import com.elmiraouy.jwtsecurity.service.ClassificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class ClassificationController {
     private final ClassificationService classificationService;
 
     @PostMapping
-    public ResponseEntity<ClassificationResponseDto> addClassificationToCollaborater(@RequestBody ClassificationRequestDto classificationRequestDto) throws CollaboraterException, ClassificationTypeException , ClassificationException {
+    public ResponseEntity<ClassificationResponseDto> addClassificationToCollaborater(@RequestBody ClassificationRequestDto classificationRequestDto) throws CollaboraterException, ClassificationTypeException, ClassificationException, CompanyException {
         return ResponseEntity.ok(classificationService.addClassificationToCollaborater(classificationRequestDto));
     }
 

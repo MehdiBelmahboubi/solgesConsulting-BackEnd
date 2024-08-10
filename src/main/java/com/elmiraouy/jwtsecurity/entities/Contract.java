@@ -41,4 +41,8 @@ public class Contract {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "type_id")
     private ContractType contractType;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id")
+    private Company company;
 }

@@ -57,6 +57,10 @@ public class Company {
     private Collection<Collaborater> collaboraters;
     @OneToMany(mappedBy = "company",fetch = FetchType.LAZY)
     private Collection<Conges> conges;
+    @OneToMany(mappedBy = "company",fetch = FetchType.LAZY)
+    private Collection<Contract> contracts;
+    @OneToMany(mappedBy = "company",fetch = FetchType.LAZY)
+    private Collection<Classification> classifications;
     public Company(Long id, String name, String raisonSocial, String code, String titledCommercial, String rc, String ice, String iss, String tva, String patent, String cnss, String codePostal,String number) {
         this.id = id;
         this.name = name;

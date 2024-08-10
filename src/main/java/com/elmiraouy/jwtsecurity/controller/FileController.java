@@ -39,9 +39,9 @@ public class FileController {
                         } else if (table.equals("Collaborater")) {
                             collaboraterService.persistFromFile(file,table, companyId);
                         } else if (table.equals("Contract")) {
-                            contractService.persistFromFile(file,table);
+                            contractService.persistFromFile(file,table,companyId);
                         } else if (table.equals("Classification")) {
-                            classificationService.persistFromFile(file,table);
+                            classificationService.persistFromFile(file,table,companyId);
                         }
                     }
                     responseDto.setMessage("Fichier  importer avec succes");

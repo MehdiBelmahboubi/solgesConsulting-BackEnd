@@ -4,6 +4,7 @@ import com.elmiraouy.jwtsecurity.Dto.request.ContractRequestDto;
 import com.elmiraouy.jwtsecurity.Dto.response.ContractResponseDto;
 import com.elmiraouy.jwtsecurity.Dto.response.ContractTypeResponseDTO;
 import com.elmiraouy.jwtsecurity.handlerException.CollaboraterException;
+import com.elmiraouy.jwtsecurity.handlerException.CompanyException;
 import com.elmiraouy.jwtsecurity.handlerException.ContractException;
 import com.elmiraouy.jwtsecurity.handlerException.ContractTypeException;
 import com.elmiraouy.jwtsecurity.service.ContractService;
@@ -22,7 +23,7 @@ public class ContractController {
     private final ContractService contractService;
 
     @PostMapping
-    public ResponseEntity<ContractResponseDto> addContractToCollaborater(@RequestBody ContractRequestDto contractRequestDto) throws ContractTypeException, CollaboraterException ,ContractException{
+    public ResponseEntity<ContractResponseDto> addContractToCollaborater(@RequestBody ContractRequestDto contractRequestDto) throws ContractTypeException, CollaboraterException, ContractException, CompanyException {
         return ResponseEntity.ok(contractService.addContractToCollaborator(contractRequestDto));
     }
 
