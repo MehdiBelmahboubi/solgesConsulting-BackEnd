@@ -1,7 +1,9 @@
 package com.elmiraouy.jwtsecurity.controller;
 
 import com.elmiraouy.jwtsecurity.Dto.request.JourFerierRequestDto;
+import com.elmiraouy.jwtsecurity.Dto.response.FeteResponseDto;
 import com.elmiraouy.jwtsecurity.Dto.response.JourFerierResponseDto;
+import com.elmiraouy.jwtsecurity.Dto.response.TypeFeteResponseDto;
 import com.elmiraouy.jwtsecurity.handlerException.CompanyException;
 import com.elmiraouy.jwtsecurity.handlerException.FeteException;
 import com.elmiraouy.jwtsecurity.handlerException.JourFerierException;
@@ -16,7 +18,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@RequestMapping("/api/client/jourferier")
+@RequestMapping("/api/client/jourferies")
 public class JourFerierController {
     private final JourFerierService jourFerierService;
 
@@ -28,5 +30,15 @@ public class JourFerierController {
     @PostMapping
     public ResponseEntity<JourFerierResponseDto> addJourFerier(@RequestBody JourFerierRequestDto jourFerierRequestDto) throws TypeFeteException, FeteException, JourFerierException, CompanyException {
         return ResponseEntity.ok(jourFerierService.addJourFerier(jourFerierRequestDto));
+    }
+
+    @GetMapping("/fetes")
+    public ResponseEntity<List<FeteResponseDto>> getFetes(@RequestParam Long id){
+        return ResponseEntity.ok(jourFerierService.getFetes(id));
+    }
+
+    @GetMapping("/typesFetes")
+    public ResponseEntity<List<TypeFeteResponseDto>> getTypesFetes(@RequestParam Long id){
+        return ResponseEntity.ok(jourFerierService.getTypesFetes(id));
     }
 }

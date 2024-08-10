@@ -1,7 +1,9 @@
 package com.elmiraouy.jwtsecurity.service;
 
 import com.elmiraouy.jwtsecurity.Dto.request.JourFerierRequestDto;
+import com.elmiraouy.jwtsecurity.Dto.response.FeteResponseDto;
 import com.elmiraouy.jwtsecurity.Dto.response.JourFerierResponseDto;
+import com.elmiraouy.jwtsecurity.Dto.response.TypeFeteResponseDto;
 import com.elmiraouy.jwtsecurity.handlerException.CompanyException;
 import com.elmiraouy.jwtsecurity.handlerException.FeteException;
 import com.elmiraouy.jwtsecurity.handlerException.JourFerierException;
@@ -13,4 +15,8 @@ public interface JourFerierService {
     public JourFerierResponseDto addJourFerier(JourFerierRequestDto jourFerierRequestDto) throws TypeFeteException, FeteException, JourFerierException, CompanyException;
 
     public List<JourFerierResponseDto> getAll(Long id);
+
+    public List<FeteResponseDto> getFetes(Long id);
+
+    public List<TypeFeteResponseDto> getTypesFetes(Long id);
 }

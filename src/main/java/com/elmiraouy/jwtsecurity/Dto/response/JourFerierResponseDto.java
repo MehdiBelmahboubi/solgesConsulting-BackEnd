@@ -12,8 +12,9 @@ import java.time.LocalDateTime;
 public class JourFerierResponseDto {
     private Long id;
     private LocalDateTime dateFete;
+    private LocalDateTime formatedDateFete;
     private String nbrJour;
-    private FeteResponseDto feteResponseDto;
+    private FeteResponseDto fete;
 
     public JourFerierResponseDto(Long id,LocalDateTime dateFete,String nbrJour){
         this.id=id;
@@ -23,8 +24,9 @@ public class JourFerierResponseDto {
 
     public JourFerierResponseDto(Long id,LocalDateTime dateFete,String nbrJour,String libelle){
         this.id=id;
-        this.dateFete=dateFete;
+        this.dateFete = dateFete;
         this.nbrJour=nbrJour;
-        this.feteResponseDto.setLibelle(libelle);
+        this.fete = new FeteResponseDto();
+        this.fete.setLibelle(libelle);
     }
 }

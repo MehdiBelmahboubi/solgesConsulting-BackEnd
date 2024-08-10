@@ -1,7 +1,9 @@
 package com.elmiraouy.jwtsecurity.service;
 
 import com.elmiraouy.jwtsecurity.Dto.request.JourFerierRequestDto;
+import com.elmiraouy.jwtsecurity.Dto.response.FeteResponseDto;
 import com.elmiraouy.jwtsecurity.Dto.response.JourFerierResponseDto;
+import com.elmiraouy.jwtsecurity.Dto.response.TypeFeteResponseDto;
 import com.elmiraouy.jwtsecurity.entities.Company;
 import com.elmiraouy.jwtsecurity.entities.Fete;
 import com.elmiraouy.jwtsecurity.entities.JourFerier;
@@ -82,5 +84,17 @@ public class JourFerierServiceImpl implements JourFerierService{
     public List<JourFerierResponseDto> getAll(Long id) {
         List<JourFerierResponseDto> jourFerierResponseDtos = jourFerierRepository.findByCompanyAndActive(id);
         return jourFerierResponseDtos;
+    }
+
+    @Override
+    public List<FeteResponseDto> getFetes(Long id) {
+        List<FeteResponseDto> feteResponseDtos = feteRepository.findByCompanyAndActive(id);
+        return feteResponseDtos;
+    }
+
+    @Override
+    public List<TypeFeteResponseDto> getTypesFetes(Long id) {
+        List<TypeFeteResponseDto> typeFeteResponseDtos = typeFeteRepository.findByCompanyAndActive(id);
+        return  typeFeteResponseDtos;
     }
 }
