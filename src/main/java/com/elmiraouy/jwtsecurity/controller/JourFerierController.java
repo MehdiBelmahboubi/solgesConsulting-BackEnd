@@ -1,6 +1,8 @@
 package com.elmiraouy.jwtsecurity.controller;
 
+import com.elmiraouy.jwtsecurity.Dto.request.FeteRequestDto;
 import com.elmiraouy.jwtsecurity.Dto.request.JourFerierRequestDto;
+import com.elmiraouy.jwtsecurity.Dto.request.TypeFeteRequestDto;
 import com.elmiraouy.jwtsecurity.Dto.response.FeteResponseDto;
 import com.elmiraouy.jwtsecurity.Dto.response.JourFerierResponseDto;
 import com.elmiraouy.jwtsecurity.Dto.response.TypeFeteResponseDto;
@@ -30,6 +32,16 @@ public class JourFerierController {
     @PostMapping
     public ResponseEntity<JourFerierResponseDto> addJourFerier(@RequestBody JourFerierRequestDto jourFerierRequestDto) throws TypeFeteException, FeteException, JourFerierException, CompanyException {
         return ResponseEntity.ok(jourFerierService.addJourFerier(jourFerierRequestDto));
+    }
+
+    @PostMapping("/fetes")
+    public ResponseEntity<FeteResponseDto> addFete(@RequestBody FeteRequestDto feteRequestDto) throws TypeFeteException, CompanyException {
+        return ResponseEntity.ok(jourFerierService.addFete(feteRequestDto));
+    }
+
+    @PostMapping("/typesFetes")
+    public ResponseEntity<TypeFeteResponseDto> addTypeFete(@RequestBody TypeFeteRequestDto typeFeteRequestDto) throws CompanyException {
+        return ResponseEntity.ok(jourFerierService.addTypeFete(typeFeteRequestDto));
     }
 
     @GetMapping("/fetes")

@@ -1,6 +1,8 @@
 package com.elmiraouy.jwtsecurity.service;
 
+import com.elmiraouy.jwtsecurity.Dto.request.FeteRequestDto;
 import com.elmiraouy.jwtsecurity.Dto.request.JourFerierRequestDto;
+import com.elmiraouy.jwtsecurity.Dto.request.TypeFeteRequestDto;
 import com.elmiraouy.jwtsecurity.Dto.response.FeteResponseDto;
 import com.elmiraouy.jwtsecurity.Dto.response.JourFerierResponseDto;
 import com.elmiraouy.jwtsecurity.Dto.response.TypeFeteResponseDto;
@@ -12,6 +14,7 @@ import com.elmiraouy.jwtsecurity.handlerException.CompanyException;
 import com.elmiraouy.jwtsecurity.handlerException.FeteException;
 import com.elmiraouy.jwtsecurity.handlerException.JourFerierException;
 import com.elmiraouy.jwtsecurity.handlerException.TypeFeteException;
+import com.elmiraouy.jwtsecurity.mappers.FeteDtoMapper;
 import com.elmiraouy.jwtsecurity.mappers.JourFerierDtoMapper;
 import com.elmiraouy.jwtsecurity.repository.CompanyRepository;
 import com.elmiraouy.jwtsecurity.repository.FeteRepository;
@@ -30,47 +33,21 @@ public class JourFerierServiceImpl implements JourFerierService{
     private final FeteRepository feteRepository;
     private final JourFerierRepository jourFerierRepository;
     private final JourFerierDtoMapper jourFerierDtoMapper;
+    private final FeteDtoMapper feteDtoMapper;
     private final CompanyRepository companyRepository;
     @Override
-    public JourFerierResponseDto addJourFerier(JourFerierRequestDto jourFerierRequestDto) throws TypeFeteException, FeteException, JourFerierException, CompanyException {
-        TypeFete typeFete;
-        Fete fete;
-        if(jourFerierRequestDto.getDateFete().isBefore(LocalDateTime.now()))
+    public JourFerierResponseDto addJourFerier(JourFerierRequestDto requestDto) throws FeteException, JourFerierException, CompanyException {
+        if(requestDto.getDateFete().isBefore(LocalDateTime.now()))
         {
-            throw new JourFerierException("Date Jour Ferie Invalide : [%s]".formatted(jourFerierRequestDto.getDateFete()));
+            throw new JourFerierException("Date Jour Ferie Invalide : [%s]".formatted(requestDto.getDateFete()));
         }
-        Company company = companyRepository.findById(jourFerierRequestDto.getCompanyId())
-                .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(jourFerierRequestDto.getCompanyId())));
-        if(jourFerierRequestDto.getFete()!=null){
-            if(jourFerierRequestDto.getFete().getTypeFete()!=null){
-                 typeFete = TypeFete.builder()
-                        .libelle(jourFerierRequestDto.getFete().getTypeFete().getLibelle())
-                        .recondiction(jourFerierRequestDto.getFete().getTypeFete().getRecondiction())
-                        .active(true)
-                        .dateCreation(LocalDateTime.now())
-                         .company(company)
-                         .build();
-                 typeFeteRepository.save(typeFete);
-            }else {
-                typeFete = typeFeteRepository.findById(jourFerierRequestDto.getFete().getTypeId())
-                        .orElseThrow(()->new TypeFeteException("Type Fete avec cette Id Introuvable: [%s]".formatted(jourFerierRequestDto.getFete().getTypeId())));
-            }
-            fete = Fete.builder()
-                    .code(jourFerierRequestDto.getFete().getCode())
-                    .libelle(jourFerierRequestDto.getFete().getLibelle())
-                    .typeFete(typeFete)
-                    .active(true)
-                    .dateCreation(LocalDateTime.now())
-                    .company(company)
-                    .build();
-            feteRepository.save(fete);
-        }else {
-            fete =feteRepository.findById(jourFerierRequestDto.getFeteId())
-                    .orElseThrow(()->new FeteException("Fete avec cette Id Introuvable: [%s]".formatted(jourFerierRequestDto.getFeteId())));
-        }
+        Company company = companyRepository.findById(requestDto.getCompanyId())
+                .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(requestDto.getCompanyId())));
+        Fete fete = feteRepository.findById(requestDto.getFeteId())
+                .orElseThrow(()->new FeteException("Type Fete avec cette Id Introuvable: [%s]".formatted(requestDto.getFeteId())));
         JourFerier jourFerier = JourFerier.builder()
-                .dateFete(jourFerierRequestDto.getDateFete())
-                .nbrJour(jourFerierRequestDto.getNbrJour())
+                .dateFete(requestDto.getDateFete())
+                .nbrJour(requestDto.getNbrJour())
                 .fete(fete)
                 .active(true)
                 .dateCreation(LocalDateTime.now())
@@ -96,5 +73,38 @@ public class JourFerierServiceImpl implements JourFerierService{
     public List<TypeFeteResponseDto> getTypesFetes(Long id) {
         List<TypeFeteResponseDto> typeFeteResponseDtos = typeFeteRepository.findByCompanyAndActive(id);
         return  typeFeteResponseDtos;
+    }
+
+    @Override
+    public FeteResponseDto addFete(FeteRequestDto requestDto) throws CompanyException, TypeFeteException {
+        Company company = companyRepository.findById(requestDto.getCompanyId())
+                .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(requestDto.getCompanyId())));
+        TypeFete typeFete = typeFeteRepository.findById(requestDto.getTypeId())
+                .orElseThrow(()->new TypeFeteException("Type Fete avec cette Id Introuvable: [%s]".formatted(requestDto.getTypeId())));
+        Fete fete = Fete.builder()
+                .code(requestDto.getCode())
+                .libelle(requestDto.getLibelle())
+                .typeFete(typeFete)
+                .active(true)
+                .dateCreation(LocalDateTime.now())
+                .company(company)
+                .build();
+        feteRepository.save(fete);
+        return feteDtoMapper.apply(fete);
+    }
+
+    @Override
+    public TypeFeteResponseDto addTypeFete(TypeFeteRequestDto requestDto) throws CompanyException {
+        Company company = companyRepository.findById(requestDto.getCompanyId())
+                .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(requestDto.getCompanyId())));
+        TypeFete typeFete = TypeFete.builder()
+                .libelle(requestDto.getLibelle())
+                .recondiction(requestDto.getRecondiction())
+                .active(true)
+                .dateCreation(LocalDateTime.now())
+                .company(company)
+                .build();
+        typeFeteRepository.save(typeFete);
+        return new TypeFeteResponseDto(typeFete.getId(), typeFete.getLibelle(), typeFete.getRecondiction());
     }
 }

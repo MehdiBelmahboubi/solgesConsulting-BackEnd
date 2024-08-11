@@ -9,4 +9,5 @@ public class TypeFeteRequestDto {
     private Long id;
     private String libelle;
     private Boolean recondiction;
+    private Long companyId;
 }
