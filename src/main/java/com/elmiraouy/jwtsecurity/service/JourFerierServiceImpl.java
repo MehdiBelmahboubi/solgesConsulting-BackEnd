@@ -99,12 +99,12 @@ public class JourFerierServiceImpl implements JourFerierService{
                 .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(requestDto.getCompanyId())));
         TypeFete typeFete = TypeFete.builder()
                 .libelle(requestDto.getLibelle())
-                .recondiction(requestDto.getRecondiction())
+                .reconduction(requestDto.getReconduction())
                 .active(true)
                 .dateCreation(LocalDateTime.now())
                 .company(company)
                 .build();
         typeFeteRepository.save(typeFete);
-        return new TypeFeteResponseDto(typeFete.getId(), typeFete.getLibelle(), typeFete.getRecondiction());
+        return new TypeFeteResponseDto(typeFete.getId(), typeFete.getLibelle(), typeFete.getReconduction());
     }
 }

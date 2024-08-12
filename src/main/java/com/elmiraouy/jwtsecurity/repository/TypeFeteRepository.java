@@ -12,7 +12,7 @@ import java.util.List;
 public interface TypeFeteRepository extends JpaRepository<TypeFete,Long> {
     @Query("""
     select new com.elmiraouy.jwtsecurity.Dto.response.TypeFeteResponseDto(
-    t.id,t.libelle,t.recondiction)
+    t.id,t.libelle,t.reconduction)
     from TypeFete  t where t.company.id=:companyId and t.active=true
     """)
     List<TypeFeteResponseDto> findByCompanyAndActive(Long companyId);

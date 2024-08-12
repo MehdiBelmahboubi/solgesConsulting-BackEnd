@@ -20,7 +20,7 @@ public class TypeFete {
     @Column(nullable = false)
     private String libelle;
     @Column(nullable = false)
-    private Boolean recondiction;
+    private Boolean reconduction;
     private Boolean active;
 
     private String observation;
