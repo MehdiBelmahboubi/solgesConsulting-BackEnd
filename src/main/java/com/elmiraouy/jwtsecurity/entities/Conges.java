@@ -41,7 +41,7 @@ public class Conges {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "typeId")
-    private CalendarType calendarType;
+    private Calendar calendar;
 
     @OneToMany(mappedBy = "conges",fetch = FetchType.LAZY)
     private Collection<Droit> droits;

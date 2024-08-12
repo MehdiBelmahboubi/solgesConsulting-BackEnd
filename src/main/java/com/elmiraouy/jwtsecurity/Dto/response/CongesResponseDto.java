@@ -1,8 +1,7 @@
 package com.elmiraouy.jwtsecurity.Dto.response;
 
-import com.elmiraouy.jwtsecurity.entities.CalendarType;
+import com.elmiraouy.jwtsecurity.entities.Calendar;
 import com.elmiraouy.jwtsecurity.entities.Droit;
-import com.elmiraouy.jwtsecurity.enums.DroitType;
 import com.elmiraouy.jwtsecurity.enums.Statut;
 import com.elmiraouy.jwtsecurity.enums.Unite;
 import lombok.AllArgsConstructor;
@@ -34,7 +33,7 @@ public class CongesResponseDto {
     private Boolean reliquatReconduire;
     private Integer nbrAnneeReliquat;
     private List<Droit> droits;
-    private CalendarType calendarType;
+    private Calendar calendar;
     public CongesResponseDto(Long id,String code,Boolean imputablePaix,Statut statut,LocalDateTime dateValidite,LocalDateTime dateFinValidite,
                              Unite unite,Boolean autoriserDefalcation,Integer nbrDefalcation,Boolean autoriserRecondiction,Integer delaiRecondiction,
                              Integer minJour,Integer maxJour,Boolean reliquatReconduire,Integer nbrAnneeReliquat){
