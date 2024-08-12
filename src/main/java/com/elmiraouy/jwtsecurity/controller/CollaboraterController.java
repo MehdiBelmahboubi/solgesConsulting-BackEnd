@@ -22,17 +22,10 @@ public class CollaboraterController {
     @GetMapping
     public ResponseEntity<Page<CollaboraterResponseDto>> getAll(
             @RequestParam Long id,
+            @RequestParam Boolean active,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) throws CompanyException {
-        return ResponseEntity.ok(collaboraterService.findByCompany(id, page, size));
-    }
-
-    @GetMapping("/archive")
-    public ResponseEntity<Page<CollaboraterResponseDto>> getArchived(
-            @RequestParam Long id,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) throws CompanyException {
-        return ResponseEntity.ok(collaboraterService.findArchivedByCompany(id, page, size));
+        return ResponseEntity.ok(collaboraterService.findByCompany(id,active,page,size));
     }
 
     @GetMapping("/{id}")

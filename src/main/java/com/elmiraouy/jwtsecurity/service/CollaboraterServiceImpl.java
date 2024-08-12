@@ -37,20 +37,9 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     private final ContractRepository contractRepository;
     private final ClassificationRepository classificationRepository;
     @Override
-    public Page<CollaboraterResponseDto> findByCompany(Long companyId, int page, int size) throws CompanyException {
+    public Page<CollaboraterResponseDto> findByCompany(Long companyId,Boolean active, int page, int size) throws CompanyException {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-        Page<CollaboraterResponseDto> collaboratersPage = collaboraterRepository.findAllByCompanyAndActive(companyId, pageable);
-
-        if (collaboratersPage.isEmpty()) {
-            return Page.empty();
-        }
-        return collaboratersPage;
-    }
-
-    @Override
-    public Page<CollaboraterResponseDto> findArchivedByCompany(Long companyId, int page, int size) throws CompanyException {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-        Page<CollaboraterResponseDto> collaboratersPage = collaboraterRepository.findByCompanyAndActive(companyId, pageable);
+        Page<CollaboraterResponseDto> collaboratersPage = collaboraterRepository.findAllByCompanyAndActive(companyId,active, pageable);
 
         if (collaboratersPage.isEmpty()) {
             return Page.empty();

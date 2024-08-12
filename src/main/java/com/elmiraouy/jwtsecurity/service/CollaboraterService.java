@@ -11,8 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface CollaboraterService {
-    public Page<CollaboraterResponseDto> findByCompany(Long companyId, int pageable, int size) throws CompanyException;
-    public Page<CollaboraterResponseDto> findArchivedByCompany(Long companyId,int pageable,int size) throws CompanyException;
+    public Page<CollaboraterResponseDto> findByCompany(Long companyId,Boolean active, int pageable, int size) throws CompanyException;
     public CollaboraterResponseDto findById(Long id) throws CollaboraterException, ContractException, ClassificationException;
     public CollaboraterResponseDto createCollab(CollaboraterRequestDto CollaboraterRequestDto) throws CollaboraterException, CompanyException, CountryException;
     public Collaborater buildCollaborater(CollaboraterRequestDto request) throws CollaboraterException, CompanyException;
