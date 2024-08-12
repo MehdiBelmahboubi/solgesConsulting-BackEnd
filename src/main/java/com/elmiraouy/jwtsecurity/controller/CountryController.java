@@ -19,7 +19,7 @@ import java.util.List;
 public class CountryController {
     private final CountryService countryService;
 
-    @GetMapping("/getAllNationalities")
+    @GetMapping
     public ResponseEntity<List<CountryResponseDto>> getAllNationalities(){
         return ResponseEntity.ok(countryService.getAllNationalities());
     }

@@ -17,4 +17,5 @@ public class ClassificationRequestDto {
     private LocalDateTime dateFin;
     private Long collaboraterId;
     private Long classificationType;
+    private Long companyId;
 }

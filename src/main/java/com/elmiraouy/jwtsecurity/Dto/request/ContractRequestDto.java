@@ -20,4 +20,5 @@ public class ContractRequestDto {
     private LocalDateTime dateFin;
     private Long collaboraterId;
     private Long contractType;
+    private Long companyId;
 }

@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -34,24 +35,11 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     private final CollaboraterDtoMapper collaboraterDtoMapper;
     private final CountryRepository countryRepository;
     private final ContractRepository contractRepository;
-    private final ContractTypeRepository contractTypeRepository;
     private final ClassificationRepository classificationRepository;
-    private final ContractTypeDtoMapper contractTypeDtoMapper;
     @Override
-    public Page<CollaboraterResponseDto> findByCompany(Long companyId, int page, int size) throws CompanyException {
+    public Page<CollaboraterResponseDto> findByCompany(Long companyId,Boolean active, int page, int size) throws CompanyException {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-        Page<CollaboraterResponseDto> collaboratersPage = collaboraterRepository.findAllByCompanyAndActive(companyId, pageable);
-
-        if (collaboratersPage.isEmpty()) {
-            return Page.empty();
-        }
-        return collaboratersPage;
-    }
-
-    @Override
-    public Page<CollaboraterResponseDto> findArchivedByCompany(Long companyId, int page, int size) throws CompanyException {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-        Page<CollaboraterResponseDto> collaboratersPage = collaboraterRepository.findByCompanyAndActive(companyId, pageable);
+        Page<CollaboraterResponseDto> collaboratersPage = collaboraterRepository.findAllByCompanyAndActive(companyId,active, pageable);
 
         if (collaboratersPage.isEmpty()) {
             return Page.empty();
@@ -88,25 +76,22 @@ public class CollaboraterServiceImpl implements CollaboraterService{
 
     @Override
     public CollaboraterResponseDto createCollab(CollaboraterRequestDto request) throws CollaboraterException, CompanyException, CountryException {
-        Company company = companyRepository.findById(request.getCompany_id())
-                .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(request.getCompany_id())));
-//        if(collaboraterRepository.findByCnie(request.getCnie()).isPresent()){
-//            throw new CollaboraterException("un collaborateur avec ce CNIE est deja creer: [%s] :".formatted(request.getCnie()));
-//        }else
-          if(collaboraterRepository.findByMatriculeAndCompany(request.getMatricule(), company).isPresent()) {
+          if(collaboraterRepository.findByMatriculeAndCompanyIdOrCnie(request.getMatricule(), request.getCompanyId(),request.getCnie()).isPresent()) {
             throw new CollaboraterException("un collaborateur avec ce Matricule deja creer dans cette company: [%s] :".formatted(request.getMatricule()));}
-        Collaborater collaborater = buildCollaborater(request, company);
+        Collaborater collaborater = buildCollaborater(request);
         Collaborater saveCollaborater = collaboraterRepository.save(collaborater);
         addNationalitiesToCollaborater(saveCollaborater, request.getCountryCode1(), request.getCountryCode2());
         return collaboraterDtoMapper.apply(saveCollaborater);
     }
 
-    public Collaborater buildCollaborater(CollaboraterRequestDto request, Company company) throws CollaboraterException {
+    public Collaborater buildCollaborater(CollaboraterRequestDto request) throws CollaboraterException, CompanyException {
         Civilite civilite = request.getSexe() == Sexe.Homme ? Civilite.Mr : Civilite.Mme;
         LocalDateTime dateNaissance = request.getDateNaissance();
         if (dateNaissance.isAfter(LocalDateTime.now())) {
             throw new CollaboraterException("Date Naissance Error: " + dateNaissance);
         }
+        Company company = companyRepository.findById(request.getCompanyId())
+                .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(request.getCompanyId())));
         return Collaborater.builder()
                 .matricule(request.getMatricule())
                 .civilite(civilite)
@@ -163,11 +148,12 @@ public class CollaboraterServiceImpl implements CollaboraterService{
         if (dateNaissance.isAfter(LocalDateTime.now())) {
             throw new CollaboraterException("Date Naissance Error: " + dateNaissance);
         }
-//        if(collaboraterRepository.findByCnie(request.getCnie()).isPresent()){
-//            throw new CollaboraterException("un collaborateur avec ce CNIE est deja creer: [%s] :".formatted(request.getCnie()));
-//        }else if(collaboraterRepository.findByMatriculeAndCompanyId(request.getMatricule(), request.getCompany_id()).isPresent()) {
-//            throw new CollaboraterException("un collaborateur avec ce Matricule deja creer dans cette company: [%s] :".formatted(request.getMatricule()));
-//        }
+        if(!Objects.equals(request.getCnie(), collaborater.getCnie())){
+            throw new CollaboraterException("Impossible de changer Cnie: [%s] :".formatted(request.getCnie()));
+        }
+        if(collaboraterRepository.findByMatriculeAndCompanyId(request.getMatricule(), request.getCompanyId()).isPresent()) {
+            throw new CollaboraterException("un collaborateur avec ce Matricule deja creer dans cette company: [%s] :".formatted(request.getMatricule()));
+        }
         collaborater.setMatricule(request.getMatricule());
         collaborater.setCivilite(civilite);
         collaborater.setInitiales(request.getInitiales());
@@ -241,6 +227,7 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     }
 
     @Override
+    @Transactional
     public void persistFromFile(MultipartFile file, String table, Long companyId) {
         List<CollaboraterRequestDto> collaboraterRequests;
         try {
@@ -305,7 +292,7 @@ public class CollaboraterServiceImpl implements CollaboraterService{
                 System.out.println("up3");
 
                 CollaboraterRequestDto collaboraterRequest = CollaboraterRequestDto.builder().build();
-                collaboraterRequest.setCompany_id(companyId);
+                collaboraterRequest.setCompanyId(companyId);
                 System.out.println("up4");
 
                 if (columnMap.containsKey("matricule")) {
@@ -579,8 +566,8 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     }
 
     public void saveInBulk(CollaboraterRequestDto request) throws CountryException, CompanyException, CollaboraterException {
-        Company company = companyRepository.findById(request.getCompany_id())
-                .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(request.getCompany_id())));
+        Company company = companyRepository.findById(request.getCompanyId())
+                .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(request.getCompanyId())));
         Collaborater collaborater = Collaborater.builder()
                 .matricule(request.getMatricule())
                 .civilite(request.getCivilite())

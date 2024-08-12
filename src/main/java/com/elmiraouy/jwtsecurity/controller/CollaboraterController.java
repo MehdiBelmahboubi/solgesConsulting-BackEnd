@@ -14,43 +14,36 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@RequestMapping("/api/client/collaborater")
+@RequestMapping("/api/client/collaborators")
 public class CollaboraterController {
 
     private final CollaboraterService collaboraterService;
 
-    @GetMapping("/getAll")
+    @GetMapping
     public ResponseEntity<Page<CollaboraterResponseDto>> getAll(
             @RequestParam Long id,
+            @RequestParam Boolean active,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) throws CompanyException {
-        return ResponseEntity.ok(collaboraterService.findByCompany(id, page, size));
+        return ResponseEntity.ok(collaboraterService.findByCompany(id,active,page,size));
     }
 
-    @GetMapping("/getArchived")
-    public ResponseEntity<Page<CollaboraterResponseDto>> getArchived(
-            @RequestParam Long id,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) throws CompanyException {
-        return ResponseEntity.ok(collaboraterService.findArchivedByCompany(id, page, size));
-    }
-
-    @GetMapping("/get")
-    public ResponseEntity<CollaboraterResponseDto> getById(@RequestParam Long id) throws CollaboraterException, ContractException , ClassificationException {
+    @GetMapping("/{id}")
+    public ResponseEntity<CollaboraterResponseDto> getById(@PathVariable Long id) throws CollaboraterException, ContractException , ClassificationException {
         return ResponseEntity.ok(collaboraterService.findById(id));
     }
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<CollaboraterResponseDto> createCollab(@RequestBody CollaboraterRequestDto collaboraterRequestDto) throws CollaboraterException, CompanyException, CountryException {
         return ResponseEntity.ok(collaboraterService.createCollab(collaboraterRequestDto));
     }
 
-    @PutMapping("/update")
+    @PutMapping
     public ResponseEntity<CollaboraterResponseDto> updateCollab(@RequestBody CollaboraterRequestDto collaboraterRequestDto) throws CollaboraterException {
         return ResponseEntity.ok(collaboraterService.updateCollab(collaboraterRequestDto));
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping
     public ResponseEntity<CollaboraterResponseDto> deleteCollab(@RequestParam Long id) throws CollaboraterException {
         return ResponseEntity.ok(collaboraterService.deleteCollab(id));
     }

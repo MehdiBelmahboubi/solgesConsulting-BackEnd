@@ -3,6 +3,7 @@ package com.elmiraouy.jwtsecurity.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
@@ -17,7 +18,11 @@ public class ContractType {
     private Long id;
     private String code;
     private String description;
+    private Boolean active;
 
     @OneToMany(mappedBy = "contractType",fetch = FetchType.LAZY)
     private Collection<Contract> contracts;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Collection<Droit> droits= new ArrayList<>();
 }

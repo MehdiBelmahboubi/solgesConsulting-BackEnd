@@ -1,21 +1,22 @@
 package com.elmiraouy.jwtsecurity.service;
 
 import com.elmiraouy.jwtsecurity.Dto.request.ClassificationRequestDto;
-import com.elmiraouy.jwtsecurity.Dto.request.ContractRequestDto;
 import com.elmiraouy.jwtsecurity.Dto.response.ClassificationResponseDto;
 import com.elmiraouy.jwtsecurity.Dto.response.ClassificationTypeResponseDto;
 import com.elmiraouy.jwtsecurity.entities.Classification;
 import com.elmiraouy.jwtsecurity.entities.ClassificationType;
 import com.elmiraouy.jwtsecurity.entities.Collaborater;
+import com.elmiraouy.jwtsecurity.entities.Company;
 import com.elmiraouy.jwtsecurity.handlerException.ClassificationException;
 import com.elmiraouy.jwtsecurity.handlerException.ClassificationTypeException;
 import com.elmiraouy.jwtsecurity.handlerException.CollaboraterException;
-import com.elmiraouy.jwtsecurity.handlerException.ContractException;
+import com.elmiraouy.jwtsecurity.handlerException.CompanyException;
 import com.elmiraouy.jwtsecurity.mappers.ClassificationDtoMapper;
 import com.elmiraouy.jwtsecurity.mappers.ClassificationTypeDtoMapper;
 import com.elmiraouy.jwtsecurity.repository.ClassificationRepository;
 import com.elmiraouy.jwtsecurity.repository.ClassificationTypeRepository;
 import com.elmiraouy.jwtsecurity.repository.CollaboraterRepository;
+import com.elmiraouy.jwtsecurity.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -23,11 +24,11 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -37,27 +38,22 @@ import java.util.*;
 public class ClassificationServiceImpl implements ClassificationService{
     private final ClassificationRepository classificationRepository;
     private final CollaboraterRepository collaboraterRepository;
+    private final CompanyRepository companyRepository;
     private final ClassificationDtoMapper classificationDtoMapper;
     private final ClassificationTypeRepository classificationTypeRepository;
     private final ClassificationTypeDtoMapper classificationTypeDtoMapper;
-    @Override
-    public ClassificationResponseDto findByCollaborater(Long collaboraterId) throws CollaboraterException, ClassificationException {
-//        Collaborater collaborater = collaboraterRepository.findById(collaboraterId)
-//                .orElseThrow(() -> new CollaboraterException("Collaborater with this Id Introuvable: [%s] :".formatted(collaboraterId)));
-//        Date currentDate = new Date();
-//        Classification classification = classificationRepository.findByCollaboraterAndDateFinGreaterThan(collaborater,currentDate)
-//                .orElseThrow(() -> new ClassificationException("This User Dont Have a Current Classification"));
-//        return classificationDtoMapper.apply(classification);
-        return null;
-    }
 
     @Override
-    public ClassificationResponseDto addClassificationToCollaborater(ClassificationRequestDto request) throws CollaboraterException, ClassificationTypeException, ClassificationException {
+    public ClassificationResponseDto addClassificationToCollaborater(ClassificationRequestDto request) throws CollaboraterException, ClassificationTypeException, ClassificationException, CompanyException {
         if (request.getDateFin().isBefore(LocalDateTime.now())) {
             throw new ClassificationException("Date fin is before current date");
         } else if (request.getDateClassification().isAfter(request.getDateFin())) {
             throw new ClassificationException("Date Classification is after Date Fin");
         }
+
+        Company company = companyRepository.findById(request.getCompanyId())
+                .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(request.getCompanyId())));
+
 
         Collaborater collaborater = collaboraterRepository.findById(request.getCollaboraterId())
                 .orElseThrow(() -> new CollaboraterException("Collaborater avec  Id Introuvable: [%s] :".formatted(request.getCollaboraterId())));
@@ -82,6 +78,7 @@ public class ClassificationServiceImpl implements ClassificationService{
                 .dateCreation(LocalDateTime.now())
                 .collaborater(collaborater)
                 .classificationType(classificationType)
+                .company(company)
                 .build();
         classificationRepository.save(classification);
         return classificationDtoMapper.apply(classification);
@@ -113,16 +110,17 @@ public class ClassificationServiceImpl implements ClassificationService{
 
     @Override
     public List<ClassificationTypeResponseDto> getAllTypes() {
-        List<ClassificationType> classificationTypes = classificationTypeRepository.findAll();
+        List<ClassificationType> classificationTypes = classificationTypeRepository.findAllByActiveIsTrue();
         return classificationTypes.stream().map(classificationTypeDtoMapper).toList();
     }
 
     @Override
-    public void persistFromFile(MultipartFile file, String table) {
+    @Transactional
+    public void persistFromFile(MultipartFile file, String table,Long companyId) {
         List<ClassificationRequestDto> classificationRequestDtos;
         try {
             InputStream is = file.getInputStream();
-            classificationRequestDtos = excelToContracts(is, table);
+            classificationRequestDtos = excelToContracts(is, table,companyId);
             classificationRequestDtos.forEach(request -> {
                 try {
                     saveInBulk(request);
@@ -135,7 +133,7 @@ public class ClassificationServiceImpl implements ClassificationService{
         }
     }
 
-    private List<ClassificationRequestDto> excelToContracts(InputStream is, String table) {
+    private List<ClassificationRequestDto> excelToContracts(InputStream is, String table,Long companyId) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         List<ClassificationRequestDto> classificationRequestDtos = new ArrayList<>();
         Workbook workbook = null;
@@ -167,6 +165,7 @@ public class ClassificationServiceImpl implements ClassificationService{
                     continue;
                 }
                 ClassificationRequestDto classificationRequestDto = ClassificationRequestDto.builder().build();
+                classificationRequestDto.setCompanyId(companyId);
                 if (columnMap.containsKey("ref_classification")) {
                     classificationRequestDto.setRefClassification(currentRow.getCell(columnMap.get("ref_classification")).getStringCellValue());
                 }else {
@@ -201,7 +200,7 @@ public class ClassificationServiceImpl implements ClassificationService{
         }
     }
 
-    private void saveInBulk(ClassificationRequestDto request) throws ClassificationTypeException, CollaboraterException, ClassificationException {
+    private void saveInBulk(ClassificationRequestDto request) throws ClassificationTypeException, CollaboraterException, ClassificationException, CompanyException {
         if(request.getDateFin() != null){
             if (request.getDateFin().isBefore(LocalDateTime.now())) {
                 throw new ClassificationException("Date fin is before current date");
@@ -209,6 +208,8 @@ public class ClassificationServiceImpl implements ClassificationService{
                 throw new ClassificationException("Date Classification is after Date Fin");
             }
         }
+        Company company = companyRepository.findById(request.getCompanyId())
+                .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(request.getCompanyId())));
         Collaborater collaborater = collaboraterRepository.findById(request.getCollaboraterId())
                 .orElseThrow(() -> new CollaboraterException("Collaborater avec  Id Introuvable: [%s] :".formatted(request.getCollaboraterId())));
 
@@ -232,6 +233,7 @@ public class ClassificationServiceImpl implements ClassificationService{
                 .dateCreation(LocalDateTime.now())
                 .collaborater(collaborater)
                 .classificationType(classificationType)
+                .company(company)
                 .build();
         classificationRepository.save(classification);
     }

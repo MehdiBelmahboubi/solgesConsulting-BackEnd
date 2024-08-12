@@ -39,4 +39,8 @@ public class Classification {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "collaborater_id")
     private Collaborater collaborater;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id")
+    private Company company;
 }

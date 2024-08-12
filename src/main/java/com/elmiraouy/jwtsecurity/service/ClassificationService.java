@@ -6,15 +6,15 @@ import com.elmiraouy.jwtsecurity.Dto.response.ClassificationTypeResponseDto;
 import com.elmiraouy.jwtsecurity.handlerException.ClassificationException;
 import com.elmiraouy.jwtsecurity.handlerException.ClassificationTypeException;
 import com.elmiraouy.jwtsecurity.handlerException.CollaboraterException;
+import com.elmiraouy.jwtsecurity.handlerException.CompanyException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface ClassificationService {
-    public ClassificationResponseDto findByCollaborater(Long collaboraterId) throws CollaboraterException, ClassificationException;
-    public ClassificationResponseDto addClassificationToCollaborater(ClassificationRequestDto classificationRequestDto) throws CollaboraterException, ClassificationTypeException, ClassificationException;
+    public ClassificationResponseDto addClassificationToCollaborater(ClassificationRequestDto classificationRequestDto) throws CollaboraterException, ClassificationTypeException, ClassificationException, CompanyException;
     public ClassificationResponseDto updateClassification(ClassificationRequestDto classificationRequestDto) throws CollaboraterException, ClassificationTypeException, ClassificationException;
     public List<ClassificationTypeResponseDto> getAllTypes();
 
-    void persistFromFile(MultipartFile file, String table);
+    void persistFromFile(MultipartFile file, String table,Long companyId);
 }
