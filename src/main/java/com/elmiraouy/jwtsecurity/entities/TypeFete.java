@@ -17,8 +17,10 @@ public class TypeFete {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String libelle;
-    private Boolean recondiction;
+    @Column(nullable = false)
+    private Boolean reconduction;
     private Boolean active;
 
     private String observation;

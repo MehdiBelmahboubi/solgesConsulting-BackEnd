@@ -12,7 +12,7 @@ import java.util.List;
 public interface FeteRepository extends JpaRepository<Fete,Long> {
     @Query("""
     select new com.elmiraouy.jwtsecurity.Dto.response.FeteResponseDto(
-    f.id,f.libelle,f.code)
+    f.id,f.code,f.libelle)
     from Fete f where f.company.id=:companyId and f.active=true
     """)
     List<FeteResponseDto> findByCompanyAndActive(Long companyId);

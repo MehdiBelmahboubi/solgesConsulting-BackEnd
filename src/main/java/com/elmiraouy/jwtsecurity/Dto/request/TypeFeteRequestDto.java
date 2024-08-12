@@ -8,5 +8,6 @@ import lombok.Data;
 public class TypeFeteRequestDto {
     private Long id;
     private String libelle;
-    private Boolean recondiction;
+    private Boolean reconduction;
+    private Long companyId;
 }

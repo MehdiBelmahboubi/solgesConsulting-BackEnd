@@ -16,7 +16,9 @@ public class JourFerier {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private LocalDateTime dateFete;
+    @Column(nullable = false)
     private String nbrJour;
     private Boolean active;
 

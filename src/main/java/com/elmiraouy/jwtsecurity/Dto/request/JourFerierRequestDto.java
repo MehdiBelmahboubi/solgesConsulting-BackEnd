@@ -11,7 +11,6 @@ public class JourFerierRequestDto {
     private Long id;
     private LocalDateTime dateFete;
     private String nbrJour;
-    private FeteRequestDto fete;
     private Long feteId;
     private Long companyId;
 }

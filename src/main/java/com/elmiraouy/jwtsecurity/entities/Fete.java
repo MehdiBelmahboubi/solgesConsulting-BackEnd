@@ -17,7 +17,9 @@ public class Fete {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String code;
+    @Column(nullable = false)
     private String libelle;
     private Boolean active;
 
