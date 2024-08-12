@@ -14,10 +14,7 @@ public class CalendarDtoMapper implements Function<Calendar, CalendarResponseDto
                 calendar.getId(),
                 calendar.getCode(),
                 calendar.getName(),
-                calendar.getJourFerier(),
-                calendar.isActive(),
-                calendar.getDateCreation(),
-                calendar.getCompany().getId()
+                calendar.getJourFerier()
         );
     }
 }
