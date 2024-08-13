@@ -249,6 +249,36 @@ public class CollaboraterServiceImpl implements CollaboraterService{
         }
     }
 
+    @Override
+    public Page<CollaboraterResponseDto> findByCompanyGroupedBy(Long companyId, Boolean active, int page, int size,String selectedType,String selectedOption) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+        Page<CollaboraterResponseDto> collaboratersPage = null;
+        if(selectedType.equals("contract")){
+            collaboratersPage = collaboraterRepository.findAllByCompanyAndActiveGroupedByContract(companyId,active, pageable ,selectedOption);
+        }else if(selectedType.equals("classification")){
+            collaboratersPage = collaboraterRepository.findAllByCompanyAndActiveGroupedByClassification(companyId,active, pageable,selectedOption);
+        }
+//        else if(selectedType.equals("both")){
+//            collaboratersPage = collaboraterRepository.findAllByCompanyAndActiveGroupedByContractAndClassification(companyId,active, pageable,selectedOption);
+//        }
+
+        if (collaboratersPage.isEmpty()) {
+            return Page.empty();
+        }
+        return collaboratersPage;
+    }
+
+    @Override
+    public Page<CollaboraterResponseDto> findByCompanyAndSearch(Long companyId, Boolean active, int page, int size, String search) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+        Page<CollaboraterResponseDto> collaboratersPage = collaboraterRepository.findAllByCompanyAndActiveAndSearch(companyId,active, pageable,search);
+
+        if (collaboratersPage.isEmpty()) {
+            return Page.empty();
+        }
+        return collaboratersPage;
+    }
+
     public List<CollaboraterRequestDto> excelToCollaboraters(InputStream is, String table, Long companyId) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         List<CollaboraterRequestDto> collaboraterRequests = new ArrayList<>();

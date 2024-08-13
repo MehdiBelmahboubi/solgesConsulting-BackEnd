@@ -1,15 +1,21 @@
+package com.elmiraouy.jwtsecurity.service;
+
+import com.elmiraouy.jwtsecurity.Dto.request.TypeUnitOrganisationalRequest;
+import com.elmiraouy.jwtsecurity.Dto.response.TypeUnitOrganisationalResponseDto;
+import com.elmiraouy.jwtsecurity.entities.TypeUnitOrganisational;
+import com.elmiraouy.jwtsecurity.handlerException.CompanyException;
+import com.elmiraouy.jwtsecurity.handlerException.EntityNotFoundException;
+import com.elmiraouy.jwtsecurity.handlerException.TypeUnityException;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.Optional;
+
 public interface TypeUnitOrganisationalService {
-    public TypeUnitOrganisationalResponseDto save(TypeUnitOrganisationalRequest typeUnitOrganisationalRequest)
-            throws CompanyException, EntityNotFoundException, TypeUnityException;
-    public TypeUnitOrganisationalResponseDto update(TypeUnitOrganisationalRequest typeUnitOrganisationalRequest)
-            throws CompanyException, EntityNotFoundException, TypeUnityException;
-    public TypeUnitOrganisationalResponseDto duplicate(TypeUnitOrganisationalRequest typeUnitOrganisationalRequest) throws CompanyException, EntityNotFoundException, TypeUnityException;
-    public void delete(Long id);
+
     public TypeUnitOrganisationalResponseDto findById(Long id) throws EntityNotFoundException;
-    public TypeUnitOrganisational findByIdIntern(Long id) throws EntityNotFoundException, TypeUnityException;
     public List<TypeUnitOrganisationalResponseDto> getAll(Long companyId) throws EntityNotFoundException;
     public TypeUnitOrganisationalResponseDto findByNameOrCode(String criteria) throws EntityNotFoundException;
     public List<TypeUnitOrganisationalResponseDto> findByCompanyId(Long companyId) throws EntityNotFoundException;
-
-    void persistFromFile(MultipartFile file,String table,Long companyId,Long userCreatedId);
+    void persistFromFile(MultipartFile file, String table, Long companyId, Long userCreatedId);
 }

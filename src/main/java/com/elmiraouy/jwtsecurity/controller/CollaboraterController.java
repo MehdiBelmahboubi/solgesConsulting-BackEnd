@@ -24,8 +24,19 @@ public class CollaboraterController {
             @RequestParam Long id,
             @RequestParam Boolean active,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) throws CompanyException {
-        return ResponseEntity.ok(collaboraterService.findByCompany(id,active,page,size));
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String selectedType,
+            @RequestParam(required = false) String selectedOption,
+            @RequestParam(required = false) String search) throws CompanyException {
+
+        if (selectedType!=null) {
+            return ResponseEntity.ok(collaboraterService.findByCompanyGroupedBy(id, active, page, size,selectedType,selectedOption));
+        } else if (search!=null) {
+            return ResponseEntity.ok(collaboraterService.findByCompanyAndSearch(id, active, page, size, search));
+        }
+
+
+        return ResponseEntity.ok(collaboraterService.findByCompany(id, active, page, size));
     }
 
     @GetMapping("/{id}")

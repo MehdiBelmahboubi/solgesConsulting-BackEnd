@@ -20,4 +20,8 @@ public interface CollaboraterService {
     public CollaboraterResponseDto updateCollab(CollaboraterRequestDto CollaboraterRequestDto) throws CollaboraterException;
 
     void persistFromFile(MultipartFile file, String table, Long companyId);
+
+    Page<CollaboraterResponseDto> findByCompanyGroupedBy(Long companyId, Boolean active, int page, int size ,String selectedType,String selectedOption);
+
+    Page<CollaboraterResponseDto> findByCompanyAndSearch(Long companyId, Boolean active, int page, int size, String search);
 }
