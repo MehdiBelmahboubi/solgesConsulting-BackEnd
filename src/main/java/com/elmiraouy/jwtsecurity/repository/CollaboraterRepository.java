@@ -80,7 +80,7 @@ public interface CollaboraterRepository extends JpaRepository<Collaborater, Long
             c.dateNaturalisation, c.active, c.recrutable, c.excluDeclaration, c.matriculeRecrutement)
         from Collaborater c join c.contracts con
         where c.company.id= :companyId and c.active=:active and con.contractType.id=:selectedOption
-        group by c.contracts
+         group by c, con.contractType
         """)
     Page<CollaboraterResponseDto> findAllByCompanyAndActiveGroupedByContract(Long companyId, Boolean active, Pageable pageable,String selectedOption);
 
@@ -96,7 +96,7 @@ public interface CollaboraterRepository extends JpaRepository<Collaborater, Long
             c.dateNaturalisation, c.active, c.recrutable, c.excluDeclaration, c.matriculeRecrutement)
         from Collaborater c join c.classifications clas
         where c.company.id= :companyId and c.active=:active and clas.classificationType.id=:selectedOption
-        group by c.classifications
+        group by c, clas.classificationType
         """)
     Page<CollaboraterResponseDto> findAllByCompanyAndActiveGroupedByClassification(Long companyId, Boolean active, Pageable pageable,String selectedOption);
 
