@@ -258,9 +258,10 @@ public class CollaboraterServiceImpl implements CollaboraterService{
         }else if(selectedType.equals("classification")){
             collaboratersPage = collaboraterRepository.findAllByCompanyAndActiveGroupedByClassification(companyId,active, pageable,selectedOption);
         }
-//        else if(selectedType.equals("both")){
-//            collaboratersPage = collaboraterRepository.findAllByCompanyAndActiveGroupedByContractAndClassification(companyId,active, pageable,selectedOption);
-//        }
+        else if(selectedType.equals("sexe")){
+            Sexe selectedOption1=Sexe.valueOf(selectedOption);
+            collaboratersPage = collaboraterRepository.findAllByCompanyAndActiveGroupedBySexe(companyId,active, pageable,selectedOption1);
+        }
 
         if (collaboratersPage.isEmpty()) {
             return Page.empty();
@@ -596,6 +597,8 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     }
 
     public void saveInBulk(CollaboraterRequestDto request) throws CountryException, CompanyException, CollaboraterException {
+        if(collaboraterRepository.findByMatriculeAndCompanyIdOrCnie(request.getMatricule(), request.getCompanyId(),request.getCnie()).isPresent()) {
+            throw new CollaboraterException("un collaborateur avec ce Matricule deja creer dans cette company: [%s] :".formatted(request.getMatricule()));}
         Company company = companyRepository.findById(request.getCompanyId())
                 .orElseThrow(() -> new CompanyException("Company avec Id Introuvable: [%s] :".formatted(request.getCompanyId())));
         Collaborater collaborater = Collaborater.builder()
