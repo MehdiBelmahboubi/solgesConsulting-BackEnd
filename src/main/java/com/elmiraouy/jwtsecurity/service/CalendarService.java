@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface CalendarService {
 
-    public List<CalendarResponseDto> getAll(Long id);
+    public List<CalendarResponseDto> getAll(Long id,Boolean statut);
 
     public CalendarResponseDto addCalendar(CalendarRequestDto calendarRequestDto) throws CalendarException, CompanyException;
 }

@@ -13,13 +13,13 @@ import java.time.LocalDateTime;
 public class CalendarResponseDto {
     private Long id;
     private String code;
-    private String  name;
+    private String  libelle;
     private Boolean jourFerier;
 
-    public CalendarResponseDto (Long id, String code, String  name, boolean jourFerier){
+    public CalendarResponseDto (Long id, String code, String  libelle, boolean jourFerier){
         this.id=id;
         this.code=code;
-        this.name=name;
+        this.libelle=libelle;
         this.jourFerier=jourFerier;
 
     }

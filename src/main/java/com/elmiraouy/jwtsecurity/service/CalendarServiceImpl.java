@@ -23,8 +23,8 @@ public class CalendarServiceImpl implements CalendarService {
     private final CalendarDtoMapper calendarDtoMapper; // Make sure this is defined or injected properly
 
     @Override
-    public List<CalendarResponseDto> getAll(Long id) {
-        List<CalendarResponseDto> calendarResponseDtos = calendarRepository.findByCompanyAndActive(id);
+    public List<CalendarResponseDto> getAll(Long id,Boolean statut) {
+        List<CalendarResponseDto> calendarResponseDtos = calendarRepository.findByCompanyAndActive(id,statut);
         return calendarResponseDtos;
     }
 
@@ -40,8 +40,9 @@ public class CalendarServiceImpl implements CalendarService {
 
         Calendar calendar = Calendar.builder()
                 .code(calendarRequestDto.getCode())
-                .name(calendarRequestDto.getName())
+                .libelle(calendarRequestDto.getLibelle())
                 .jourFerier(calendarRequestDto.getJourFerier())
+                .daysOfWeek(calendarRequestDto.getDaysOfWeek())
                 .active(true)
                 .dateCreation(LocalDateTime.now())
                 .company(company)

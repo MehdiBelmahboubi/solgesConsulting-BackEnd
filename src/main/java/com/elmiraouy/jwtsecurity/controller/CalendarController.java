@@ -20,8 +20,8 @@ public class CalendarController {
     private final CalendarService calendarService;
 
     @GetMapping
-    public ResponseEntity<List<CalendarResponseDto>> getAll(@RequestParam Long id){
-        return ResponseEntity.ok(calendarService.getAll(id));
+    public ResponseEntity<List<CalendarResponseDto>> getAll(@RequestParam Long id,@RequestParam Boolean statut){
+        return ResponseEntity.ok(calendarService.getAll(id,statut));
     }
 
     @PostMapping

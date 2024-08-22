@@ -13,7 +13,7 @@ public class CalendarDtoMapper implements Function<Calendar, CalendarResponseDto
         return new CalendarResponseDto(
                 calendar.getId(),
                 calendar.getCode(),
-                calendar.getName(),
+                calendar.getLibelle(),
                 calendar.getJourFerier()
         );
     }
