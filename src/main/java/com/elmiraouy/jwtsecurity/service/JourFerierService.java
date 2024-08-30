@@ -16,7 +16,7 @@ import java.util.List;
 public interface JourFerierService {
     public JourFerierResponseDto addJourFerier(JourFerierRequestDto jourFerierRequestDto) throws TypeFeteException, FeteException, JourFerierException, CompanyException;
 
-    public List<JourFerierResponseDto> getAll(Long id);
+    public List<JourFerierResponseDto> getAll(Long id,Boolean statut);
 
     public List<FeteResponseDto> getFetes(Long id);
 

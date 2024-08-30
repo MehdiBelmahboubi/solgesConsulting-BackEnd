@@ -58,8 +58,8 @@ public class JourFerierServiceImpl implements JourFerierService{
     }
 
     @Override
-    public List<JourFerierResponseDto> getAll(Long id) {
-        List<JourFerierResponseDto> jourFerierResponseDtos = jourFerierRepository.findByCompanyAndActive(id);
+    public List<JourFerierResponseDto> getAll(Long id,Boolean statut) {
+        List<JourFerierResponseDto> jourFerierResponseDtos = jourFerierRepository.findByCompanyAndActive(id,statut);
         return jourFerierResponseDtos;
     }
 

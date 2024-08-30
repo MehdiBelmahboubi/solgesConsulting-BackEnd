@@ -25,8 +25,8 @@ public class JourFerierController {
     private final JourFerierService jourFerierService;
 
     @GetMapping
-    public ResponseEntity<List<JourFerierResponseDto>> getAll(@RequestParam Long id){
-        return ResponseEntity.ok(jourFerierService.getAll(id));
+    public ResponseEntity<List<JourFerierResponseDto>> getAll(@RequestParam Long id,@RequestParam Boolean statut){
+        return ResponseEntity.ok(jourFerierService.getAll(id,statut));
     }
 
     @PostMapping

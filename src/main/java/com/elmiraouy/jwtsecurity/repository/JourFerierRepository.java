@@ -13,7 +13,7 @@ public interface JourFerierRepository extends JpaRepository<JourFerier,Long> {
     @Query("""
     select new com.elmiraouy.jwtsecurity.Dto.response.JourFerierResponseDto(
     j.id,j.dateFete,j.nbrJour,j.fete.libelle)
-    from JourFerier j where j.company.id=:companyId and j.active=true
+    from JourFerier j where j.company.id=:companyId and j.active=:statut
     """)
-    List<JourFerierResponseDto> findByCompanyAndActive(Long companyId);
+    List<JourFerierResponseDto> findByCompanyAndActive(Long companyId,Boolean statut);
 }
