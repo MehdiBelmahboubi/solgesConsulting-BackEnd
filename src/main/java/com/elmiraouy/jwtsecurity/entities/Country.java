@@ -23,6 +23,7 @@ public class Country {
     private String capital;
     private String country;
     private String nationality;
+    private Boolean active;
 
     @ManyToMany(fetch = FetchType.LAZY)
     private Collection<Collaborater> collaborators= new ArrayList<>();

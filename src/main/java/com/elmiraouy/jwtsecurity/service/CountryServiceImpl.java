@@ -15,7 +15,7 @@ public class CountryServiceImpl implements CountryService{
     private final CountryDtoMapper countryDtoMapper;
     @Override
     public List<CountryResponseDto> getAllNationalities() {
-        List<Country> countries = countryRepository.findAll();
+        List<Country> countries = countryRepository.findAllByActiveIsTrue();
         return countries.stream().map(countryDtoMapper).toList();
     }
 }
