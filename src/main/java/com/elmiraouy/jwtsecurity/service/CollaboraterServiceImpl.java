@@ -140,6 +140,15 @@ public class CollaboraterServiceImpl implements CollaboraterService{
     }
 
     @Override
+    public CollaboraterResponseDto restoreCollab(Long id) throws CollaboraterException {
+        Collaborater collaborater = collaboraterRepository.findById(id)
+                .orElseThrow(() -> new CollaboraterException("Collaborater with this Id Introuvable: [%s] :".formatted(id)));
+        collaborater.setActive(true);
+        collaboraterRepository.save(collaborater);
+        return collaboraterDtoMapper.apply(collaborater);
+    }
+
+    @Override
     public CollaboraterResponseDto updateCollab( CollaboraterRequestDto request) throws CollaboraterException {
         Collaborater collaborater = collaboraterRepository.findById(request.getId())
                 .orElseThrow(() -> new CollaboraterException("Collaborater with this Id Introuvable: [%s] :".formatted(request.getId())));

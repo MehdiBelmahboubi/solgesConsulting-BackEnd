@@ -17,6 +17,7 @@ public interface CollaboraterService {
     public Collaborater buildCollaborater(CollaboraterRequestDto request) throws CollaboraterException, CompanyException;
     public void addNationalitiesToCollaborater(Collaborater collaborater, Long countryCode1, Long countryCode2) throws CountryException;
     public CollaboraterResponseDto deleteCollab(Long id) throws CollaboraterException;
+    public CollaboraterResponseDto restoreCollab(Long id) throws CollaboraterException;
     public CollaboraterResponseDto updateCollab(CollaboraterRequestDto CollaboraterRequestDto) throws CollaboraterException;
 
     void persistFromFile(MultipartFile file, String table, Long companyId);
@@ -24,4 +25,5 @@ public interface CollaboraterService {
     Page<CollaboraterResponseDto> findByCompanyGroupedBy(Long companyId, Boolean active, int page, int size ,String selectedType,String selectedOption);
 
     Page<CollaboraterResponseDto> findByCompanyAndSearch(Long companyId, Boolean active, int page, int size, String search);
+
 }

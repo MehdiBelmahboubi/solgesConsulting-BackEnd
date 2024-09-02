@@ -58,4 +58,9 @@ public class CollaboraterController {
     public ResponseEntity<CollaboraterResponseDto> deleteCollab(@RequestParam Long id) throws CollaboraterException {
         return ResponseEntity.ok(collaboraterService.deleteCollab(id));
     }
+
+    @DeleteMapping("/restore")
+    public ResponseEntity<CollaboraterResponseDto> restoreCollab(@RequestParam Long id) throws CollaboraterException {
+        return ResponseEntity.ok(collaboraterService.restoreCollab(id));
+    }
 }
