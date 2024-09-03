@@ -52,4 +52,30 @@ public class CalendarServiceImpl implements CalendarService {
 
         return calendarDtoMapper.apply(calendar);
     }
+
+    @Override
+    public CalendarResponseDto getById(Long id) throws CalendarException {
+        Calendar calendar = calendarRepository.findById(id)
+                .orElseThrow(() -> new CalendarException("Calendar with ID [%s] not found.".formatted(id)));
+
+        return calendarDtoMapper.apply(calendar);
+    }
+
+    @Override
+    public CalendarResponseDto deleteCalendar(Long id) throws CalendarException {
+        Calendar calendar = calendarRepository.findById(id)
+                .orElseThrow(() -> new CalendarException("Calendar with ID [%s] not found.".formatted(id)));
+        calendar.setActive(false);
+        calendarRepository.save(calendar);
+        return calendarDtoMapper.apply(calendar);
+    }
+
+    @Override
+    public CalendarResponseDto restoreCalendar(Long id) throws CalendarException {
+        Calendar calendar = calendarRepository.findById(id)
+                .orElseThrow(() -> new CalendarException("Calendar with ID [%s] not found.".formatted(id)));
+        calendar.setActive(true);
+        calendarRepository.save(calendar);
+        return calendarDtoMapper.apply(calendar);
+    }
 }

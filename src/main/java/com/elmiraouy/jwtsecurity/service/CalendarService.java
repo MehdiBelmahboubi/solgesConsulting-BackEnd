@@ -13,4 +13,10 @@ public interface CalendarService {
     public List<CalendarResponseDto> getAll(Long id,Boolean statut);
 
     public CalendarResponseDto addCalendar(CalendarRequestDto calendarRequestDto) throws CalendarException, CompanyException;
+
+    public CalendarResponseDto getById(Long id) throws CalendarException;
+
+    public CalendarResponseDto deleteCalendar(Long id) throws CalendarException;
+
+    public CalendarResponseDto restoreCalendar(Long id) throws CalendarException;;
 }

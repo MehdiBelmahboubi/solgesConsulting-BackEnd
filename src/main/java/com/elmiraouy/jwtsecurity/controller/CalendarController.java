@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@RequestMapping("/api/client/calendar")
+@RequestMapping("/api/client/calendars")
 
 public class CalendarController {
     private final CalendarService calendarService;
@@ -24,9 +24,23 @@ public class CalendarController {
         return ResponseEntity.ok(calendarService.getAll(id,statut));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<CalendarResponseDto> getById(@RequestParam Long id) throws CalendarException {
+        return ResponseEntity.ok(calendarService.getById(id));
+    }
+
     @PostMapping
     public ResponseEntity<CalendarResponseDto> addCalendar(@RequestBody CalendarRequestDto CalendarRequestDto) throws CalendarException, CompanyException {
         return ResponseEntity.ok(calendarService.addCalendar(CalendarRequestDto));
     }
 
+    @DeleteMapping
+    public ResponseEntity<CalendarResponseDto> deleteCalendar(@RequestParam Long id) throws CalendarException {
+        return ResponseEntity.ok(calendarService.deleteCalendar(id));
+    }
+
+    @DeleteMapping("/restore")
+    public ResponseEntity<CalendarResponseDto> restoreCalendar(@RequestParam Long id) throws CalendarException {
+        return ResponseEntity.ok(calendarService.restoreCalendar(id));
+    }
 }
