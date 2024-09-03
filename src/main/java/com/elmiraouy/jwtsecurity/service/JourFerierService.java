@@ -25,4 +25,8 @@ public interface JourFerierService {
     public FeteResponseDto addFete(FeteRequestDto feteRequestDto) throws CompanyException, TypeFeteException;
 
     public TypeFeteResponseDto addTypeFete(TypeFeteRequestDto typeFeteRequestDto) throws CompanyException;
+
+    public JourFerierResponseDto deleteCalendar(Long id) throws JourFerierException;
+
+    public JourFerierResponseDto restoreCalendar(Long id) throws JourFerierException;
 }

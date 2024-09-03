@@ -3,13 +3,11 @@ package com.elmiraouy.jwtsecurity.controller;
 import com.elmiraouy.jwtsecurity.Dto.request.FeteRequestDto;
 import com.elmiraouy.jwtsecurity.Dto.request.JourFerierRequestDto;
 import com.elmiraouy.jwtsecurity.Dto.request.TypeFeteRequestDto;
+import com.elmiraouy.jwtsecurity.Dto.response.CalendarResponseDto;
 import com.elmiraouy.jwtsecurity.Dto.response.FeteResponseDto;
 import com.elmiraouy.jwtsecurity.Dto.response.JourFerierResponseDto;
 import com.elmiraouy.jwtsecurity.Dto.response.TypeFeteResponseDto;
-import com.elmiraouy.jwtsecurity.handlerException.CompanyException;
-import com.elmiraouy.jwtsecurity.handlerException.FeteException;
-import com.elmiraouy.jwtsecurity.handlerException.JourFerierException;
-import com.elmiraouy.jwtsecurity.handlerException.TypeFeteException;
+import com.elmiraouy.jwtsecurity.handlerException.*;
 import com.elmiraouy.jwtsecurity.service.JourFerierService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -52,5 +50,15 @@ public class JourFerierController {
     @GetMapping("/typesFetes")
     public ResponseEntity<List<TypeFeteResponseDto>> getTypesFetes(@RequestParam Long id){
         return ResponseEntity.ok(jourFerierService.getTypesFetes(id));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<JourFerierResponseDto> deleteJourFerier(@RequestParam Long id) throws JourFerierException {
+        return ResponseEntity.ok(jourFerierService.deleteCalendar(id));
+    }
+
+    @DeleteMapping("/restore")
+    public ResponseEntity<JourFerierResponseDto> restoreJourFerier(@RequestParam Long id) throws JourFerierException {
+        return ResponseEntity.ok(jourFerierService.restoreCalendar(id));
     }
 }

@@ -107,4 +107,22 @@ public class JourFerierServiceImpl implements JourFerierService{
         typeFeteRepository.save(typeFete);
         return new TypeFeteResponseDto(typeFete.getId(), typeFete.getLibelle(), typeFete.getReconduction());
     }
+
+    @Override
+    public JourFerierResponseDto deleteCalendar(Long id) throws JourFerierException {
+        JourFerier jourFerier = jourFerierRepository.findById(id)
+                .orElseThrow(()->new JourFerierException("Jour Ferie avec Id Introuvable: [%s] :".formatted(id)));
+        jourFerier.setActive(false);
+        jourFerierRepository.save(jourFerier);
+        return jourFerierDtoMapper.apply(jourFerier);
+    }
+
+    @Override
+    public JourFerierResponseDto restoreCalendar(Long id) throws JourFerierException {
+        JourFerier jourFerier = jourFerierRepository.findById(id)
+                .orElseThrow(()->new JourFerierException("Jour Ferie avec Id Introuvable: [%s] :".formatted(id)));
+        jourFerier.setActive(true);
+        jourFerierRepository.save(jourFerier);
+        return jourFerierDtoMapper.apply(jourFerier);
+    }
 }
