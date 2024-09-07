@@ -59,9 +59,6 @@ public class UnitOrganisational {
     @ManyToOne(fetch = FetchType.LAZY)
     private AppUser manager;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Collection<Droit> droits= new ArrayList<>();
-
 
 
 }

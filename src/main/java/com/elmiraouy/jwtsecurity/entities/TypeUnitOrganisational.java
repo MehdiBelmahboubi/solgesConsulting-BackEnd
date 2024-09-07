@@ -41,6 +41,4 @@ public class TypeUnitOrganisational {
     private Company company;
     private String color;
     private Boolean addedInBulk;
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Collection<Droit> droits= new ArrayList<>();
 }

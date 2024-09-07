@@ -22,7 +22,4 @@ public class ContractType {
 
     @OneToMany(mappedBy = "contractType",fetch = FetchType.LAZY)
     private Collection<Contract> contracts;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Collection<Droit> droits= new ArrayList<>();
 }

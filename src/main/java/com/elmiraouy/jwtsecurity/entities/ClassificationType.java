@@ -22,7 +22,4 @@ public class ClassificationType {
 
     @OneToMany(mappedBy = "classificationType",fetch = FetchType.LAZY)
     private Collection<Classification> classifications;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Collection<Droit> droits= new ArrayList<>();
 }
