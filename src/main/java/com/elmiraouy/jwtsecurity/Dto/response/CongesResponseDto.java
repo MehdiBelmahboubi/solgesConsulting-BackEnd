@@ -34,9 +34,7 @@ public class CongesResponseDto {
     private Integer nbrAnneeReliquat;
     private List<Droit> droits;
     private Calendar calendar;
-    public CongesResponseDto(Long id,String code,Boolean imputablePaix,Statut statut,LocalDateTime dateValidite,LocalDateTime dateFinValidite,
-                             Unite unite,Boolean autoriserDefalcation,Integer nbrDefalcation,Boolean autoriserRecondiction,Integer delaiRecondiction,
-                             Integer minJour,Integer maxJour,Boolean reliquatReconduire,Integer nbrAnneeReliquat){
+    public CongesResponseDto(Long id,String code,Boolean imputablePaix,Statut statut,LocalDateTime dateValidite,LocalDateTime dateFinValidite, Unite unite){
         this.id=id;
         this.code=code;
         this.imputablePaix=imputablePaix;
@@ -44,14 +42,6 @@ public class CongesResponseDto {
         this.dateValidite=dateValidite;
         this.dateFinValidite=dateFinValidite;
         this.unite=unite;
-        this.autoriserDefalcation=autoriserDefalcation;
-        this.nbrDefalcation=nbrDefalcation;
-        this.autoriserRecondiction=autoriserRecondiction;
-        this.delaiRecondiction=delaiRecondiction;
-        this.minJour=minJour;
-        this.maxJour=maxJour;
-        this.reliquatReconduire=reliquatReconduire;
-        this.nbrAnneeReliquat=nbrAnneeReliquat;
     }
 
 }

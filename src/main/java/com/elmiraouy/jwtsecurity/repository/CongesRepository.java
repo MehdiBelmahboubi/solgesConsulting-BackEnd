@@ -12,9 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface CongesRepository extends JpaRepository<Conges,Long> {
     @Query("""
     select new com.elmiraouy.jwtsecurity.Dto.response.CongesResponseDto(
-        c.id,c.code,c.imputablePaix,c.statut,c.dateValidite,c.dateFinValidite,c.unite,c.autoriserDefalcation,
-        c.nbrDefalcation,c.autoriserRecondiction,c.delaiRecondiction,c.minJour,c.maxJour,c.reliquatReconduire,
-        c.nbrAnneeReliquat)
+        c.id,c.code,c.imputablePaix,c.statut,c.dateValidite,c.dateFinValidite,c.unite)
         from Conges c where c.company.id=:companyId
     """)
     Page<CongesResponseDto> findAllByCompanyAndActive(Long companyId, Pageable pageable);

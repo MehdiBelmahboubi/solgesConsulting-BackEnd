@@ -2,6 +2,7 @@ package com.elmiraouy.jwtsecurity.controller;
 
 import com.elmiraouy.jwtsecurity.Dto.request.CongesRequestDto;
 import com.elmiraouy.jwtsecurity.Dto.response.CongesResponseDto;
+import com.elmiraouy.jwtsecurity.handlerException.CalendarException;
 import com.elmiraouy.jwtsecurity.handlerException.CompanyException;
 import com.elmiraouy.jwtsecurity.service.CongesService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class CongesController {
     }
 
     @PostMapping
-    public ResponseEntity<CongesResponseDto> createConges(@RequestBody CongesRequestDto congesRequestDto){
+    public ResponseEntity<CongesResponseDto> createConges(@RequestBody CongesRequestDto congesRequestDto) throws CalendarException {
         return ResponseEntity.ok(congesService.createConges(congesRequestDto));
     }
 
