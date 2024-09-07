@@ -11,18 +11,15 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @Builder
 public class DroitRequestDto {
     private Long id;
     private Integer nbrJour;
-    private Sexe sexe;
-    private String contractType;
-    private String classificationType;
+    private List<Sexe> sexes;
+    private List<String> contractTypes;
+    private List<String> classificationTypes;
     private DroitType droitType;
-    private Collection<ContractType> contractTypes = new ArrayList<>();
-    private Collection<ClassificationType> classificationTypes = new ArrayList<>();
-    private Collection<UnitOrganisational> unitOrganisationals = new ArrayList<>();
-    private Collection<TypeUnitOrganisational> typeUnitOrganisationals = new ArrayList<>();
 }
