@@ -27,9 +27,7 @@ public class CongesController {
     }
 
     @PostMapping
-    public ResponseEntity<CongesResponseDto> createConges(@RequestBody CongesRequestDto congesRequestDto) throws CalendarException {
+    public ResponseEntity<CongesResponseDto> createConges(@RequestBody CongesRequestDto congesRequestDto) throws CalendarException, CompanyException {
         return ResponseEntity.ok(congesService.createConges(congesRequestDto));
     }
-
-
 }

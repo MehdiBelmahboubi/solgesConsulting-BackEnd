@@ -3,11 +3,14 @@ package com.elmiraouy.jwtsecurity.service;
 import com.elmiraouy.jwtsecurity.Dto.request.CongesRequestDto;
 import com.elmiraouy.jwtsecurity.Dto.response.CongesResponseDto;
 import com.elmiraouy.jwtsecurity.entities.Calendar;
+import com.elmiraouy.jwtsecurity.entities.Company;
 import com.elmiraouy.jwtsecurity.entities.Conges;
 import com.elmiraouy.jwtsecurity.entities.Droit;
 import com.elmiraouy.jwtsecurity.handlerException.CalendarException;
+import com.elmiraouy.jwtsecurity.handlerException.CompanyException;
 import com.elmiraouy.jwtsecurity.mappers.CongesDtoMapper;
 import com.elmiraouy.jwtsecurity.repository.CalendarRepository;
+import com.elmiraouy.jwtsecurity.repository.CompanyRepository;
 import com.elmiraouy.jwtsecurity.repository.CongesRepository;
 import com.elmiraouy.jwtsecurity.repository.DroitRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +30,7 @@ public class CongesServiceImpl implements CongesService{
     private final DroitRepository droitRepository;
     private final CongesDtoMapper congesDtoMapper;
     private final CalendarRepository calendarRepository;
+    private final CompanyRepository companyRepository;
     @Override
     public Page<CongesResponseDto> findByCompany(Long companyId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
@@ -39,7 +43,9 @@ public class CongesServiceImpl implements CongesService{
     }
 
     @Override
-    public CongesResponseDto createConges(CongesRequestDto congesRequestDto) throws CalendarException {
+    public CongesResponseDto createConges(CongesRequestDto congesRequestDto) throws CalendarException, CompanyException {
+        Company company = companyRepository.findById(congesRequestDto.getCompanyId())
+                .orElseThrow(()->new CompanyException("Company with this Id Introuvable: [%s] :".formatted(congesRequestDto.getCompanyId())));
         Calendar calendar = calendarRepository.findById(congesRequestDto.getCalendarId())
                 .orElseThrow(()->new CalendarException("Calendar with this Id Introuvable: [%s] :".formatted(congesRequestDto.getCalendarId())));
         List<Droit> droits = congesRequestDto.getDroits().stream()
@@ -72,6 +78,7 @@ public class CongesServiceImpl implements CongesService{
                 .nbrAnneeReliquat(congesRequestDto.getNbrAnneeReliquat())
                 .droits(droits)
                 .calendar(calendar)
+                .company(company)
                 .build();
 
         Conges savedConges = congesRepository.save(conges);

@@ -25,4 +25,5 @@ public class CongesRequestDto {
     private Integer nbrAnneeReliquat;
     private Collection<DroitRequestDto> droits;
     private Long calendarId;
+    private Long companyId;
 }
